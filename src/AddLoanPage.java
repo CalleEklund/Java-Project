@@ -40,34 +40,34 @@ public class AddLoanPage extends JPanel {
         add(title, "wrap,spanx ,alignx center,gap 0 0 20 20");
 
         loanTitlelbl.setFont(breadFont);
-        add(loanTitlelbl, "alignx center,gap 0 0 20 0");
+        add(loanTitlelbl, "alignx right,gap 0 0 20 0");
         add(loanTitle, "wrap, h 30");
 
         startDate.setDate(Calendar.getInstance().getTime());
         startDate.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
         loanStartDatelbl.setFont(breadFont);
-        add(loanStartDatelbl, "alignx center,gap 0 0 20 0");
+        add(loanStartDatelbl, "alignx right,gap 0 0 20 0");
         add(startDate, "wrap,aligny bottom, h 20");
 
         endDate.setDate(Calendar.getInstance().getTime());
         endDate.setFormats(new SimpleDateFormat("dd/MM/yyyy"));
         loanEndDatelbl.setFont(breadFont);
-        add(loanEndDatelbl, "alignx center,gap 0 0 20 0");
+        add(loanEndDatelbl, "alignx right,gap 0 0 20 0");
         add(endDate, "wrap, aligny bottom,h 20");
 
         loanInterestlbl.setFont(breadFont);
-        add(loanInterestlbl, "alignx center,gap 0 0 20 0");
+        add(loanInterestlbl, "alignx right,gap 0 0 20 0");
         add(loanInterest, "wrap, h 30");
 
         loanAmortizationlbl.setFont(breadFont);
-        add(loanAmortizationlbl, "alignx center,gap 0 0 20 0");
+        add(loanAmortizationlbl, "alignx right,gap 0 0 20 0");
         add(loanAmortization, "wrap, h 30");
 
         loanDescriptionlbl.setFont(breadFont);
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         loanDescription.setBorder(BorderFactory.createCompoundBorder(border,
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        add(loanDescriptionlbl, "alignx center,gap 0 0 20 0");
+        add(loanDescriptionlbl, "alignx right,gap 0 0 20 0");
         add(loanDescription,"wrap,spanx,alignx right,gapright 60");
 
         add(addLoan,"spanx,alignx center,gap 0 0 10 0");

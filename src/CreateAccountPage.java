@@ -2,6 +2,8 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CreateAccountPage extends JPanel {
     JPanel formPanel = new JPanel();
@@ -15,13 +17,14 @@ public class CreateAccountPage extends JPanel {
     final JLabel noAccount = new JLabel("har du redan ett konto ?");
     final JLabel copyright = new JLabel("Carl Eklund Copyright©");
 
+    final JLabel errorMessage = new JLabel();
 
     final JButton createAccount = new JButton("Skapa konto");
     final JButton toLoginPage = new JButton("Logga in");
 
     final JTextField nameInput = new JTextField(20);
     final JTextField emailInput = new JTextField(20);
-    final JTextField passwordInput = new JTextField(20);
+    final JPasswordField  passwordInput = new JPasswordField (20);
 
     public CreateAccountPage() {
 
@@ -46,14 +49,49 @@ public class CreateAccountPage extends JPanel {
         add(password, "alignx center,gap 0 0 30 0");
         add(passwordInput, "wrap, h 30");
 
+        errorMessage.setForeground(Color.RED);
+        add(errorMessage,"wrap,alignx center,spanx");
 
+        createAccount.addActionListener(createAcc);
         add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
         add(noAccount, "wrap,alignx center,spanx");
 
         add(toLoginPage, "wrap,alignx center,spanx");
 
-        add(copyright,"spanx,alignx right,gap 0 0 120 0");
+        add(copyright, "spanx,alignx right,gap 0 0 120 0");
 
+    }
+
+    final Action createAcc = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            String name = nameInput.getText();
+            String email = emailInput.getText();
+            String password = new String(passwordInput.getPassword());
+
+            User newUser = new User(name,email,password);
+
+            if(!validateInput(newUser)){
+                nameInput.setText("");
+                emailInput.setText("");
+                passwordInput.setText("");
+            }else{
+                System.out.println("konto skapat");
+            }
+        }
+    };
+
+    public boolean validateInput(User user) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        if(user.getName().length() <= 0 || user.getPassword().length() <= 0){
+           errorMessage.setText("tom indata");
+           return false;
+        }else if(!user.getEmail().matches(regex)){
+            errorMessage.setText("felaktig email");
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public static void main(String[] args) {

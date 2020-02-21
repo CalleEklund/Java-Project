@@ -2,8 +2,11 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EventListener;
 
-public class LoginPage extends JPanel
+public class LoginPage extends JPanel implements EventListener
 {
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
     Font breadFont = new Font(Font.SERIF, Font.PLAIN, 22);
@@ -39,6 +42,7 @@ public class LoginPage extends JPanel
         add(passwordInput, "wrap, h 30");
 
 
+        logIn.addActionListener(test);
         add(logIn, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
         add(noAccount, "wrap,alignx center,spanx");
 
@@ -47,7 +51,12 @@ public class LoginPage extends JPanel
         add(copyright,"spanx,alignx right,gap 0 0 120 0");
 
     }
-
+    final Action test = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println("test");
+        }
+    };
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
