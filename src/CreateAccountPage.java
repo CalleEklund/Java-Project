@@ -26,9 +26,9 @@ public class CreateAccountPage extends JPanel {
     final JTextField emailInput = new JTextField(20);
     final JPasswordField  passwordInput = new JPasswordField (20);
 
-    public CreateAccountPage() {
+    public CreateAccountPage(CardSwitcher switcher) {
 
-        setLayout(new MigLayout("fillx,debug"));
+        setLayout(new MigLayout("fillx"));
 
         formPanel.setLayout(new MigLayout("fillx"));
 
@@ -53,9 +53,17 @@ public class CreateAccountPage extends JPanel {
         add(errorMessage,"wrap,alignx center,spanx");
 
         createAccount.addActionListener(createAcc);
+
         add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
         add(noAccount, "wrap,alignx center,spanx");
 
+        Action changePage = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                switcher.switchTo("logInPage");
+            }
+        };
+        toLoginPage.addActionListener(changePage);
         add(toLoginPage, "wrap,alignx center,spanx");
 
         add(copyright, "spanx,alignx right,gap 0 0 120 0");
@@ -97,11 +105,11 @@ public class CreateAccountPage extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        frame.add(new CreateAccountPage());
+//        frame.add(new CreateAccountPage());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 600);
         frame.setResizable(false);
-//	frame.pack();
+//	    frame.pack();
         frame.setVisible(true);
 
     }

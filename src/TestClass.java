@@ -29,10 +29,10 @@ public static void main(String[] args) {
         JPanel centerPanel = new JPanel(cardLayout);
 
         JPanel panelA = new JPanel();
-        panelA.add(new LoginPage());
+//        panelA.add(new LoginPage());
         centerPanel.add(panelA, "A");
         JPanel panelB = new JPanel();
-        panelB.add(new CreateAccountPage());
+//        panelB.add(new CreateAccountPage());
         centerPanel.add(panelB, "B");
         JPanel panelC = new JPanel();
         panelC.add(new AddLoanPage());
