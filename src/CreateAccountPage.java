@@ -3,7 +3,6 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class CreateAccountPage extends JPanel {
     JPanel formPanel = new JPanel();
@@ -106,7 +105,7 @@ public class CreateAccountPage extends JPanel {
         JFrame frame = new JFrame();
 
 //        frame.add(new CreateAccountPage());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
         frame.setResizable(false);
 //	    frame.pack();

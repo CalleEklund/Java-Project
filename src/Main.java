@@ -1,45 +1,26 @@
 import javax.swing.*;
-import java.awt.*;
-
-public class Main {
-    /**
-     * TODO
-     * fixa så att det finns en cardswitcher class som behöver följa med i konstruktorn
-     * på varje page för att knapen ska kunna ändra jpanel.
-     * Kolla exemplet i TestClass
-     **/
+import java.awt.event.ActionEvent;
 
 
+public class Main extends JPanel {
 
-    JFrame frame = new JFrame();
-    CardLayout cl = new CardLayout();
+    JButton addLoanTest = new JButton("lägg till lån");
+    JLabel displayUserTest = new JLabel("User: \n");
 
-    JPanel cont = new JPanel();
+    public Main(CardSwitcher switcher) {
+        Action logInUser = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                switcher.switchTo("addLoanPage");
+            }
+        };
 
-    CardSwitcher switcher = new CardSwitcher(cont, cl);
-
-    JPanel logInPage = new LoginPage(switcher);
-    JPanel createAccountPage = new CreateAccountPage(switcher);
-
-
-
-
-    public Main() {
-
-        cont.setLayout(cl);
-
-        cont.add(logInPage, "logInPage");
-        cont.add(createAccountPage, "createAccountPage");
-        cl.show(cont, "logInPage");
-
-        frame.add(cont);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 600);
-        frame.setResizable(false);
-        frame.setVisible(true);
+        addLoanTest.addActionListener(logInUser);
+        add(addLoanTest);
+        add(displayUserTest);
+    }
+    public void setCurrentUser(User u){
+        displayUserTest.setText(u.toString());
     }
 
-    public static void main(String[] args) {
-        new Main();
-    }
 }

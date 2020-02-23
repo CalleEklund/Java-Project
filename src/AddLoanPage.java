@@ -4,6 +4,7 @@ import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -32,7 +33,7 @@ public class AddLoanPage extends JPanel {
     final JButton exit = new JButton("Avsluta");
     final JButton addLoan = new JButton("Lägg till lån");
 
-    public AddLoanPage() {
+    public AddLoanPage(CardSwitcher switcher) {
         setLayout(new MigLayout("fillx"));
 
 
@@ -68,9 +69,17 @@ public class AddLoanPage extends JPanel {
         loanDescription.setBorder(BorderFactory.createCompoundBorder(border,
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         add(loanDescriptionlbl, "alignx right,gap 0 0 20 0");
-        add(loanDescription,"wrap,spanx,alignx right,gapright 60");
+        add(loanDescription, "wrap,spanx,alignx right,gapright 60");
 
-        add(addLoan,"spanx,alignx center,gap 0 0 10 0");
+
+        Action toMainPage = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                switcher.switchTo("mainPage");
+            }
+        };
+        addLoan.addActionListener(toMainPage);
+        add(addLoan, "spanx,alignx center,gap 0 0 10 0");
 
 
     }
@@ -78,8 +87,8 @@ public class AddLoanPage extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-        frame.add(new AddLoanPage());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        frame.add(new AddLoanPage(switcher));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(450, 600);
         frame.setResizable(false);
         frame.setVisible(true);
