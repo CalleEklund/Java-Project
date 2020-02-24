@@ -74,8 +74,4 @@ public class Loan {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate;
     }
-
-    public static void main(String[] args) {
-        System.out.println();
-    }
 }

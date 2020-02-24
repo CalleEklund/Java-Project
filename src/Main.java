@@ -3,7 +3,10 @@ import java.awt.event.ActionEvent;
 
 
 public class Main extends JPanel {
-
+    /**
+     * TODO:
+     *  - Lägg til en logga ut knapp, som tar tillbaka till logInPage
+     * **/
     JButton addLoanTest = new JButton("lägg till lån");
     JLabel displayUserTest = new JLabel("User: \n");
 

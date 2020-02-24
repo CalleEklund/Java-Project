@@ -3,11 +3,6 @@ import java.awt.*;
 
 public class Test
 {
-    /**
-     * TODO fixa så att det finns en cardswitcher class som behöver följa med i konstruktorn på varje page för att knapen ska
-     * kunna ändra jpanel. Kolla exemplet i TestClass
-     **/
-
     JFrame frame = new JFrame();
     JPanel cont = new JPanel();
 
