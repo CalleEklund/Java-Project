@@ -22,7 +22,7 @@ public class Test
 	addLoanPage = new AddLoanPage(switcher);
 
 	UserController uc = new UserController(logInPage, mainPage);
-
+	LoanController lc = new LoanController(addLoanPage,mainPage);
 	cont.setLayout(cl);
 
 	cont.add(logInPage, "logInPage");

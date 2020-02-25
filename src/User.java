@@ -50,11 +50,11 @@ public class User
 	this.password = password;
     }
 
-    public ArrayList<Loan> getUserLoans() {
-	return userLoans;
+    public String getUserLoans() {
+	return userLoans.toString();
     }
 
-    public void addLoans(Loan l) {
+    public void addLoan(Loan l) {
 	this.userLoans.add(l);
     }
 

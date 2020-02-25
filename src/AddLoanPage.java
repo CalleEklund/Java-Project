@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -19,11 +20,11 @@ import java.util.Date;
 import java.util.Properties;
 
 public class AddLoanPage extends JPanel
-    /**
-     * TODO:
-     * 	- Lägg till summa som ett fält
-     * 	- Fortsätt med validering
-     * **/
+	/**
+	 * TODO:
+	 * 	- Fundera över hur flera lån ska lagras, hashmap? eller listor i listor
+	 * 	- Fortsätt med validering, errortesta valideringen
+	 * **/
 {
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
     Font breadFont = new Font(Font.SERIF, Font.PLAIN, 18);
@@ -33,6 +34,7 @@ public class AddLoanPage extends JPanel
     final JLabel loanTitlelbl = new JLabel("Rubrik: ");
     final JLabel loanStartDatelbl = new JLabel("Startdatum: ");
     final JLabel loanEndDatelbl = new JLabel("Slutdatum: ");
+    final JLabel loanAmountlbl = new JLabel("Mängd: ");
     final JLabel loanAmortizationlbl = new JLabel("Ammortering(kr): ");
     final JLabel loanInterestlbl = new JLabel("Ränta(%): ");
     final JLabel loanDescriptionlbl = new JLabel("Beskrivning:");
@@ -49,6 +51,7 @@ public class AddLoanPage extends JPanel
 
     final JTextField loanTitle = new JTextField(15);
     final JTextField loanInterest = new JTextField(8);
+    final JTextField loanAmount = new JTextField(15);
     final JTextField loanAmortization = new JTextField(15);
 
     final JTextArea loanDescription = new JTextArea(4, 20);
@@ -75,6 +78,10 @@ public class AddLoanPage extends JPanel
 	add(loanEndDatelbl, "alignx right,gap 0 0 20 0");
 	add(endDate, "wrap, aligny bottom,h 20");
 
+	loanAmountlbl.setFont(breadFont);
+	add(loanAmountlbl, "alignx right,gap 0 0 20 0");
+	add(loanAmount, "wrap, h 30");
+
 	loanInterestlbl.setFont(breadFont);
 	add(loanInterestlbl, "alignx right,gap 0 0 20 0");
 	add(loanInterest, "wrap, h 30");
@@ -95,6 +102,7 @@ public class AddLoanPage extends JPanel
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
 		if (validateInput()) {
+
 		    switcher.switchTo("mainPage");
 		}
 	    }
@@ -106,30 +114,30 @@ public class AddLoanPage extends JPanel
     }
 
     public boolean validateInput() {
+	double intrest;
+	int amount, amortization;
 	String title = loanTitle.getText();
-	String intrest = loanInterest.getText();
-	String amortization = loanAmortization.getText();
 	String description = loanDescription.getText();
 	LocalDate startDateInput = convertToLocalDate(startDate.getModel());
 	LocalDate endDateInput = convertToLocalDate(endDate.getModel());
 	try {
-	    Integer.parseInt(intrest);
-	    Integer.parseInt(amortization);
-	}catch (NumberFormatException e){
+	    intrest = Double.parseDouble(loanInterest.getText());
+	    amortization = Integer.parseInt(loanAmortization.getText());
+	    amount = Integer.parseInt(loanAmount.getText());
+	} catch (NumberFormatException e) {
 	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
 	    return false;
 	}
-	if (title.isEmpty() || intrest.isEmpty() || amortization.isEmpty() || description.isEmpty()) {
+	if (title.isEmpty() || intrest <= 0 || amortization <= 0 || description.isEmpty() || amount <= 0) {
 	    errorMessagelbl.setText("Tomma fält");
 	    return false;
 	} else if (endDateInput.isBefore(startDateInput)) {
 	    errorMessagelbl.setText("Start datum före slut datum");
 	    return false;
-	}else if(endDateInput.isEqual(startDateInput)){
+	} else if (endDateInput.isEqual(startDateInput)) {
 	    errorMessagelbl.setText("Start datum samma som slut datum");
 	    return false;
 	}
-
 	return true;
     }
 
@@ -138,6 +146,22 @@ public class AddLoanPage extends JPanel
 	int dateMonth = date.getMonth();
 	int dateDay = date.getDay();
 	return LocalDate.of(dateYear, dateMonth, dateDay);
+    }
+
+    public Loan getCurrentLoan()
+    {
+	String title = loanTitle.getText();
+	String description = loanDescription.getText();
+	LocalDate startDateInput = convertToLocalDate(startDate.getModel());
+	LocalDate endDateInput = convertToLocalDate(endDate.getModel());
+	double intrest = Double.parseDouble(loanInterest.getText());
+	int amortization = Integer.parseInt(loanAmortization.getText());
+	int amount = Integer.parseInt(loanAmount.getText());
+	return new Loan(title,description,intrest,amount,amortization,startDateInput,endDateInput);
+    }
+
+    void addAddLoanListener(ActionListener listenForAddLoan) {
+	addLoan.addActionListener(listenForAddLoan);
     }
 
     public static void main(String[] args) {
@@ -150,5 +174,7 @@ public class AddLoanPage extends JPanel
 	frame.setVisible(true);
 
     }
+
+
 }
 

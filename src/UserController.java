@@ -18,6 +18,7 @@ public class UserController {
         public void actionPerformed(ActionEvent actionEvent) {
             User currentUser = theModel.getLoggedInUser();
             theView.setCurrentUser(currentUser);
+            theView.displayCurrentUser(currentUser);
         }
     }
 }
