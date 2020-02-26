@@ -1,7 +1,15 @@
+import MVCcontrollers.UserController;
+import classes.CardSwitcher;
+import MVCcontrollers.LoanController;
+import pages.AddLoanPage;
+import pages.CreateAccountPage;
+import pages.LoginPage;
+import pages.MainPage;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class Test
+public class App
 {
     JFrame frame = new JFrame();
     JPanel cont = new JPanel();
@@ -11,18 +19,18 @@ public class Test
 
     LoginPage logInPage;
     CreateAccountPage createAccountPage;
-    Main mainPage;
+    MainPage mainPage;
     AddLoanPage addLoanPage;
 
 
-    public Test() {
+    public App() {
 	logInPage = new LoginPage(switcher);
-	mainPage = new Main(switcher);
+	mainPage = new MainPage(switcher);
 	createAccountPage = new CreateAccountPage(switcher);
 	addLoanPage = new AddLoanPage(switcher);
 
 	UserController uc = new UserController(logInPage, mainPage);
-	LoanController lc = new LoanController(addLoanPage,mainPage);
+	LoanController lc = new LoanController(addLoanPage, mainPage);
 	cont.setLayout(cl);
 
 	cont.add(logInPage, "logInPage");
@@ -40,6 +48,6 @@ public class Test
     }
 
     public static void main(String[] args) {
-	Test t = new Test();
+	App t = new App();
     }
 }

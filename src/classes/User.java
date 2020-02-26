@@ -1,25 +1,30 @@
+package classes;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class User
 {
     private String uid, name, email, password;
-    private ArrayList<Loan> userLoans;
+    private HashMap<String, Loan> userLoanshm;
 
     public User(String name, String email, String password) {
 	this.uid = UUID.randomUUID().toString();
 	this.name = name;
 	this.email = email;
 	this.password = password;
-	this.userLoans = new ArrayList<>();
+	this.userLoanshm = new HashMap<String, Loan>();
     }
 
+    //login konstruktor, bara test
     public User(String email, String password) {
-        this.uid = UUID.randomUUID().toString();
+	this.uid = UUID.randomUUID().toString();
 	this.name = "testanvändare";
 	this.email = email;
 	this.password = password;
-	this.userLoans = new ArrayList<>();
+	this.userLoanshm = new HashMap<String, Loan>();
+
     }
 
     public String getUid() {
@@ -50,26 +55,28 @@ public class User
 	this.password = password;
     }
 
-    public String getUserLoans() {
-	return userLoans.toString();
+    public void addUserLoanshm(Loan l) {
+	if (l != null) {
+	    userLoanshm.put(l.getUid(), l);
+	}
     }
 
-    public void addLoan(Loan l) {
-	this.userLoans.add(l);
+    public void removeUserLoanhm(String loanId) {
+	userLoanshm.remove(loanId);
     }
 
-    public void removeLoans(Loan l) {
-	this.userLoans.remove(l);
+    public HashMap<String, Loan> getUserLoanshm() {
+	return userLoanshm;
     }
 
     @Override public String toString() {
 	return "uid=" + uid + "\n, name=" + name + "\n, email='" + email + "\n, password=" + password + "\nloans=" +
-	       userLoans;
+	       userLoanshm;
     }
 
 //    public static void main(String[] args) {
-//        User test = new User("calle","carek123@student.liu.se","losen123");
-//        test.addLoans(new Loan("test","test",0.12,1000, LocalDate.of(2000,10,15),LocalDate.now()));
+//        classes.User test = new classes.User("calle","carek123@student.liu.se","losen123");
+//        test.addLoans(new classes.Loan("test","test",0.12,1000, LocalDate.of(2000,10,15),LocalDate.now()));
 //        System.out.println(test);
 //    }
 }

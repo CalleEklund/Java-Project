@@ -1,3 +1,7 @@
+package pages;
+
+import classes.CardSwitcher;
+import classes.User;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -76,7 +80,7 @@ public class CreateAccountPage extends JPanel {
             String email = emailInput.getText();
             String password = new String(passwordInput.getPassword());
 
-            User newUser = new User(name,email,password);
+            User newUser = new User(name, email, password);
 
             if(!validateInput(newUser)){
                 nameInput.setText("");
@@ -104,7 +108,7 @@ public class CreateAccountPage extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
 
-//        frame.add(new CreateAccountPage());
+//        frame.add(new pages.CreateAccountPage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
         frame.setResizable(false);

@@ -1,12 +1,17 @@
+package MVCcontrollers;
+
+import classes.Loan;
+import pages.AddLoanPage;
+import pages.MainPage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoanController
 {
     private AddLoanPage theModel;
-    private Main theView;
+    private MainPage theView;
 
-    public LoanController(final AddLoanPage theModel, final Main theView) {
+    public LoanController(final AddLoanPage theModel, final MainPage theView) {
 	this.theModel = theModel;
 	this.theView = theView;
 	this.theModel.addAddLoanListener(new AddLoanListener());

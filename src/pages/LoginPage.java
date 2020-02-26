@@ -1,10 +1,11 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+package pages;
+
+import classes.CardSwitcher;
+import classes.User;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +13,7 @@ public class LoginPage extends JPanel
 {
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
     Font breadFont = new Font(Font.SERIF, Font.PLAIN, 22);
+
 
     final JLabel titlelbl = new JLabel("*BUDGET*");
     final JLabel emaillbl = new JLabel("Email: ");
@@ -112,7 +114,7 @@ public class LoginPage extends JPanel
 	return currentUser;
     }
 
-    void addLogInListener(ActionListener listenForLogIn) {
+    public void addLogInListener(ActionListener listenForLogIn) {
 	logInbtn.addActionListener(listenForLogIn);
     }
 }

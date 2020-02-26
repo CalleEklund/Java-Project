@@ -1,3 +1,5 @@
+package classes;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -19,6 +21,10 @@ public class Loan
 	this.amortization = amortization;
 	this.startDate = startDate;
 	this.endDate = endDate;
+    }
+
+    public String getUid() {
+	return uid;
     }
 
     public String getTitle() {
@@ -77,8 +83,10 @@ public class Loan
 	this.intrest = intrest;
     }
 
+
+
     @Override public String toString() {
-	return "uid='" + uid + '\'' + ", title='" + title + '\'' + ", description='" + description + '\'' + ", intrest='" +
-	       intrest + '\'' + ", startDate=" + startDate + ", endDate=" + endDate;
+	return "title="+title + ", description='" + description +", intrest='" +
+	       intrest + ", startDate=" + startDate + ", endDate=" + endDate;
     }
 }

@@ -1,28 +1,25 @@
-import javafx.scene.control.DatePicker;
+package pages;
+
+import classes.CardSwitcher;
+import classes.Loan;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 
 public class AddLoanPage extends JPanel
 	/**
 	 * TODO:
-	 * 	- Fundera över hur flera lån ska lagras, hashmap? eller listor i listor
 	 * 	- Fortsätt med validering, errortesta valideringen
 	 * **/
 {
@@ -101,8 +98,8 @@ public class AddLoanPage extends JPanel
 	Action toMainPage = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
+		System.out.println(validateInput());
 		if (validateInput()) {
-
 		    switcher.switchTo("mainPage");
 		}
 	    }
@@ -110,6 +107,14 @@ public class AddLoanPage extends JPanel
 	addLoan.addActionListener(toMainPage);
 	add(addLoan, "spanx,alignx center,gap 0 0 10 0");
 
+	int test = 1000;
+	loanTitle.setText("Test");
+	loanDescription.setText("testdesc");
+	loanAmount.setText(String.valueOf(test));
+	loanAmortization.setText(String.valueOf(test));
+	loanInterest.setText(String.valueOf(test));
+	startDate.getModel().setDate(2000, 10, 10);
+	endDate.getModel().setDate(2000, 10, 10);
 
     }
 
@@ -157,17 +162,22 @@ public class AddLoanPage extends JPanel
 	double intrest = Double.parseDouble(loanInterest.getText());
 	int amortization = Integer.parseInt(loanAmortization.getText());
 	int amount = Integer.parseInt(loanAmount.getText());
-	return new Loan(title,description,intrest,amount,amortization,startDateInput,endDateInput);
+	if (validateInput()) {
+	    return new Loan(title, description, intrest, amount, amortization, startDateInput, endDateInput);
+	}else{
+	    return null;
+	}
+
     }
 
-    void addAddLoanListener(ActionListener listenForAddLoan) {
+    public void addAddLoanListener(ActionListener listenForAddLoan) {
 	addLoan.addActionListener(listenForAddLoan);
     }
 
     public static void main(String[] args) {
 	JFrame frame = new JFrame();
 
-//        frame.add(new AddLoanPage(switcher));
+//        frame.add(new pages.AddLoanPage(switcher));
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setSize(450, 600);
 	frame.setResizable(false);
