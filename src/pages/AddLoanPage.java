@@ -14,14 +14,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 public class AddLoanPage extends JPanel
-	/**
-	 * TODO:
-	 * 	- Fortsätt med validering, errortesta valideringen
-	 * **/
 {
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
     Font breadFont = new Font(Font.SERIF, Font.PLAIN, 18);
@@ -37,14 +36,13 @@ public class AddLoanPage extends JPanel
     final JLabel loanDescriptionlbl = new JLabel("Beskrivning:");
     final JLabel errorMessagelbl = new JLabel();
 
-
     UtilDateModel modelStart = new UtilDateModel();
     JDatePanelImpl datePanelStart = new JDatePanelImpl(modelStart, new Properties());
     UtilDateModel modelEnd = new UtilDateModel();
     JDatePanelImpl datePanelEnd = new JDatePanelImpl(modelEnd, new Properties());
 
-    final JDatePickerImpl startDate = new JDatePickerImpl(datePanelStart, new DateComponentFormatter());
-    final JDatePickerImpl endDate = new JDatePickerImpl(datePanelEnd, new DateComponentFormatter());
+    final JDatePickerImpl loanstartDate = new JDatePickerImpl(datePanelStart, new DateComponentFormatter());
+    final JDatePickerImpl loanendDate = new JDatePickerImpl(datePanelEnd, new DateComponentFormatter());
 
     final JTextField loanTitle = new JTextField(15);
     final JTextField loanInterest = new JTextField(8);
@@ -58,10 +56,19 @@ public class AddLoanPage extends JPanel
 
     public AddLoanPage(CardSwitcher switcher) {
 	setLayout(new MigLayout("fillx"));
-	//model.setSelected(true);
-
+	modelStart.setValue(Calendar.getInstance().getTime());
+	modelEnd.setValue(Calendar.getInstance().getTime());
 	title.setFont(titleFont);
-	add(title, "wrap,spanx ,alignx center,gap 0 0 20 20");
+	add(title, "skip,alignx center,gap 0 0 20 20");
+
+	Action exitToMainPage = new AbstractAction()
+	{
+	    @Override public void actionPerformed(ActionEvent actionEvent) {
+		switcher.switchTo("mainPage");
+	    }
+	};
+	exit.addActionListener(exitToMainPage);
+	add(exit, "wrap,alignx right,w 30");
 
 	loanTitlelbl.setFont(breadFont);
 	add(loanTitlelbl, "alignx right,gap 0 0 20 0");
@@ -69,11 +76,11 @@ public class AddLoanPage extends JPanel
 
 	loanStartDatelbl.setFont(breadFont);
 	add(loanStartDatelbl, "alignx right,gap 0 0 20 0");
-	add(startDate, "wrap,aligny bottom, h 20");
+	add(loanstartDate, "wrap,aligny bottom, h 20");
 
 	loanEndDatelbl.setFont(breadFont);
 	add(loanEndDatelbl, "alignx right,gap 0 0 20 0");
-	add(endDate, "wrap, aligny bottom,h 20");
+	add(loanendDate, "wrap, aligny bottom,h 20");
 
 	loanAmountlbl.setFont(breadFont);
 	add(loanAmountlbl, "alignx right,gap 0 0 20 0");
@@ -113,8 +120,8 @@ public class AddLoanPage extends JPanel
 	loanAmount.setText(String.valueOf(test));
 	loanAmortization.setText(String.valueOf(test));
 	loanInterest.setText(String.valueOf(test));
-	startDate.getModel().setDate(2000, 10, 10);
-	endDate.getModel().setDate(2000, 10, 10);
+//	loanstartDate.getModel().setDate(2000, 10, 10);
+//	loanendDate.getModel().setDate(2000, 10, 10);
 
     }
 
@@ -123,8 +130,8 @@ public class AddLoanPage extends JPanel
 	int amount, amortization;
 	String title = loanTitle.getText();
 	String description = loanDescription.getText();
-	LocalDate startDateInput = convertToLocalDate(startDate.getModel());
-	LocalDate endDateInput = convertToLocalDate(endDate.getModel());
+	LocalDate startDateInput = convertToLocalDate(loanstartDate.getModel());
+	LocalDate endDateInput = convertToLocalDate(loanendDate.getModel());
 	try {
 	    intrest = Double.parseDouble(loanInterest.getText());
 	    amortization = Integer.parseInt(loanAmortization.getText());
@@ -157,14 +164,14 @@ public class AddLoanPage extends JPanel
     {
 	String title = loanTitle.getText();
 	String description = loanDescription.getText();
-	LocalDate startDateInput = convertToLocalDate(startDate.getModel());
-	LocalDate endDateInput = convertToLocalDate(endDate.getModel());
+	LocalDate startDateInput = convertToLocalDate(loanstartDate.getModel());
+	LocalDate endDateInput = convertToLocalDate(loanendDate.getModel());
 	double intrest = Double.parseDouble(loanInterest.getText());
 	int amortization = Integer.parseInt(loanAmortization.getText());
 	int amount = Integer.parseInt(loanAmount.getText());
 	if (validateInput()) {
 	    return new Loan(title, description, intrest, amount, amortization, startDateInput, endDateInput);
-	}else{
+	} else {
 	    return null;
 	}
 

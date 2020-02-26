@@ -41,6 +41,7 @@ public class App
 
 
 	frame.add(cont);
+	frame.setLocation(1200,100);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setSize(600, 600);
 	frame.setResizable(false);
@@ -49,5 +50,6 @@ public class App
 
     public static void main(String[] args) {
 	App t = new App();
+
     }
 }
