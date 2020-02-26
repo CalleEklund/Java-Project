@@ -71,7 +71,7 @@ public class User
     }
 
     @Override public String toString() {
-	return "uid=" + uid + "\n, name=" + name + "\n, email='" + email + "\n, password=" + password + "\nloans=" +
+	return "name=" + name + "\n, email='" + email + "\n, password=" + password + "\nloans=" +
 	       userLoanshm;
     }
 

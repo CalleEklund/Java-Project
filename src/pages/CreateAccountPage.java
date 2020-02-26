@@ -3,12 +3,19 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
+import texthandlers.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class CreateAccountPage extends JPanel {
+    /**
+     * TODO:
+     *  - Validering från textfil om användare finns
+     *  - Implementera filehanterare
+     *
+     * **/
     JPanel formPanel = new JPanel();
 
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
@@ -29,7 +36,9 @@ public class CreateAccountPage extends JPanel {
     final JTextField emailInput = new JTextField(20);
     final JPasswordField  passwordInput = new JPasswordField (20);
 
+
     public CreateAccountPage(CardSwitcher switcher) {
+        TextWriter jw = new TextWriter();
 
         setLayout(new MigLayout("fillx"));
 
