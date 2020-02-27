@@ -41,10 +41,11 @@ public class TextReader
 
     //kolla om användare finns
     public boolean checkIfUserExists(User u) {
-        return userData.containsKey(u.getEmail());
+	return userData.containsKey(u.getEmail());
     }
+
     //hämta specifika data från fil (användare samt lån)
-    public User getUser(String key){
-        return userData.get(key);
+    public User getUser(String key) {
+	return userData.get(key);
     }
 }

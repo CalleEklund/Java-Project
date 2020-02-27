@@ -3,11 +3,13 @@ package texthandlers;
 import classes.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import javafx.scene.shape.Path;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class TextWriter
@@ -17,31 +19,16 @@ public class TextWriter
     private FileWriter fileCleaner;
     private HashMap<String, User> userData;
     private Gson gson;
+    private TextReader tr;
 
 
     /**
-     * TODO:
-     *  - Lägg till säker skrivning
-     * 	- Skulle nog kunna göra en superklass typ texthandlers
+     * TODO: - Lägg till säker skrivning - Skulle nog kunna göra en superklass typ texthandlers
      **/
     public TextWriter() {
 	this.file = new File("src/usersData.json");
 	this.userData = new HashMap<>();
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
-	try {
-	    this.primaryWriter = new FileWriter(file, true);
-	    this.fileCleaner = new FileWriter(file);
-	} catch (IOException e) {
-	    e.printStackTrace();
-	} finally {
-	    try {
-		this.primaryWriter.close();
-		this.fileCleaner.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
-
     }
 
     //To hashmap, converta användare till hashmap
@@ -59,10 +46,22 @@ public class TextWriter
 
     //appenda till fil
     public void writeToFile() {
+
+
 	try {
+	    this.primaryWriter = new FileWriter(file, true);
 	    primaryWriter.write(gson.toJson(userData));
+	    System.out.println("write success");
 	} catch (IOException e) {
 	    e.printStackTrace();
+	} finally {
+	    try {
+//		this.userData.clear();
+		this.primaryWriter.close();
+		System.out.println("stream closed");
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
 
     }
@@ -70,9 +69,16 @@ public class TextWriter
     //rensa fil
     public void cleanFile() {
 	try {
+	    this.fileCleaner = new FileWriter(file);
 	    fileCleaner.write("");
 	} catch (IOException e) {
 	    e.printStackTrace();
+	} finally {
+	    try {
+		this.fileCleaner.close();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 

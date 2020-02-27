@@ -81,7 +81,7 @@ public class MainPage extends JPanel
 
     private static JPanel makeLoanPanel(Loan l) {
 	JPanel p = new JPanel();
-	p.setLayout(new MigLayout("fillx,debug"));
+	p.setLayout(new MigLayout("fillx"));
 
 	UtilDateModel modelStart = new UtilDateModel();
 	JDatePanelImpl datePanelStart = new JDatePanelImpl(modelStart, new Properties());

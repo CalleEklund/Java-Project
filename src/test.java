@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class test
      *  - Radera "konton" med att en temp sträng, ta bort användare, lägg till den nya användaren.
      *
      * **/
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 	HashMap<String, User> data = new HashMap<>();
 	Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -33,32 +34,31 @@ public class test
 	System.out.println(gson.toJson(data));
 
 
-	File file = new File("src/users.json");
+	File file = new File("src/usersData.json");
 	FileWriter fw = null;
-	FileReader fr = null;
+	FileReader fr = new FileReader(file);
 	FileWriter fclean = null;
-	try {
-	    fr = new FileReader(file);
-	    fw = new FileWriter(file, true);
-	    //rensa filen
-	    fclean = new FileWriter(file);
-//	    fclean.write("");
-	    fw.write(gson.toJson(data));
+//	try {
+//	    fr = new FileReader(file);
+//	    fw = new FileWriter(file, true);
+//	    //rensa filen
+//	    fclean = new FileWriter(file);
+////	    fclean.write("");
+//	    fw.write(gson.toJson(data));
+//
+//	} catch (IOException e) {
+//
+//	} finally {
+//	    try {
+//		assert fw != null;
+//		fw.close();
+//	    } catch (IOException e) {
+//		e.printStackTrace();
+//	    }
+//	}
 
-	} catch (IOException e) {
 
-	} finally {
-	    try {
-		assert fw != null;
-		fw.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	}
-
-
-
-	HashMap<String,User> outdata = gson.fromJson(fr,HashMap.class);
+	HashMap outdata = gson.fromJson(fr, HashMap.class);
 
 	System.out.println("OUT"+gson.toJson(outdata));
 
