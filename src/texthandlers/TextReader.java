@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class TextReader
 {
+    //test för git
     private File file;
     private FileReader primaryReader;
     private Gson gson;
