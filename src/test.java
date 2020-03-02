@@ -98,7 +98,9 @@ public class test extends JPanel
     }
 
     /**
-     * TODO: - Radera "konton" med att en temp sträng, ta bort användare, lägg till den nya användaren.
+     * TODO:
+     * - Radera "konton" med att en temp sträng, ta bort användare, lägg till den nya användaren.
+     * - Test för git
      **/
     public static void main(String[] args) throws IOException {
 	new test();
