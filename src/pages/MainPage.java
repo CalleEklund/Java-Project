@@ -52,7 +52,6 @@ public class MainPage extends JPanel
 	};
 	logOutbtn.addActionListener(logoutUser);
 	add(loanPanes,"grow,pushy,spanx");
-	System.out.println("cu"+currentUser);
 
 
     }

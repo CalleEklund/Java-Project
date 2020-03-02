@@ -21,8 +21,18 @@ public class TextReader
 	this.file = new File("src/usersData.json");
 	this.userData = new HashMap<>();
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
+	userData = readFromFile();
+    }
+
+    public FileReader getPrimaryReader() {
+	return primaryReader;
+    }
+
+    //Läsa data från fil
+    public HashMap readFromFile() {
 	try {
 	    this.primaryReader = new FileReader(file);
+	    this.userData = gson.fromJson(primaryReader, HashMap.class);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	} finally {
@@ -32,17 +42,16 @@ public class TextReader
 		e.printStackTrace();
 	    }
 	}
-
-    }
-
-    //Läsa data från fil
-    public void readFromFile() {
-	userData = gson.fromJson(primaryReader, HashMap.class);
+	return userData;
     }
 
     //kolla om användare finns
     public boolean checkIfUserExists(User u) {
-	return userData.containsKey(u.getEmail());
+	HashMap<String, User> currentData = readFromFile();
+	if (userData != null){
+	    return userData.containsKey(u.getEmail());
+	}
+	return false;
     }
 
     //hämta specifika data från fil (användare samt lån)

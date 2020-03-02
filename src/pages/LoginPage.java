@@ -58,6 +58,7 @@ public class LoginPage extends JPanel
 		/**
 		 * TODO:
 		 *  - kolla indata mot en textfil, evt. en databas
+		 *  -klar med att kolla om ett konto finns när man ska skapa ett, gör samma sak vid inlogg
 		 **/
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());

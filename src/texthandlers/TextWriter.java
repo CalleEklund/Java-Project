@@ -26,9 +26,11 @@ public class TextWriter
      * TODO: - Lägg till säker skrivning - Skulle nog kunna göra en superklass typ texthandlers
      **/
     public TextWriter() {
+	this.tr = new TextReader();
 	this.file = new File("src/usersData.json");
 	this.userData = new HashMap<>();
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
+
     }
 
     //To hashmap, converta användare till hashmap
@@ -37,6 +39,11 @@ public class TextWriter
     }
 
     public void addUserToHashMap(User u) {
+	HashMap<String, User> temp = tr.readFromFile();
+	if (temp != null) {
+	    temp.put(u.getEmail(), u);
+	    this.userData = temp;
+	}
 	this.userData.put(u.getEmail(), u);
     }
 
@@ -49,14 +56,13 @@ public class TextWriter
 
 
 	try {
-	    this.primaryWriter = new FileWriter(file, true);
+	    this.primaryWriter = new FileWriter(file);
 	    primaryWriter.write(gson.toJson(userData));
-	    System.out.println("write success");
+	     System.out.println("write success");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	} finally {
 	    try {
-//		this.userData.clear();
 		this.primaryWriter.close();
 		System.out.println("stream closed");
 	    } catch (IOException e) {
