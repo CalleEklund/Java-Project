@@ -3,6 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
+import texthandlers.TextReader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,7 @@ public class LoginPage extends JPanel
     final JTextField emailInput = new JTextField(20);
     final JPasswordField passwordInput = new JPasswordField(20);
 
+    final TextReader tr = new TextReader();
 
     public LoginPage(CardSwitcher switcher) {
 
@@ -67,9 +69,13 @@ public class LoginPage extends JPanel
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else {
+		    if (tr.checkIfUserExists(newUser)) {
+			switcher.switchTo("mainPage");
+		    }else{
+		        errorMessagelbl.setText("Det finns ingen sådan användare");
+		    }
 //		    errorMessagelbl.setForeground(Color.GREEN);
 //		    errorMessagelbl.setText("Du loggas nu in");
-                    switcher.switchTo("mainPage");
 		}
 
 	    }
@@ -95,6 +101,7 @@ public class LoginPage extends JPanel
 
 
     }
+
     public boolean validateInput(User user) {
 	String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	if (user.getEmail().length() <= 0 || user.getPassword().length() <= 0) {

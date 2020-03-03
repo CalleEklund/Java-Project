@@ -8,6 +8,7 @@ import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import texthandlers.TextReader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class MainPage extends JPanel
     final JLabel titlelbl = new JLabel("*BUDGET*");
     final JButton logOutbtn = new JButton("Logga ut");
     static JTabbedPane loanPanes = new JTabbedPane(JTabbedPane.TOP);
+    final TextReader tr = new TextReader();
 
     User currentUser = null;
 
@@ -34,7 +36,7 @@ public class MainPage extends JPanel
 	setLayout(new MigLayout("fillx,debug"));
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
-	add(addNewLoan,"");
+	add(addNewLoan, "");
 	add(logOutbtn, "alignx right,wrap");
 	Action addLoan = new AbstractAction()
 	{
@@ -51,7 +53,7 @@ public class MainPage extends JPanel
 	    }
 	};
 	logOutbtn.addActionListener(logoutUser);
-	add(loanPanes,"grow,pushy,spanx");
+	add(loanPanes, "grow,pushy,spanx");
 
 
     }
@@ -67,13 +69,13 @@ public class MainPage extends JPanel
 		loanPanes.insertTab(currentLoan.getTitle(), null, loanPanel, null, index);
 		index++;
 	    }
-	}else{
+	} else {
 	    /**
 	     * TODO:
 	     *  - Ta bart när användaren har lån och "loggar in" igen, tror inte detta problem
 	     *   finns när man har information sparad i en textfil
 	     * **/
-	    loanPanes.insertTab("Inga lån",null,loanPanel,null,0);
+	    loanPanes.insertTab("Inga lån", null, loanPanel, null, 0);
 	}
 	return loanPanes;
     }
@@ -163,6 +165,8 @@ public class MainPage extends JPanel
     }
 
     public void addLoanToUser(final Loan currentLoan) {
+	System.out.println("current user" + tr.getUser(currentUser.getEmail()));
+
 	currentUser.addUserLoanshm(currentLoan);
 	makePages(currentUser.getUserLoanshm());
     }
