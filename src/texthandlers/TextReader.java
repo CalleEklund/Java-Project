@@ -1,15 +1,20 @@
 package texthandlers;
 
+import classes.Loan;
 import classes.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class TextReader
 {
@@ -17,11 +22,12 @@ public class TextReader
     private File file;
     private FileReader primaryReader;
     private Gson gson;
-    private HashMap<String, User> userData;
+    private ArrayList<User> userData;
+    private TextWriter tw;
 
     public TextReader() {
 	this.file = new File("src/usersData.json");
-	this.userData = new HashMap<>();
+	this.userData = new ArrayList<>();
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
 	userData = readFromFile();
     }
@@ -31,10 +37,12 @@ public class TextReader
     }
 
     //Läsa data från fil
-    public HashMap readFromFile() {
+    public ArrayList readFromFile() {
 	try {
 	    this.primaryReader = new FileReader(file);
-	    this.userData = gson.fromJson(primaryReader, HashMap.class);
+	    this.userData = gson.fromJson(primaryReader, new TypeToken<ArrayList<User>>()
+	    {
+	    }.getType());
 	} catch (IOException e) {
 	    e.printStackTrace();
 	} finally {
@@ -44,29 +52,45 @@ public class TextReader
 		e.printStackTrace();
 	    }
 	}
+	if (userData == null) {return new ArrayList<User>();}
 	return userData;
     }
 
     //kolla om användare finns
     public boolean checkIfUserExists(User u) {
-	HashMap<String, User> currentData = readFromFile();
-	if (userData != null) {
-	    return userData.containsKey(u.getEmail());
+	for (User elem : userData) {
+	    if (elem.getEmail().equals(u.getEmail()) && elem.getPassword().equals(u.getPassword())) {
+		return true;
+	    }
 	}
 	return false;
     }
 
-    //hämta specifika data från fil (användare samt lån)
+
+//hämta specifika data från fil (användare samt lån)
+
     /**
-     * Lägg usern i en map för att sedan hämta information
-     * gör en jsonToUser funktion som returnerar en user med json datan,
-     *
-     * **/
+     * TODO: - Lägg usern i en map för att sedan hämta information gör en jsonToUser funktion som returnerar en user med json
+     * datan,
+     **/
     public User getUser(String key) {
-	Map<String,User> user = (Map<String, User>) userData.get(key);
-	System.out.println(user.get("password"));
-//	User user = userData.get(key);
-//	System.out.println(user);
-	return new User("test","test");
+	for (User elem : userData) {
+	    if (elem.getEmail().equals(key)) {
+		return elem;
+	    }
+	}
+	return new User();
+    }
+
+    public void addLoanToUser(User u, Loan l) {
+
+	HashMap<String, User> temp = new HashMap<>();
+
+//	System.out.println(userData);
+//	this.userData.entrySet().removeIf(entry -> u.getEmail().equals(entry.getKey()));
+//	this.userData.put(u.getEmail(),u);
+
+//	System.out.println(temp);
+
     }
 }

@@ -9,10 +9,12 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import texthandlers.TextReader;
+import texthandlers.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -27,7 +29,9 @@ public class MainPage extends JPanel
     final JLabel titlelbl = new JLabel("*BUDGET*");
     final JButton logOutbtn = new JButton("Logga ut");
     static JTabbedPane loanPanes = new JTabbedPane(JTabbedPane.TOP);
-    final TextReader tr = new TextReader();
+//    final TextReader tr = new TextReader();
+    final TextWriter tw = new TextWriter();
+
 
     User currentUser = null;
 
@@ -165,9 +169,17 @@ public class MainPage extends JPanel
     }
 
     public void addLoanToUser(final Loan currentLoan) {
-	System.out.println("current user" + tr.getUser(currentUser.getEmail()));
-
+	Loan testLoan = new Loan("test", "testdec", 1.2, 100, 100, LocalDate.now(), LocalDate.now());
 	currentUser.addUserLoanshm(currentLoan);
+	tw.updateData(currentUser);
+//	tw.writeToFile();
+//	System.out.println(currentUser);
+//	tr.getUser(currentUser.getEmail());
+//	tr.addLoanToUser(currentUser, currentLoan);
+//	tw.writeToFile();
+//	System.out.println(currentUser);
+	//System.out.println("current user: " + tr.getUser(currentUser.getEmail()));
+	//currentUser.addUserLoanshm(currentLoan);
 	makePages(currentUser.getUserLoanshm());
     }
 }

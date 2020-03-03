@@ -27,6 +27,16 @@ public class User
 	this.userLoanshm = new HashMap<String, Loan>();
 
     }
+    public User(String uid,String name, String email, String password,HashMap userLoanshm) {
+	this.uid = uid;
+	this.name = name;
+	this.email = email;
+	this.password = password;
+	this.userLoanshm = userLoanshm;
+    }
+
+    public User() {
+    }
 
     public String getUid() {
 	return uid;
@@ -70,10 +80,10 @@ public class User
 	return userLoanshm;
     }
 
-    @Override public String toString() {
-	return "name=" + name + "\n, email='" + email + "\n, password=" + password + "\nloans=" +
-	       userLoanshm;
-    }
+//    @Override public String toString() {
+//	return "name=" + name + "\n, email='" + email + "\n, password=" + password + "\nloans=" +
+//	       userLoanshm;
+//    }
 
 //    public static void main(String[] args) {
 //        classes.User test = new classes.User("calle","carek123@student.liu.se","losen123");

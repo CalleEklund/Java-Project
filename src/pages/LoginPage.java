@@ -64,7 +64,8 @@ public class LoginPage extends JPanel
 		 **/
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
-		User newUser = new User(email, password);
+		User newUser = tr.getUser(email);
+//		User newUser = new User(email, password);
 		if (!validateInput(newUser)) {
 		    emailInput.setText("");
 		    passwordInput.setText("");

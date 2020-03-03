@@ -105,8 +105,9 @@ public class AddLoanPage extends JPanel
 	Action toMainPage = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
-		System.out.println(validateInput());
+//		System.out.println(validateInput());
 		if (validateInput()) {
+
 		    switcher.switchTo("mainPage");
 		}
 	    }

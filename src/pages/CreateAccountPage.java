@@ -13,8 +13,7 @@ import java.awt.event.ActionEvent;
 public class CreateAccountPage extends JPanel
 {
     /**
-     * TODO: - Validering från textfil om användare finns
-     *       - Implementera filehanterare
+     * TODO: - Validering från textfil om användare finns - Implementera filehanterare
      **/
     JPanel formPanel = new JPanel();
 
@@ -107,14 +106,15 @@ public class CreateAccountPage extends JPanel
     };
 
     public void saveUserToFile(User u) {
-        if(!tr.checkIfUserExists(u)){
-            tw.addUserToHashMap(u);
-            tw.writeToFile();
-        }else{
-            System.out.println("konto finns redan");
-            errorMessagelbl.setForeground(Color.red);
-            errorMessagelbl.setText("Emailen är redan registrerad");
-        }
+//	System.out.println(tr.checkIfUserExists(u));
+	if (!tr.checkIfUserExists(u)) {
+	    tw.setCurrentUser(u);
+	    tw.writeToFile();
+	} else {
+	    System.out.println("konto finns redan");
+	    errorMessagelbl.setForeground(Color.red);
+	    errorMessagelbl.setText("Emailen är redan registrerad");
+	}
     }
 
     public boolean validateInput() {
