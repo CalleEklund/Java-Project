@@ -8,6 +8,7 @@ import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import texthandlers.SaveData;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -53,6 +54,7 @@ public class AddLoanPage extends JPanel
 
     final JButton exit = new JButton("Avsluta");
     final JButton addLoan = new JButton("Lägg till lån");
+
 
     public AddLoanPage(CardSwitcher switcher) {
 	setLayout(new MigLayout("fillx"));
@@ -107,7 +109,6 @@ public class AddLoanPage extends JPanel
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
 //		System.out.println(validateInput());
 		if (validateInput()) {
-
 		    switcher.switchTo("mainPage");
 		}
 	    }

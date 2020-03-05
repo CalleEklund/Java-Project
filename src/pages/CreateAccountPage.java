@@ -3,6 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
+import texthandlers.SaveData;
 import texthandlers.TextReader;
 import texthandlers.TextWriter;
 
@@ -38,9 +39,13 @@ public class CreateAccountPage extends JPanel
     TextWriter tw;
     TextReader tr;
 
+    SaveData sd;
+
     public CreateAccountPage(CardSwitcher switcher) {
 	tw = new TextWriter();
-        tr = new TextReader();
+	tr = new TextReader();
+	sd = new SaveData();
+
 
 	setLayout(new MigLayout("fillx"));
 
@@ -106,12 +111,9 @@ public class CreateAccountPage extends JPanel
     };
 
     public void saveUserToFile(User u) {
-//	System.out.println(tr.checkIfUserExists(u));
-	if (!tr.checkIfUserExists(u)) {
-	    tw.setCurrentUser(u);
-	    tw.writeToFile();
+	if (!sd.checkIfUserExists(u)) {
+	    sd.addNewUser(u);
 	} else {
-	    System.out.println("konto finns redan");
 	    errorMessagelbl.setForeground(Color.red);
 	    errorMessagelbl.setText("Emailen är redan registrerad");
 	}

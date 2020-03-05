@@ -8,6 +8,7 @@ import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import texthandlers.SaveData;
 import texthandlers.TextReader;
 import texthandlers.TextWriter;
 
@@ -15,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -29,10 +31,10 @@ public class MainPage extends JPanel
     final JLabel titlelbl = new JLabel("*BUDGET*");
     final JButton logOutbtn = new JButton("Logga ut");
     static JTabbedPane loanPanes = new JTabbedPane(JTabbedPane.TOP);
-//    final TextReader tr = new TextReader();
+    //    final TextReader tr = new TextReader();
     final TextWriter tw = new TextWriter();
 
-
+    final SaveData sd = new SaveData();
     User currentUser = null;
 
 
@@ -62,17 +64,20 @@ public class MainPage extends JPanel
 
     }
 
-    private static JTabbedPane makePages(HashMap<String, Loan> userLoans) {
+    private static JTabbedPane makePages(ArrayList<Loan> userLoans) {
 	JPanel loanPanel = new JPanel();
 	int index = 0;
 	if (!userLoans.isEmpty()) {
 	    loanPanes.removeAll();
-	    for (String key : userLoans.keySet()) {
-		loanPanel = makeLoanPanel(userLoans.get(key));
-		Loan currentLoan = userLoans.get(key);
+	    for (int i = 0; i < userLoans.size(); i++) {
+		loanPanel = makeLoanPanel(userLoans.get(i));
+		Loan currentLoan = userLoans.get(i);
 		loanPanes.insertTab(currentLoan.getTitle(), null, loanPanel, null, index);
 		index++;
 	    }
+//	    for (String key : userLoans.keySet()) {
+//
+//	    }
 	} else {
 	    /**
 	     * TODO:
@@ -164,22 +169,20 @@ public class MainPage extends JPanel
     }
 
     public void setCurrentUser(User loggedInUser) {
+//	System.out.println("lu"+loggedInUser.getUserLoans());
 	currentUser = loggedInUser;
-	makePages(currentUser.getUserLoanshm());
+//	makePages(currentUser.getUserLoans());
     }
 
     public void addLoanToUser(final Loan currentLoan) {
-	Loan testLoan = new Loan("test", "testdec", 1.2, 100, 100, LocalDate.now(), LocalDate.now());
-	currentUser.addUserLoanshm(currentLoan);
-	tw.updateData(currentUser);
-//	tw.writeToFile();
-//	System.out.println(currentUser);
-//	tr.getUser(currentUser.getEmail());
-//	tr.addLoanToUser(currentUser, currentLoan);
-//	tw.writeToFile();
-//	System.out.println(currentUser);
-	//System.out.println("current user: " + tr.getUser(currentUser.getEmail()));
-	//currentUser.addUserLoanshm(currentLoan);
-	makePages(currentUser.getUserLoanshm());
+//	currentUser.addUserLoan(currentLoan);
+	System.out.println("u"+currentUser);
+	System.out.println("l"+currentLoan);
+	sd.saveLoan(currentUser,currentLoan);
+	makePages(currentUser.getUserLoans());
+//	currentUser.addUserLoan(currentLoan);
+//	sd.saveLoan(currentUser, currentLoan);
+//	System.out.println(currentUser.getUserLoans());
+//	makePages(currentUser.getUserLoans());
     }
 }

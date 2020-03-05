@@ -3,19 +3,20 @@ package classes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class User
 {
     private String uid, name, email, password;
-    private HashMap<String, Loan> userLoanshm;
+    private ArrayList<Loan> userLoans;
 
     public User(String name, String email, String password) {
 	this.uid = UUID.randomUUID().toString();
 	this.name = name;
 	this.email = email;
 	this.password = password;
-	this.userLoanshm = new HashMap<String, Loan>();
+	this.userLoans = new ArrayList<>();
     }
 
     //login konstruktor, bara test
@@ -24,15 +25,16 @@ public class User
 	this.name = "testanvändare";
 	this.email = email;
 	this.password = password;
-	this.userLoanshm = new HashMap<String, Loan>();
+	this.userLoans = new ArrayList<>();
 
     }
-    public User(String uid,String name, String email, String password,HashMap userLoanshm) {
+
+    public User(String uid, String name, String email, String password, ArrayList userLoans) {
 	this.uid = uid;
 	this.name = name;
 	this.email = email;
 	this.password = password;
-	this.userLoanshm = userLoanshm;
+	this.userLoans = userLoans;
     }
 
     public User() {
@@ -66,28 +68,14 @@ public class User
 	this.password = password;
     }
 
-    public void addUserLoanshm(Loan l) {
-	if (l != null) {
-	    userLoanshm.put(l.getUid(), l);
-	}
+    public void addUserLoan(Loan l) {
+	userLoans.add(l);
     }
 
-    public void removeUserLoanhm(String loanId) {
-	userLoanshm.remove(loanId);
+    public ArrayList<Loan> getUserLoans() {
+	return userLoans;
     }
-
-    public HashMap<String, Loan> getUserLoanshm() {
-	return userLoanshm;
+    public boolean equals(final User o) {
+	return Objects.equals(password, o.password) && Objects.equals(email, o.email);
     }
-
-//    @Override public String toString() {
-//	return "name=" + name + "\n, email='" + email + "\n, password=" + password + "\nloans=" +
-//	       userLoanshm;
-//    }
-
-//    public static void main(String[] args) {
-//        classes.User test = new classes.User("calle","carek123@student.liu.se","losen123");
-//        test.addLoans(new classes.Loan("test","test",0.12,1000, LocalDate.of(2000,10,15),LocalDate.now()));
-//        System.out.println(test);
-//    }
 }

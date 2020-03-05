@@ -3,6 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
+import texthandlers.SaveData;
 import texthandlers.TextReader;
 
 import javax.swing.*;
@@ -30,6 +31,8 @@ public class LoginPage extends JPanel
     final JPasswordField passwordInput = new JPasswordField(20);
 
     final TextReader tr = new TextReader();
+
+    final SaveData sd = new SaveData();
 
     public LoginPage(CardSwitcher switcher) {
 
@@ -64,19 +67,17 @@ public class LoginPage extends JPanel
 		 **/
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
-		User newUser = tr.getUser(email);
-//		User newUser = new User(email, password);
+		User newUser = new User(email, password);
 		if (!validateInput(newUser)) {
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else {
-		    if (tr.checkIfUserExists(newUser)) {
+		    System.out.println("exits"+sd.checkIfUserExists(newUser));
+		    if (sd.checkIfUserExists(newUser)) {
 			switcher.switchTo("mainPage");
-		    }else{
-		        errorMessagelbl.setText("Det finns ingen sådan användare");
+		    } else {
+			errorMessagelbl.setText("Det finns ingen sådan användare");
 		    }
-//		    errorMessagelbl.setForeground(Color.GREEN);
-//		    errorMessagelbl.setText("Du loggas nu in");
 		}
 
 	    }
@@ -119,8 +120,7 @@ public class LoginPage extends JPanel
     public User getLoggedInUser() {
 	String email = emailInput.getText();
 	String password = new String(passwordInput.getPassword());
-	User currentUser = new User(email, password);
-	return currentUser;
+	return sd.getUser(email,password);
     }
 
     public void addLogInListener(ActionListener listenForLogIn) {
