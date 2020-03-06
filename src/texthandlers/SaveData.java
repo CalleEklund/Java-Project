@@ -67,32 +67,46 @@ public class SaveData
     }
 
     public boolean checkIfUserExists(User u) {
-        readFromFile();
+	readFromFile();
 	for (User elem : userData) {
-	    if (elem.equals(u)) {
+	    if (elem.getEmail().equals(u.getEmail()) && elem.getPassword().equals(u.getPassword())) {
 		return true;
 	    }
+//	    if (elem.equals(u)) {
+//		return true;
+//	    }
 	}
 	return false;
     }
 
     public void removeUser(User u) {
-	userData.removeIf(curr -> checkIfUserExists(u));
+	int ind = getIndex(u);
+	userData.remove(ind);
     }
 
     //add user to arraylist and then save
-    public void addNewUser(User u){
-        readFromFile();
-        userData.add(u);
-        saveUser();
+    public void addNewUser(User u) {
+	readFromFile();
+	userData.add(u);
+	saveUser();
     }
+
     public void saveLoan(User u, Loan l) {
 	readFromFile();
-        u.addUserLoan(l);
-	System.out.println(userData);
-	removeUser(u);
-	userData.add(u);
-	System.out.println(userData);
+	int ind = getIndex(u);
+	u = userData.get(ind);
+	u.addUserLoan(l);
+	userData.set(ind,u);
+	saveUser();
+    }
+
+    public int getIndex(User u) {
+	for (int i = 0; i < userData.size(); i++) {
+	    if (userData.get(i).equals(u)) {
+		return i;
+	    }
+	}
+	return -1;
     }
 
     public User getUser(String email, String password) {
@@ -104,15 +118,17 @@ public class SaveData
 	return null;
     }
 
-    public static Loan testLoan = new Loan("test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
-    public static Loan testLoan1 = new Loan("test1", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
-    public static User u1 = new User("test@gmail.com", "test");
+    final static Loan testLoan = new Loan("test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
+    final static Loan testLoan1 = new Loan("test1", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
+    final static User u1 = new User("test@gmail.com", "test");
+    final static User u2 = new User("test2@gmail.com", "test2");
 
     public static void main(String[] args) {
 	SaveData sd = new SaveData();
-//	sd.saveUser(u1);
-	u1.addUserLoan(testLoan);
+//	sd.addNewUser(u2);
+//	u1.addUserLoan(testLoan1);
 	sd.saveLoan(u1, testLoan1);
-//	sd.removeUser(u1);
+
+
     }
 }

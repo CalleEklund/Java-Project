@@ -78,4 +78,9 @@ public class User
     public boolean equals(final User o) {
 	return Objects.equals(password, o.password) && Objects.equals(email, o.email);
     }
+
+    @Override public String toString() {
+	return "User{" + "uid='" + uid + '\'' + ", name='" + name + '\'' + ", email='" + email + '\'' + ", password='" +
+	       password + '\'' + ", userLoans=" + userLoans + '}';
+    }
 }
