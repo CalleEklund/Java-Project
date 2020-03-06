@@ -1,8 +1,7 @@
-import classes.Loan;
 import classes.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import texthandlers.TextWriter;
+import misc.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;

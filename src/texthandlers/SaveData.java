@@ -50,7 +50,6 @@ public class SaveData
     }
 
     public void saveUser() {
-	//this.userData.add(u);
 	try {
 	    this.primaryWriter = new FileWriter(file);
 	    this.primaryWriter.write(gson.toJson(userData));
@@ -72,9 +71,6 @@ public class SaveData
 	    if (elem.getEmail().equals(u.getEmail()) && elem.getPassword().equals(u.getPassword())) {
 		return true;
 	    }
-//	    if (elem.equals(u)) {
-//		return true;
-//	    }
 	}
 	return false;
     }
@@ -84,7 +80,6 @@ public class SaveData
 	userData.remove(ind);
     }
 
-    //add user to arraylist and then save
     public void addNewUser(User u) {
 	readFromFile();
 	userData.add(u);
@@ -118,17 +113,17 @@ public class SaveData
 	return null;
     }
 
-    final static Loan testLoan = new Loan("test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
+  /*  final static Loan testLoan = new Loan("test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
     final static Loan testLoan1 = new Loan("test1", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
     final static User u1 = new User("test@gmail.com", "test");
     final static User u2 = new User("test2@gmail.com", "test2");
 
     public static void main(String[] args) {
 	SaveData sd = new SaveData();
-//	sd.addNewUser(u2);
-//	u1.addUserLoan(testLoan1);
+	sd.addNewUser(u2);
+	u1.addUserLoan(testLoan1);
 	sd.saveLoan(u1, testLoan1);
 
 
-    }
+    }*/
 }

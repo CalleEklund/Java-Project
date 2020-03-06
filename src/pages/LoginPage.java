@@ -4,7 +4,7 @@ import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.SaveData;
-import texthandlers.TextReader;
+import misc.TextReader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,14 +56,13 @@ public class LoginPage extends JPanel
 	add(errorMessagelbl, "wrap,alignx center,spanx");
 	//testing only, REMOVE
 	emailInput.setText("test@gmail.com");
-	passwordInput.setText("testlosen");
+	passwordInput.setText("test");
 	Action logInuser = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
 		/**
 		 * TODO:
-		 *  - kolla indata mot en textfil, evt. en databas
-		 *  -klar med att kolla om ett konto finns när man ska skapa ett, gör samma sak vid inlogg
+		 *  - kolla indata mot en databas
 		 **/
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
@@ -72,7 +71,6 @@ public class LoginPage extends JPanel
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else {
-		    System.out.println("exits"+sd.checkIfUserExists(newUser));
 		    if (sd.checkIfUserExists(newUser)) {
 			switcher.switchTo("mainPage");
 		    } else {

@@ -4,8 +4,8 @@ import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.SaveData;
-import texthandlers.TextReader;
-import texthandlers.TextWriter;
+import misc.TextReader;
+import misc.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +13,6 @@ import java.awt.event.ActionEvent;
 
 public class CreateAccountPage extends JPanel
 {
-    /**
-     * TODO: - Validering från textfil om användare finns - Implementera filehanterare
-     **/
     JPanel formPanel = new JPanel();
 
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);

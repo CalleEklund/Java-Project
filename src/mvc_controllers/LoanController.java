@@ -1,4 +1,4 @@
-package MVCcontrollers;
+package mvc_controllers;
 
 import classes.Loan;
 import pages.AddLoanPage;

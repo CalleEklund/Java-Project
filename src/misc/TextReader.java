@@ -1,10 +1,9 @@
-package texthandlers;
+package misc;
 
 import classes.Loan;
 import classes.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -12,13 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 public class TextReader
 {
-    //test för git
     private File file;
     private FileReader primaryReader;
     private Gson gson;
@@ -68,11 +63,6 @@ public class TextReader
 
 
 //hämta specifika data från fil (användare samt lån)
-
-    /**
-     * TODO: - Lägg usern i en map för att sedan hämta information gör en jsonToUser funktion som returnerar en user med json
-     * datan,
-     **/
     public User getUser(String key) {
 	for (User elem : userData) {
 	    if (elem.getEmail().equals(key)) {

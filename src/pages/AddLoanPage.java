@@ -107,7 +107,6 @@ public class AddLoanPage extends JPanel
 	Action toMainPage = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
-//		System.out.println(validateInput());
 		if (validateInput()) {
 		    switcher.switchTo("mainPage");
 		}
@@ -122,8 +121,6 @@ public class AddLoanPage extends JPanel
 	loanAmount.setText(String.valueOf(test));
 	loanAmortization.setText(String.valueOf(test));
 	loanInterest.setText(String.valueOf(test));
-//	loanstartDate.getModel().setDate(2000, 10, 10);
-//	loanendDate.getModel().setDate(2000, 10, 10);
 
     }
 

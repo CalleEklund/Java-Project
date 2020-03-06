@@ -9,15 +9,12 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import texthandlers.SaveData;
-import texthandlers.TextReader;
-import texthandlers.TextWriter;
+import misc.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 
 
@@ -31,8 +28,6 @@ public class MainPage extends JPanel
     final JLabel titlelbl = new JLabel("*BUDGET*");
     final JButton logOutbtn = new JButton("Logga ut");
     static JTabbedPane loanPanes = new JTabbedPane(JTabbedPane.TOP);
-    //    final TextReader tr = new TextReader();
-    final TextWriter tw = new TextWriter();
 
     final SaveData sd = new SaveData();
     User currentUser = null;
@@ -63,7 +58,6 @@ public class MainPage extends JPanel
 
 
     }
-
     private static JTabbedPane makePages(ArrayList<Loan> userLoans) {
 	JPanel loanPanel = new JPanel();
 	int index = 0;
@@ -75,15 +69,9 @@ public class MainPage extends JPanel
 		loanPanes.insertTab(currentLoan.getTitle(), null, loanPanel, null, index);
 		index++;
 	    }
-//	    for (String key : userLoans.keySet()) {
-//
-//	    }
 	} else {
-	    /**
-	     * TODO:
-	     *  - Ta bart när användaren har lån och "loggar in" igen, tror inte detta problem
-	     *   finns när man har information sparad i en textfil
-	     * **/
+
+	    loanPanes.removeAll();
 	    loanPanes.insertTab("Inga lån", null, loanPanel, null, 0);
 	}
 	return loanPanes;
@@ -169,20 +157,15 @@ public class MainPage extends JPanel
     }
 
     public void setCurrentUser(User loggedInUser) {
-//	System.out.println("lu"+loggedInUser.getUserLoans());
 	currentUser = loggedInUser;
-//	makePages(currentUser.getUserLoans());
-    }
+	System.out.println("current user " + currentUser);
+	System.out.println("current userloans " + currentUser.getUserLoans());
 
-    public void addLoanToUser(final Loan currentLoan) {
-//	currentUser.addUserLoan(currentLoan);
-	System.out.println("u"+currentUser);
-	System.out.println("l"+currentLoan);
-	sd.saveLoan(currentUser,currentLoan);
 	makePages(currentUser.getUserLoans());
-//	currentUser.addUserLoan(currentLoan);
-//	sd.saveLoan(currentUser, currentLoan);
-//	System.out.println(currentUser.getUserLoans());
-//	makePages(currentUser.getUserLoans());
+    }
+    public void addLoanToUser(final Loan currentLoan) {
+	sd.saveLoan(currentUser,currentLoan);
+	currentUser = sd.getUser(currentUser.getEmail(),currentUser.getPassword());
+	makePages(currentUser.getUserLoans());
     }
 }

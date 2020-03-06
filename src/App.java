@@ -1,6 +1,6 @@
-import MVCcontrollers.UserController;
+import mvc_controllers.UserController;
 import classes.CardSwitcher;
-import MVCcontrollers.LoanController;
+import mvc_controllers.LoanController;
 import pages.AddLoanPage;
 import pages.CreateAccountPage;
 import pages.LoginPage;
