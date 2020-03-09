@@ -1,8 +1,6 @@
 package classes;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,7 +17,7 @@ public class User
 	this.userLoans = new ArrayList<>();
     }
 
-    //login konstruktor, bara test
+    //login konstruktor, bara misc.test
     public User(String email, String password) {
 	this.uid = UUID.randomUUID().toString();
 	this.name = "testanvändare";
@@ -38,8 +36,16 @@ public class User
     }
 
     public User() {
+	this.uid = "";
+	this.name = "";
+	this.email = "";
+	this.password = "";
+	this.userLoans = new ArrayList<>();
     }
 
+    /**
+     * Setters och getters
+     **/
     public String getUid() {
 	return uid;
     }
@@ -63,6 +69,10 @@ public class User
     public ArrayList<Loan> getUserLoans() {
 	return userLoans;
     }
+
+    /**
+     * metoden equals kollar om lösenord samt email är lika
+     **/
     public boolean equals(final User o) {
 	return Objects.equals(password, o.password) && Objects.equals(email, o.email);
     }

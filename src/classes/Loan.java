@@ -31,16 +31,8 @@ public class Loan
 	return title;
     }
 
-    public void setTitle(String title) {
-	this.title = title;
-    }
-
     public String getDescription() {
 	return description;
-    }
-
-    public void setDescription(String description) {
-	this.description = description;
     }
 
     public double getIntrest() {
@@ -51,36 +43,16 @@ public class Loan
 	return amount;
     }
 
-    public void setAmount(int amount) {
-	this.amount = amount;
-    }
-
     public LocalDate getStartDate() {
 	return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-	this.startDate = startDate;
     }
 
     public LocalDate getEndDate() {
 	return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-	this.endDate = endDate;
-    }
-
     public int getAmortization() {
 	return amortization;
-    }
-
-    public void setAmortization(final int amortization) {
-	this.amortization = amortization;
-    }
-
-    public void setIntrest(final double intrest) {
-	this.intrest = intrest;
     }
 
 

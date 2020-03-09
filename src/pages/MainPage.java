@@ -9,7 +9,6 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import texthandlers.SaveData;
-import misc.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -158,9 +157,9 @@ public class MainPage extends JPanel
 
     public void setCurrentUser(User loggedInUser) {
 	currentUser = loggedInUser;
-	System.out.println("current user " + currentUser);
-	System.out.println("current userloans " + currentUser.getUserLoans());
-
+	if(currentUser == null){
+	    currentUser = new User();
+	}
 	makePages(currentUser.getUserLoans());
     }
     public void addLoanToUser(final Loan currentLoan) {

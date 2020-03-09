@@ -2,6 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
+import mvc_controllers.UserController;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.SaveData;
 import misc.TextReader;
@@ -30,10 +31,10 @@ public class LoginPage extends JPanel
     final JTextField emailInput = new JTextField(20);
     final JPasswordField passwordInput = new JPasswordField(20);
 
-    final TextReader tr = new TextReader();
-
     final SaveData sd = new SaveData();
 
+    UserController uc;
+    App a;
     public LoginPage(CardSwitcher switcher) {
 
 
@@ -55,8 +56,8 @@ public class LoginPage extends JPanel
 	errorMessagelbl.setForeground(Color.RED);
 	add(errorMessagelbl, "wrap,alignx center,spanx");
 	//testing only, REMOVE
-	emailInput.setText("test@gmail.com");
-	passwordInput.setText("test");
+	emailInput.setText("misc.test@gmail.com");
+	passwordInput.setText("misc.test");
 	Action logInuser = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
@@ -72,12 +73,12 @@ public class LoginPage extends JPanel
 		    passwordInput.setText("");
 		} else {
 		    if (sd.checkIfUserExists(newUser)) {
+		        errorMessagelbl.setText("");
 			switcher.switchTo("mainPage");
-		    } else {
-			errorMessagelbl.setText("Det finns ingen sådan användare");
+		    }else{
+		        errorMessagelbl.setText("Det finns ingen sådan användare");
 		    }
 		}
-
 	    }
 	};
 
@@ -103,11 +104,14 @@ public class LoginPage extends JPanel
     }
 
     public boolean validateInput(User user) {
+	System.out.println(3);
 	String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-	if (user.getEmail().length() <= 0 || user.getPassword().length() <= 0) {
+	if (user.getEmail().length() == 0 || user.getPassword().length() == 0) {
+	    System.out.println(1);
 	    errorMessagelbl.setText("tom indata");
 	    return false;
 	} else if (!user.getEmail().matches(regex)) {
+	    System.out.println(2);
 	    errorMessagelbl.setText("felaktig email");
 	    return false;
 	} else {

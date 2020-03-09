@@ -6,6 +6,9 @@ import pages.MainPage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * En klass för att kunna temporärt lagra ett lån mellan de olika sidorna
+ */
 public class LoanController
 {
     private AddLoanPage theModel;

@@ -2,6 +2,9 @@ package classes;
 
 import java.awt.*;
 
+/**
+ * En klass som hanterar byte av de olika sidorna
+ */
 public class CardSwitcher {
     CardLayout layout;
     Container container;

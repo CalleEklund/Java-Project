@@ -1,7 +1,8 @@
+package misc;
+
 import classes.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import misc.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 public class test extends JPanel
 {
     /**
-     * test för git laptop
+     * misc.test för git laptop
      * **/
     private TextWriter tw;
     private HashMap<String, User> userData;
@@ -80,11 +81,6 @@ public class test extends JPanel
 	frame.pack();
 	frame.setVisible(true);
     }
-
-    /**
-     * TODO:
-     * - Radera "konton" med att en temp sträng, ta bort användare, lägg till den nya användaren.
-     **/
     public static void main(String[] args) throws IOException {
 	new test();
 

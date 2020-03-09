@@ -113,9 +113,9 @@ public class SaveData
 	return null;
     }
 
-  /*  final static Loan testLoan = new Loan("test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
+  /*  final static Loan testLoan = new Loan("misc.test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
     final static Loan testLoan1 = new Loan("test1", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
-    final static User u1 = new User("test@gmail.com", "test");
+    final static User u1 = new User("misc.test@gmail.com", "misc.test");
     final static User u2 = new User("test2@gmail.com", "test2");
 
     public static void main(String[] args) {

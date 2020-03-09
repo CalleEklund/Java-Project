@@ -7,6 +7,9 @@ import pages.MainPage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * En klass för att kunna temporärt lagra en användare mellan de olika sidorna
+ */
 public class UserController {
     private LoginPage theModel;
     private MainPage theView;

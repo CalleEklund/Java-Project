@@ -24,9 +24,6 @@ public class TextWriter
     private ArrayList<User> test;
     private User currentUser;
 
-    /**
-     * TODO: - Lägg till säker skrivning - Skulle nog kunna göra en superklass typ texthandlers
-     **/
     public TextWriter() {
 	this.tr = new TextReader();
 	this.file = new File("src/usersData.json");
@@ -90,7 +87,7 @@ public class TextWriter
     }
 
     public void updateData(User u) {
-//	System.out.println(test.size());
+//	System.out.println(misc.test.size());
 
 	Iterator<User> itr = test.iterator();
 	while (itr.hasNext()) {
@@ -101,11 +98,11 @@ public class TextWriter
 
 	}
 //	if (tr.checkIfUserExists(u)) {
-//	    test.remove(u);
+//	    misc.test.remove(u);
 //	}
 	test.add(u);
-//	System.out.println(test);
-//	System.out.println(test.size());
+//	System.out.println(misc.test);
+//	System.out.println(misc.test.size());
 	writeToFile();
 //	User currU = tr.getUser(u.getEmail());
 //	ArrayList<User> data = tr.readFromFile();
