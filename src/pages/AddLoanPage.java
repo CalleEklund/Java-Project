@@ -8,24 +8,23 @@ import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import texthandlers.SaveData;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Lägg till ett lån
+ */
 public class AddLoanPage extends JPanel
 {
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
     Font breadFont = new Font(Font.SERIF, Font.PLAIN, 18);
-    Font small = new Font(Font.SERIF, Font.PLAIN, 14);
 
     final JLabel title = new JLabel("Lägg till lån");
     final JLabel loanTitlelbl = new JLabel("Rubrik: ");
@@ -55,7 +54,10 @@ public class AddLoanPage extends JPanel
     final JButton exit = new JButton("Avsluta");
     final JButton addLoan = new JButton("Lägg till lån");
 
-
+    /**
+       * Layout init.
+       * @param switcher cardlayout för att kunna byta mellan sidorna
+       */
     public AddLoanPage(CardSwitcher switcher) {
 	setLayout(new MigLayout("fillx"));
 	modelStart.setValue(Calendar.getInstance().getTime());
@@ -115,6 +117,7 @@ public class AddLoanPage extends JPanel
 	addLoan.addActionListener(toMainPage);
 	add(addLoan, "spanx,alignx center,gap 0 0 10 0");
 
+	//TEST ta bort sen
 	int test = 1000;
 	loanTitle.setText("Test");
 	loanDescription.setText("testdesc");
@@ -124,6 +127,10 @@ public class AddLoanPage extends JPanel
 
     }
 
+    /**
+     * Validerar input
+     * @return True/False beroende på om giltig input eller inte
+     */
     public boolean validateInput() {
 	double intrest;
 	int amount, amortization;
@@ -152,6 +159,11 @@ public class AddLoanPage extends JPanel
 	return true;
     }
 
+    /**
+     * Konverterar DateModel datum till ett LocalDate datum
+     * @param date DateModel datum
+     * @return LocalDate datum
+     */
     public LocalDate convertToLocalDate(DateModel date) {
 	int dateYear = date.getYear();
 	int dateMonth = date.getMonth();
@@ -159,6 +171,10 @@ public class AddLoanPage extends JPanel
 	return LocalDate.of(dateYear, dateMonth, dateDay);
     }
 
+    /**
+     * Ger LoanController tillgång till currentLoan
+     * @return nuvarnde lån
+     */
     public Loan getCurrentLoan()
     {
 	String title = loanTitle.getText();
@@ -179,18 +195,5 @@ public class AddLoanPage extends JPanel
     public void addAddLoanListener(ActionListener listenForAddLoan) {
 	addLoan.addActionListener(listenForAddLoan);
     }
-
-    public static void main(String[] args) {
-	JFrame frame = new JFrame();
-
-//        frame.add(new pages.AddLoanPage(switcher));
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setSize(450, 600);
-	frame.setResizable(false);
-	frame.setVisible(true);
-
-    }
-
-
 }
 

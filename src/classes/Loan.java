@@ -3,6 +3,9 @@ package classes;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Lån
+ */
 public class Loan
 {
     private String uid, title, description;

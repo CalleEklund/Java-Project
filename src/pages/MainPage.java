@@ -3,12 +3,12 @@ package pages;
 import classes.CardSwitcher;
 import classes.Loan;
 import classes.User;
+import texthandlers.SaveData;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import texthandlers.SaveData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,11 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import static javax.swing.SwingConstants.TOP;
 
+/**
+ * Huvudsidan för användaren och dess lån
+ */
 public class MainPage extends JPanel
 {
     static Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
@@ -26,12 +30,15 @@ public class MainPage extends JPanel
     final JButton addNewLoan = new JButton("lägg till lån");
     final JLabel titlelbl = new JLabel("*BUDGET*");
     final JButton logOutbtn = new JButton("Logga ut");
-    static JTabbedPane loanPanes = new JTabbedPane(JTabbedPane.TOP);
+    static JTabbedPane loanPanes = new JTabbedPane(TOP);
 
     final SaveData sd = new SaveData();
     User currentUser = null;
 
-
+    /**
+      * Layout init.
+      * @param switcher cardlayout för att kunna byta mellan sidorna
+      */
     public MainPage(CardSwitcher switcher) {
 	setLayout(new MigLayout("fillx,debug"));
 	titlelbl.setFont(titleFont);
@@ -57,6 +64,12 @@ public class MainPage extends JPanel
 
 
     }
+
+    /**
+     * Gör Jtabbedpanes för varje lån som finns för användaren
+     * @param userLoans inloggade användares lån
+     * @return Jtabbedpanes
+     */
     private static JTabbedPane makePages(ArrayList<Loan> userLoans) {
 	JPanel loanPanel = new JPanel();
 	int index = 0;
@@ -76,6 +89,11 @@ public class MainPage extends JPanel
 	return loanPanes;
     }
 
+    /**
+     * Gör GUI för lånet
+     * @param l Lån av klassen classes.Loan
+     * @return returnerar GUI:n för det lånet
+     */
     private static JPanel makeLoanPanel(Loan l) {
 	JPanel p = new JPanel();
 	p.setLayout(new MigLayout("fillx"));
@@ -155,6 +173,10 @@ public class MainPage extends JPanel
 	return p;
     }
 
+    /**
+     * Sätta den inloggade användare till currentUser
+     * @param loggedInUser användare som är inloggad
+     */
     public void setCurrentUser(User loggedInUser) {
 	currentUser = loggedInUser;
 	if(currentUser == null){
@@ -162,6 +184,11 @@ public class MainPage extends JPanel
 	}
 	makePages(currentUser.getUserLoans());
     }
+
+    /**
+     * Lägger till de nyligen skapta lånet till användaren samt gör en ny panel för de lånet
+     * @param currentLoan De senaste skapta lånet
+     */
     public void addLoanToUser(final Loan currentLoan) {
 	sd.saveLoan(currentUser,currentLoan);
 	currentUser = sd.getUser(currentUser.getEmail(),currentUser.getPassword());

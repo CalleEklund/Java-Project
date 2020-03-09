@@ -11,11 +11,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
 
+/**
+ * Sparar till textfil
+ */
 public class SaveData
 {
     private File file;
@@ -24,6 +24,11 @@ public class SaveData
     private FileReader primaryReader;
     private ArrayList<User> userData;
 
+    /**
+     * Sätter sparfilen,
+     * samt skapar Gson object för utskrift
+     * Uppdaterar userData till alla nuvarande data från textfilen
+     */
     public SaveData() {
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
 	this.file = new File("src/usersData.json");
@@ -37,6 +42,9 @@ public class SaveData
 
     }
 
+    /**
+     * Läser all datan från textfilen och sätter data i userData variablen
+     */
     public void readFromFile() {
 	try {
 	    this.primaryReader = new FileReader(file);
@@ -49,6 +57,9 @@ public class SaveData
 	if (userData == null) {userData = new ArrayList<User>();}
     }
 
+    /**
+     * Spara användare till textfilen
+     */
     public void saveUser() {
 	try {
 	    this.primaryWriter = new FileWriter(file);
@@ -65,6 +76,11 @@ public class SaveData
 	}
     }
 
+    /**
+     * Kollar om User u finns i textfilen
+     * @param u användare från User klassen
+     * @return True/False om användaren finns eller inte
+     */
     public boolean checkIfUserExists(User u) {
 	readFromFile();
 	for (User elem : userData) {
@@ -80,12 +96,21 @@ public class SaveData
 	userData.remove(ind);
     }
 
+    /**
+     * Lägger till ny användare till userData sen spara användare till textfilen
+     * @param u från User klassen
+     */
     public void addNewUser(User u) {
 	readFromFile();
 	userData.add(u);
 	saveUser();
     }
 
+    /**
+     * Sparar ett lån till användaren samt sparar till textfilen
+     * @param u från User klassen
+     * @param l från Loan klassen,lånet som användaren vill lägga till
+     */
     public void saveLoan(User u, Loan l) {
 	readFromFile();
 	int ind = getIndex(u);
@@ -95,6 +120,10 @@ public class SaveData
 	saveUser();
     }
 
+    /**
+     * @param u från User klassen
+     * @return vilket index u har i textfilen listan (userData)
+     */
     public int getIndex(User u) {
 	for (int i = 0; i < userData.size(); i++) {
 	    if (userData.get(i).equals(u)) {
@@ -104,6 +133,12 @@ public class SaveData
 	return -1;
     }
 
+    /**
+     * Returnerar användare om den finns i textfilen
+     * @param email från User klassen
+     * @param password från User klassen
+     * @return den sökta användaren från textfilen eller null om användaren inte finns
+     */
     public User getUser(String email, String password) {
 	for (User u : userData) {
 	    if (u.getEmail().equalsIgnoreCase(email) && u.getPassword().equalsIgnoreCase(password)) {
@@ -112,18 +147,4 @@ public class SaveData
 	}
 	return null;
     }
-
-  /*  final static Loan testLoan = new Loan("misc.test", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
-    final static Loan testLoan1 = new Loan("test1", "testdec", 1.8, 100, 100, LocalDate.now(), LocalDate.now());
-    final static User u1 = new User("misc.test@gmail.com", "misc.test");
-    final static User u2 = new User("test2@gmail.com", "test2");
-
-    public static void main(String[] args) {
-	SaveData sd = new SaveData();
-	sd.addNewUser(u2);
-	u1.addUserLoan(testLoan1);
-	sd.saveLoan(u1, testLoan1);
-
-
-    }*/
 }

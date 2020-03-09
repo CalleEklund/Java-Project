@@ -2,16 +2,17 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
-import mvc_controllers.UserController;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.SaveData;
-import misc.TextReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Logga in
+ */
 public class LoginPage extends JPanel
 {
     Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
@@ -33,8 +34,10 @@ public class LoginPage extends JPanel
 
     final SaveData sd = new SaveData();
 
-    UserController uc;
-    App a;
+    /**
+     * Layout init.
+     * @param switcher cardlayout för att kunna byta mellan sidorna
+     */
     public LoginPage(CardSwitcher switcher) {
 
 
@@ -55,9 +58,10 @@ public class LoginPage extends JPanel
 
 	errorMessagelbl.setForeground(Color.RED);
 	add(errorMessagelbl, "wrap,alignx center,spanx");
-	//testing only, REMOVE
-	emailInput.setText("misc.test@gmail.com");
-	passwordInput.setText("misc.test");
+	/**
+	 * Validerar indatan samt kollar mot textfil "databasen"
+	 * skickar vidare användare om rätt användare inmatats
+	 */
 	Action logInuser = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
@@ -103,6 +107,11 @@ public class LoginPage extends JPanel
 
     }
 
+    /**
+     * Validerar input mot tom sträng samt giltig email, skriver även ut ett felmeddelande om felaktigt input angetts
+     * @param user användaren som är inmatad
+     * @return True/False beroende på om giltig input eller inte
+     */
     public boolean validateInput(User user) {
 	System.out.println(3);
 	String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
@@ -119,6 +128,10 @@ public class LoginPage extends JPanel
 	}
     }
 
+    /**
+     * Sätta den nuvarande inloggade användaren
+     * @return get UserController tillgång till den inloggade användaren
+     */
     public User getLoggedInUser() {
 	String email = emailInput.getText();
 	String password = new String(passwordInput.getPassword());

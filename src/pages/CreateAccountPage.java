@@ -4,13 +4,14 @@ import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.SaveData;
-import misc.TextReader;
-import misc.TextWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * Skapa konto sidan
+ */
 public class CreateAccountPage extends JPanel
 {
     JPanel formPanel = new JPanel();
@@ -33,14 +34,13 @@ public class CreateAccountPage extends JPanel
     final JTextField emailInput = new JTextField(20);
     final JPasswordField passwordInput = new JPasswordField(20);
 
-    TextWriter tw;
-    TextReader tr;
-
     SaveData sd;
 
+    /**
+     * Layout init.
+     * @param switcher cardlayout för att kunna byta mellan sidorna
+     */
     public CreateAccountPage(CardSwitcher switcher) {
-	tw = new TextWriter();
-	tr = new TextReader();
 	sd = new SaveData();
 
 
@@ -85,6 +85,9 @@ public class CreateAccountPage extends JPanel
 
     }
 
+    /**
+     * Kollar valideringen och sparanvändare
+     */
     Action createAcc = new AbstractAction()
     {
 	@Override public void actionPerformed(ActionEvent actionEvent) {
@@ -107,6 +110,10 @@ public class CreateAccountPage extends JPanel
 	}
     };
 
+    /**
+     * Kolla om användare u finns finns i "databasen", om inte spara användaren i textfilen
+     * @param u från User klassen
+     */
     public void saveUserToFile(User u) {
 	if (!sd.checkIfUserExists(u)) {
 	    sd.addNewUser(u);
@@ -116,6 +123,11 @@ public class CreateAccountPage extends JPanel
 	}
     }
 
+    /**
+     * Validerar input om giltigt namn,lösenord samt email angetts
+     * ger ett felmeddelande till använder som fel input angetts
+     * @return True/False beroende på om giltig input eller inte
+     */
     public boolean validateInput() {
 	String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	errorMessagelbl.setForeground(Color.red);
@@ -145,18 +157,4 @@ public class CreateAccountPage extends JPanel
 
 
     }
-
-    public static void main(String[] args) {
-	JFrame frame = new JFrame();
-
-//        frame.add(new pages.CreateAccountPage());
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setSize(600, 600);
-	frame.setResizable(false);
-//	    frame.pack();
-	frame.setVisible(true);
-
-    }
-
-
 }

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Användare
+ */
 public class User
 {
     private String uid, name, email, password;
