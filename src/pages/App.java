@@ -14,26 +14,19 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public class App
 {
-    JFrame frame = new JFrame();
-    JPanel cont = new JPanel();
-
-    CardLayout cl = new CardLayout();
-    CardSwitcher switcher = new CardSwitcher(cont, cl);
-
-    LoginPage logInPage;
-    CreateAccountPage createAccountPage;
-    MainPage mainPage;
-    AddLoanPage addLoanPage;
+    final static private int windowSize = 600;
 
     /**
-     * Lägger till alla sidor samt mvc controllers,
-     * huvud appen
+     * Lägger till alla sidor samt mvc controllers, huvud appen
      */
     public App() {
-	logInPage = new LoginPage(switcher);
-	mainPage = new MainPage(switcher);
-	createAccountPage = new CreateAccountPage(switcher);
-	addLoanPage = new AddLoanPage(switcher);
+	final CardLayout cl = new CardLayout();
+	final JPanel cont = new JPanel();
+	final CardSwitcher switcher = new CardSwitcher(cont, cl);
+	final LoginPage logInPage = new LoginPage(switcher);
+	final MainPage mainPage = new MainPage(switcher);
+	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher);
+	final AddLoanPage addLoanPage = new AddLoanPage(switcher);
 
 	new UserController(logInPage, mainPage);
 	new LoanController(addLoanPage, mainPage);
@@ -46,16 +39,17 @@ public class App
 	cl.show(cont, "logInPage");
 
 
+	final JFrame frame = new JFrame();
 	frame.add(cont);
 	//frame.setLocation(1200,100);
 	frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-	frame.setSize(600, 600);
+	frame.setSize(windowSize, windowSize);
 	frame.setResizable(false);
 	frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-	new App();
+	final App app = new App();
 
 
     }

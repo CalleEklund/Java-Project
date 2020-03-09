@@ -19,7 +19,7 @@ public class LoanController
 	this.theView = theView;
 	this.theModel.addAddLoanListener(new AddLoanListener());
     }
-    class AddLoanListener implements ActionListener{
+    private class AddLoanListener implements ActionListener{
 
 	@Override public void actionPerformed(final ActionEvent actionEvent) {
 	    Loan currentLoan = theModel.getCurrentLoan();

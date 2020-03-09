@@ -19,9 +19,8 @@ import java.util.ArrayList;
 public class SaveData
 {
     private File file;
-    private FileWriter primaryWriter;
+    private FileWriter primaryWriter = null;
     private Gson gson;
-    private FileReader primaryReader;
     private ArrayList<User> userData;
 
     /**
@@ -32,12 +31,6 @@ public class SaveData
     public SaveData() {
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
 	this.file = new File("src/usersData.json");
-	try {
-	    if (!file.exists()) {file.createNewFile();}
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
 	readFromFile();
 
     }
@@ -47,14 +40,14 @@ public class SaveData
      */
     public void readFromFile() {
 	try {
-	    this.primaryReader = new FileReader(file);
+	    final FileReader primaryReader = new FileReader(file);
 	    this.userData = gson.fromJson(primaryReader, new TypeToken<ArrayList<User>>()
 	    {
 	    }.getType());
 	} catch (FileNotFoundException e) {
 	    e.printStackTrace();
 	}
-	if (userData == null) {userData = new ArrayList<User>();}
+	if (userData == null) {userData = new ArrayList<>();}
     }
 
     /**

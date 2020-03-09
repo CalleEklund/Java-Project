@@ -23,9 +23,13 @@ import static javax.swing.SwingConstants.TOP;
  */
 public class MainPage extends JPanel
 {
-    static Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
-    static Font loantitleFont = new Font(Font.SERIF, Font.PLAIN, 30);
-    static Font breadFont = new Font(Font.SERIF, Font.PLAIN, 18);
+    final static private int titleFontSize = 38;
+    final static private int loanTitleFontSize = 30;
+    final static private int breadFontSize = 18;
+
+    static Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
+    static Font loantitleFont = new Font(Font.SERIF, Font.PLAIN, loanTitleFontSize);
+    static Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 
     final JButton addNewLoan = new JButton("lägg till lån");
     final JLabel titlelbl = new JLabel("*BUDGET*");
@@ -36,11 +40,12 @@ public class MainPage extends JPanel
     User currentUser = null;
 
     /**
-      * Layout init.
-      * @param switcher cardlayout för att kunna byta mellan sidorna
-      */
+     * Layout init.
+     *
+     * @param switcher cardlayout för att kunna byta mellan sidorna
+     */
     public MainPage(CardSwitcher switcher) {
-	setLayout(new MigLayout("fillx,debug"));
+	setLayout(new MigLayout("fillx"));
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
 	add(addNewLoan, "");
@@ -67,14 +72,14 @@ public class MainPage extends JPanel
 
     /**
      * Gör Jtabbedpanes för varje lån som finns för användaren
+     *
      * @param userLoans inloggade användares lån
-     * @return Jtabbedpanes
      */
-    private static JTabbedPane makePages(ArrayList<Loan> userLoans) {
+    private static void makePages(ArrayList<Loan> userLoans) {
 	JPanel loanPanel = new JPanel();
-	int index = 0;
 	if (!userLoans.isEmpty()) {
 	    loanPanes.removeAll();
+	    int index = 0;
 	    for (int i = 0; i < userLoans.size(); i++) {
 		loanPanel = makeLoanPanel(userLoans.get(i));
 		Loan currentLoan = userLoans.get(i);
@@ -86,11 +91,11 @@ public class MainPage extends JPanel
 	    loanPanes.removeAll();
 	    loanPanes.insertTab("Inga lån", null, loanPanel, null, 0);
 	}
-	return loanPanes;
     }
 
     /**
      * Gör GUI för lånet
+     *
      * @param l Lån av klassen classes.Loan
      * @return returnerar GUI:n för det lånet
      */
@@ -175,11 +180,12 @@ public class MainPage extends JPanel
 
     /**
      * Sätta den inloggade användare till currentUser
+     *
      * @param loggedInUser användare som är inloggad
      */
     public void setCurrentUser(User loggedInUser) {
 	currentUser = loggedInUser;
-	if(currentUser == null){
+	if (currentUser == null) {
 	    currentUser = new User();
 	}
 	makePages(currentUser.getUserLoans());
@@ -187,11 +193,12 @@ public class MainPage extends JPanel
 
     /**
      * Lägger till de nyligen skapta lånet till användaren samt gör en ny panel för de lånet
+     *
      * @param currentLoan De senaste skapta lånet
      */
     public void addLoanToUser(final Loan currentLoan) {
-	sd.saveLoan(currentUser,currentLoan);
-	currentUser = sd.getUser(currentUser.getEmail(),currentUser.getPassword());
+	sd.saveLoan(currentUser, currentLoan);
+	currentUser = sd.getUser(currentUser.getEmail(), currentUser.getPassword());
 	makePages(currentUser.getUserLoans());
     }
 }

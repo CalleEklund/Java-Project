@@ -21,7 +21,7 @@ public class UserController {
         this.theModel.addLogInListener(new LogInListener());
     }
 
-    class LogInListener implements ActionListener {
+    private class LogInListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {

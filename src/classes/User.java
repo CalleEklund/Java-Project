@@ -9,7 +9,10 @@ import java.util.UUID;
  */
 public class User
 {
-    private String uid, name, email, password;
+    private String uid;
+    private String name;
+    private String email;
+    private String password;
     private ArrayList<Loan> userLoans;
 
     public User(String name, String email, String password) {

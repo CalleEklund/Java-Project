@@ -6,8 +6,8 @@ import java.awt.*;
  * En klass som hanterar byte av de olika sidorna
  */
 public class CardSwitcher {
-    CardLayout layout;
-    Container container;
+    private CardLayout layout;
+    private Container container;
 
     public CardSwitcher(Container container, CardLayout layout) {
         this.layout = layout;

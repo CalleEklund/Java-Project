@@ -14,27 +14,14 @@ import java.awt.event.ActionEvent;
  */
 public class CreateAccountPage extends JPanel
 {
-    JPanel formPanel = new JPanel();
 
-    Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
-    Font breadFont = new Font(Font.SERIF, Font.PLAIN, 22);
-    final JLabel titlelbl = new JLabel("*BUDGET*");
-    final JLabel namelbl = new JLabel("Namn: ");
-    final JLabel emaillbl = new JLabel("Email: ");
-    final JLabel passwordlbl = new JLabel("Lösenord: ");
-    final JLabel noAccountlbl = new JLabel("har du redan ett konto ?");
-    final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
+    private JLabel errorMessagelbl;
 
-    final JLabel errorMessagelbl = new JLabel();
+    private JTextField nameInput;
+    private JTextField emailInput;
+    private JPasswordField passwordInput;
 
-    final JButton createAccount = new JButton("Skapa konto");
-    final JButton toLoginPage = new JButton("Logga in");
-
-    final JTextField nameInput = new JTextField(20);
-    final JTextField emailInput = new JTextField(20);
-    final JPasswordField passwordInput = new JPasswordField(20);
-
-    SaveData sd;
+    private SaveData sd;
 
     /**
      * Layout init.
@@ -46,30 +33,69 @@ public class CreateAccountPage extends JPanel
 
 	setLayout(new MigLayout("fillx"));
 
+	final JPanel formPanel = new JPanel();
 	formPanel.setLayout(new MigLayout("fillx"));
 
+	final JLabel titlelbl = new JLabel("*BUDGET*");
+	final int titleFontSize = 38;
+	final Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
+	final JLabel namelbl = new JLabel("Namn: ");
+	final int breadFontSize = 18;
+	final Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 	namelbl.setFont(breadFont);
+	final JLabel emaillbl = new JLabel("Email: ");
 	emaillbl.setFont(breadFont);
+	final JLabel passwordlbl = new JLabel("Lösenord: ");
 	passwordlbl.setFont(breadFont);
 
 
 	add(namelbl, "alignx center,gap 0 0 30 0");
+	nameInput = new JTextField(20);
 	add(nameInput, "wrap, h 30");
 
 	add(emaillbl, "alignx center,gap 0 0 30 0");
+	emailInput = new JTextField(20);
 	add(emailInput, "wrap, h 30");
 
 	add(passwordlbl, "alignx center,gap 0 0 30 0");
+	passwordInput = new JPasswordField(20);
 	add(passwordInput, "wrap, h 30");
 
+	errorMessagelbl = new JLabel();
 	add(errorMessagelbl, "wrap,alignx center,spanx");
 
+	final JButton createAccount = new JButton("Skapa konto");
+	/**
+	 * Kollar valideringen och sparanvändare
+	 */
+	final Action createAcc = new AbstractAction()
+	{
+	    @Override public void actionPerformed(ActionEvent actionEvent) {
+
+
+		if (!validateInput()) {
+		    nameInput.setText("");
+		    emailInput.setText("");
+		    passwordInput.setText("");
+		} else {
+		    String name = nameInput.getText();
+		    String email = emailInput.getText();
+		    String password = new String(passwordInput.getPassword());
+		    User newUser = new User(name, email, password);
+		    errorMessagelbl.setForeground(Color.GREEN);
+		    errorMessagelbl.setText("Konto skapat");
+		    saveUserToFile(newUser);
+
+		}
+	    }
+	};
 	createAccount.addActionListener(createAcc);
 
 	add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
+	final JLabel noAccountlbl = new JLabel("har du redan ett konto ?");
 	add(noAccountlbl, "wrap,alignx center,spanx");
 
 	Action changePage = new AbstractAction()
@@ -78,37 +104,14 @@ public class CreateAccountPage extends JPanel
 		switcher.switchTo("logInPage");
 	    }
 	};
+	final JButton toLoginPage = new JButton("Logga in");
 	toLoginPage.addActionListener(changePage);
 	add(toLoginPage, "wrap,alignx center,spanx");
 
+	final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
 	add(copyrightlbl, "spanx,alignx right,gap 0 0 120 0");
 
     }
-
-    /**
-     * Kollar valideringen och sparanvändare
-     */
-    Action createAcc = new AbstractAction()
-    {
-	@Override public void actionPerformed(ActionEvent actionEvent) {
-
-
-	    if (!validateInput()) {
-		nameInput.setText("");
-		emailInput.setText("");
-		passwordInput.setText("");
-	    } else {
-		String name = nameInput.getText();
-		String email = emailInput.getText();
-		String password = new String(passwordInput.getPassword());
-		User newUser = new User(name, email, password);
-		errorMessagelbl.setForeground(Color.GREEN);
-		errorMessagelbl.setText("Konto skapat");
-		saveUserToFile(newUser);
-
-	    }
-	}
-    };
 
     /**
      * Kolla om användare u finns finns i "databasen", om inte spara användaren i textfilen
@@ -129,12 +132,10 @@ public class CreateAccountPage extends JPanel
      * @return True/False beroende på om giltig input eller inte
      */
     public boolean validateInput() {
-	String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	errorMessagelbl.setForeground(Color.red);
-	String name, email, password;
-	name = nameInput.getText();
-	email = emailInput.getText();
-	password = new String(passwordInput.getPassword());
+	String name = nameInput.getText();
+	String email = emailInput.getText();
+	String password = new String(passwordInput.getPassword());
 
 
 	try {
@@ -144,6 +145,8 @@ public class CreateAccountPage extends JPanel
 	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
 	    return false;
 	} catch (NumberFormatException e) {
+	    System.out.println("Error: " + e);
+	    String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
 	    if (name.length() <= 0 || email.length() <= 0 || password.length() <= 0) {
 		errorMessagelbl.setText("tom indata");
 		return false;

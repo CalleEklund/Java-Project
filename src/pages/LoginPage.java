@@ -15,27 +15,20 @@ import java.awt.event.ActionListener;
  */
 public class LoginPage extends JPanel
 {
-    Font titleFont = new Font(Font.SERIF, Font.PLAIN, 38);
-    Font breadFont = new Font(Font.SERIF, Font.PLAIN, 22);
 
 
-    final JLabel titlelbl = new JLabel("*BUDGET*");
-    final JLabel emaillbl = new JLabel("Email: ");
-    final JLabel passwordlbl = new JLabel("Lösenord: ");
-    final JLabel noAccountlbl = new JLabel("har du inte ett konto ?");
-    final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
-    final JLabel errorMessagelbl = new JLabel();
+    private JLabel errorMessagelbl;
 
-    final JButton logInbtn = new JButton("Logga in");
-    final JButton toCreateAccountPagebtn = new JButton("Skapa konto");
+    private JButton logInbtn;
 
-    final JTextField emailInput = new JTextField(20);
-    final JPasswordField passwordInput = new JPasswordField(20);
+    private JTextField emailInput = new JTextField(20);
+    private JPasswordField passwordInput = new JPasswordField(20);
 
-    final SaveData sd = new SaveData();
+    private SaveData sd = new SaveData();
 
     /**
      * Layout init.
+     *
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
     public LoginPage(CardSwitcher switcher) {
@@ -43,10 +36,17 @@ public class LoginPage extends JPanel
 
 	setLayout(new MigLayout("fillx"));
 
+	final int titleFontSize = 38;
+	Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
+	final JLabel titlelbl = new JLabel("*BUDGET*");
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
+	final int breadFontSize = 18;
+	Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
+	final JLabel emaillbl = new JLabel("Email: ");
 	emaillbl.setFont(breadFont);
+	final JLabel passwordlbl = new JLabel("Lösenord: ");
 	passwordlbl.setFont(breadFont);
 
 
@@ -56,6 +56,7 @@ public class LoginPage extends JPanel
 	add(passwordlbl, "alignx center,gap 0 0 30 0");
 	add(passwordInput, "wrap, h 30");
 
+	errorMessagelbl = new JLabel();
 	errorMessagelbl.setForeground(Color.RED);
 	add(errorMessagelbl, "wrap,alignx center,spanx");
 	/**
@@ -77,18 +78,20 @@ public class LoginPage extends JPanel
 		    passwordInput.setText("");
 		} else {
 		    if (sd.checkIfUserExists(newUser)) {
-		        errorMessagelbl.setText("");
+			errorMessagelbl.setText("");
 			switcher.switchTo("mainPage");
-		    }else{
-		        errorMessagelbl.setText("Det finns ingen sådan användare");
+		    } else {
+			errorMessagelbl.setText("Det finns ingen sådan användare");
 		    }
 		}
 	    }
 	};
 
+	logInbtn = new JButton("Logga in");
 	logInbtn.addActionListener(logInuser);
 
 	add(logInbtn, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
+	final JLabel noAccountlbl = new JLabel("har du inte ett konto ?");
 	add(noAccountlbl, "wrap,alignx center,spanx");
 
 
@@ -99,9 +102,11 @@ public class LoginPage extends JPanel
 	    }
 	};
 
+	final JButton toCreateAccountPagebtn = new JButton("Skapa konto");
 	toCreateAccountPagebtn.addActionListener(changePage);
 	add(toCreateAccountPagebtn, "wrap,alignx center,spanx");
 
+	final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
 	add(copyrightlbl, "spanx,alignx right,gap 0 0 135 0");
 
 
@@ -109,18 +114,16 @@ public class LoginPage extends JPanel
 
     /**
      * Validerar input mot tom sträng samt giltig email, skriver även ut ett felmeddelande om felaktigt input angetts
+     *
      * @param user användaren som är inmatad
      * @return True/False beroende på om giltig input eller inte
      */
     public boolean validateInput(User user) {
-	System.out.println(3);
-	String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
 	if (user.getEmail().length() == 0 || user.getPassword().length() == 0) {
-	    System.out.println(1);
 	    errorMessagelbl.setText("tom indata");
 	    return false;
 	} else if (!user.getEmail().matches(regex)) {
-	    System.out.println(2);
 	    errorMessagelbl.setText("felaktig email");
 	    return false;
 	} else {
@@ -130,12 +133,13 @@ public class LoginPage extends JPanel
 
     /**
      * Sätta den nuvarande inloggade användaren
+     *
      * @return get UserController tillgång till den inloggade användaren
      */
     public User getLoggedInUser() {
 	String email = emailInput.getText();
 	String password = new String(passwordInput.getPassword());
-	return sd.getUser(email,password);
+	return sd.getUser(email, password);
     }
 
     public void addLogInListener(ActionListener listenForLogIn) {

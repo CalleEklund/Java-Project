@@ -8,10 +8,14 @@ import java.util.UUID;
  */
 public class Loan
 {
-    private String uid, title, description;
-    private int amount, amortization;
+    private String uid;
+    private String title;
+    private String description;
+    private int amount;
+    private int amortization;
     private double intrest;
-    private LocalDate startDate, endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Loan(String title, String description, double intrest, int amount, int amortization, LocalDate startDate,
 		LocalDate endDate)
