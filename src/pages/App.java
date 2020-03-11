@@ -11,6 +11,11 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  * Huvud appen
+ *
+ * TODO:
+ *  - Implementera en abstrakt klass för controllers,
+ *  - Kolla hur det ser ut att implementera en interface för att kunna notify vilken användare som inloggad just nu
+ *
  */
 public class App
 {
@@ -41,7 +46,6 @@ public class App
 
 	final JFrame frame = new JFrame();
 	frame.add(cont);
-	//frame.setLocation(1200,100);
 	frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	frame.setSize(windowSize, windowSize);
 	frame.setResizable(false);

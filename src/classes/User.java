@@ -24,7 +24,7 @@ public class User
     }
 
     //login konstruktor, bara misc.test
-    public User(String email, String password) {
+    public User(String email,String password) {
 	this.uid = UUID.randomUUID().toString();
 	this.name = "testanvändare";
 	this.email = email;
@@ -33,12 +33,12 @@ public class User
 
     }
 
-    public User(String uid, String name, String email, String password, ArrayList userLoans) {
-	this.uid = uid;
-	this.name = name;
+    public User(String email) {
+	this.uid = "";
+	this.name = "";
 	this.email = email;
-	this.password = password;
-	this.userLoans = userLoans;
+	this.password = "";
+	this.userLoans = new ArrayList<>();
     }
 
     public User() {

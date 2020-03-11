@@ -139,7 +139,11 @@ public class LoginPage extends JPanel
     public User getLoggedInUser() {
 	String email = emailInput.getText();
 	String password = new String(passwordInput.getPassword());
-	return sd.getUser(email, password);
+	User loggedInUser = sd.getUser(email, password);
+	if(loggedInUser == null){
+	    return new User();
+	}
+	return loggedInUser;
     }
 
     public void addLogInListener(ActionListener listenForLogIn) {

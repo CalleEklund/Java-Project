@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: userdb
+-- Host: 127.0.0.1    texthandlers.Database: userdb
 -- ------------------------------------------------------
 -- Server version	8.0.19
 

@@ -115,7 +115,7 @@ public class SaveData
 
     /**
      * @param u från User klassen
-     * @return vilket index u har i textfilen listan (userData)
+     * @return vilket index u har i textfil listan (userData)
      */
     public int getIndex(User u) {
 	for (int i = 0; i < userData.size(); i++) {
@@ -133,6 +133,7 @@ public class SaveData
      * @return den sökta användaren från textfilen eller null om användaren inte finns
      */
     public User getUser(String email, String password) {
+        readFromFile();
 	for (User u : userData) {
 	    if (u.getEmail().equalsIgnoreCase(email) && u.getPassword().equalsIgnoreCase(password)) {
 		return u;

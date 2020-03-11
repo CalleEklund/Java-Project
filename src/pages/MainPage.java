@@ -71,6 +71,8 @@ public class MainPage extends JPanel
     }
 
     /**
+     * ta bort static
+     *
      * Gör Jtabbedpanes för varje lån som finns för användaren
      *
      * @param userLoans inloggade användares lån
@@ -184,9 +186,11 @@ public class MainPage extends JPanel
      * @param loggedInUser användare som är inloggad
      */
     public void setCurrentUser(User loggedInUser) {
-	currentUser = loggedInUser;
-	if (currentUser == null) {
-	    currentUser = new User();
+
+	if(sd.checkIfUserExists(loggedInUser)){
+	    currentUser = sd.getUser(loggedInUser.getEmail(),loggedInUser.getPassword());
+	}else{
+	    currentUser = loggedInUser;
 	}
 	makePages(currentUser.getUserLoans());
     }
