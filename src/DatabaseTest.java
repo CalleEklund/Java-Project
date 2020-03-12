@@ -4,11 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Remote database: https://remotemysql.com/databases.php
- * phpMyAdmin: https://remotemysql.com/phpmyadmin/index.php
- * Help: https://www3.ntu.edu.sg/home/ehchua/programming/java/JDBC_Basic.html
- */
+
 public class DatabaseTest
 {
 

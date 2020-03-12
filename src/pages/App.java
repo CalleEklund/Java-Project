@@ -14,6 +14,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  *
  * TODO:
  *  - Implementera en abstrakt klass för controllers,
+ *  - Implementra en databas kopplingen
  *  - Kolla hur det ser ut att implementera en interface för att kunna notify vilken användare som inloggad just nu
  *
  */

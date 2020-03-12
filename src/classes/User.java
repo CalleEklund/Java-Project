@@ -22,7 +22,13 @@ public class User
 	this.password = password;
 	this.userLoans = new ArrayList<>();
     }
-
+    public User(final String idDB, final String nameDB, final String emailDB, final String passwordDB, final ArrayList<Loan> userLoansDB) {
+	this.uid = idDB;
+	this.name = nameDB;
+	this.email = emailDB;
+	this.password = passwordDB;
+	this.userLoans = userLoansDB;
+    }
     //login konstruktor, bara misc.test
     public User(String email,String password) {
 	this.uid = UUID.randomUUID().toString();
@@ -48,7 +54,6 @@ public class User
 	this.password = "";
 	this.userLoans = new ArrayList<>();
     }
-
     /**
      * Setters och getters
      **/

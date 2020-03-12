@@ -29,6 +29,18 @@ public class Loan
 	this.startDate = startDate;
 	this.endDate = endDate;
     }
+    public Loan(String id,String title, String description, double intrest, int amount, int amortization, LocalDate startDate,
+		LocalDate endDate)
+    {
+	this.uid = id;
+	this.title = title;
+	this.description = description;
+	this.intrest = intrest;
+	this.amount = amount;
+	this.amortization = amortization;
+	this.startDate = startDate;
+	this.endDate = endDate;
+    }
 
     public String getUid() {
 	return uid;
