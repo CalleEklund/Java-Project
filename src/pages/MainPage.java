@@ -183,38 +183,6 @@ public class MainPage extends JPanel
 	return p;
     }
 
-    public static Font getTitleFont() {
-	return titleFont;
-    }
-
-    public static void setTitleFont(Font titleFont) {
-	MainPage.titleFont = titleFont;
-    }
-
-    public static Font getLoantitleFont() {
-	return loantitleFont;
-    }
-
-    public static void setLoantitleFont(Font loantitleFont) {
-	MainPage.loantitleFont = loantitleFont;
-    }
-
-    public static Font getBreadFont() {
-	return breadFont;
-    }
-
-    public static void setBreadFont(Font breadFont) {
-	MainPage.breadFont = breadFont;
-    }
-
-    public static JTabbedPane getLoanPanes() {
-	return loanPanes;
-    }
-
-    public static void setLoanPanes(JTabbedPane loanPanes) {
-	MainPage.loanPanes = loanPanes;
-    }
-
     /**
      * Sätta den inloggade användare till currentUser
      *
@@ -242,23 +210,4 @@ public class MainPage extends JPanel
 	makePages(currentUser.getUserLoans());
     }
 
-    public JButton getAddNewLoan() {
-	return addNewLoan;
-    }
-
-    public JLabel getTitlelbl() {
-	return titlelbl;
-    }
-
-    public JButton getLogOutbtn() {
-	return logOutbtn;
-    }
-
-    public Database getDb() {
-	return db;
-    }
-
-    public User getCurrentUser() {
-	return currentUser;
-    }
 }

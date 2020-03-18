@@ -5,6 +5,7 @@ import classes.User;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.Database;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -88,7 +89,7 @@ public class CreateAccountPage extends JPanel
 		    User newUser = new User(name, email, password);
 		    errorMessagelbl.setForeground(Color.GREEN);
 		    errorMessagelbl.setText("Konto skapat");
-		    saveUserToFile(newUser);
+		    saveUser(newUser);
 
 		}
 	    }
@@ -118,7 +119,7 @@ public class CreateAccountPage extends JPanel
      * Kolla om användare u finns finns i "databasen", om inte spara användaren i textfilen
      * @param u från User klassen
      */
-    public void saveUserToFile(User u) {
+    public void saveUser(User u) {
 	if(!db.userExists(u.getEmail())){
 	    db.insertUser(u);
 	}else{

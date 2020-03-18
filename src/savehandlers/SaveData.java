@@ -1,4 +1,4 @@
-package texthandlers;
+package savehandlers;
 
 import classes.Loan;
 import classes.User;
@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
@@ -24,13 +26,14 @@ public class SaveData
     private ArrayList<User> userData = null;
 
     /**
-     * Sätter sparfilen,
-     * samt skapar Gson object för utskrift
-     * Uppdaterar userData till alla nuvarande data från textfilen
+     * Sätter sparfilen, samt skapar Gson object för utskrift Uppdaterar userData till alla nuvarande data från textfilen
      */
     public SaveData() {
+
+	URL url = ClassLoader.getSystemResource("usersData.json");
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
-	this.file = new File("src/usersData.json");
+	this.file = new File(url.getFile());
+
 	readFromFile();
 
     }
@@ -40,7 +43,7 @@ public class SaveData
      */
     public void readFromFile() {
 	try {
-	    final FileReader primaryReader = new FileReader(file);
+	    final FileReader primaryReader = new FileReader(file.getAbsolutePath());
 	    this.userData = gson.fromJson(primaryReader, new TypeToken<ArrayList<User>>()
 	    {
 	    }.getType());
@@ -71,6 +74,7 @@ public class SaveData
 
     /**
      * Kollar om User u finns i textfilen
+     *
      * @param u användare från User klassen
      * @return True/False om användaren finns eller inte
      */
@@ -91,6 +95,7 @@ public class SaveData
 
     /**
      * Lägger till ny användare till userData sen spara användare till textfilen
+     *
      * @param u från User klassen
      */
     public void addNewUser(User u) {
@@ -101,6 +106,7 @@ public class SaveData
 
     /**
      * Sparar ett lån till användaren samt sparar till textfilen
+     *
      * @param u från User klassen
      * @param l från Loan klassen,lånet som användaren vill lägga till
      */
@@ -109,7 +115,7 @@ public class SaveData
 	int ind = getIndex(u);
 	u = userData.get(ind);
 	u.addUserLoan(l);
-	userData.set(ind,u);
+	userData.set(ind, u);
 	saveUser();
     }
 
@@ -128,17 +134,24 @@ public class SaveData
 
     /**
      * Returnerar användare om den finns i textfilen
-     * @param email från User klassen
+     *
+     * @param email    från User klassen
      * @param password från User klassen
      * @return den sökta användaren från textfilen eller null om användaren inte finns
      */
     public User getUser(String email, String password) {
-        readFromFile();
+	readFromFile();
 	for (User u : userData) {
 	    if (u.getEmail().equalsIgnoreCase(email) && u.getPassword().equalsIgnoreCase(password)) {
 		return u;
 	    }
 	}
 	return null;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+	SaveData sd = new SaveData();
+//	System.out.println(ClassLoader.getSystemResource("usersData.json").getFile());
+//	System.out.println(sd.file);
     }
 }
