@@ -13,19 +13,18 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * Huvud appen
  *
  * TODO:
- *  - Implementera en abstrakt klass för controllers,
- *  - Implementra en databas kopplingen
+ *  - Implementera en abstrakt klass för controllers och för User iaf man skulle vilja skapa flera olika sorters användare,
  *  - Kolla hur det ser ut att implementera en interface för att kunna notify vilken användare som inloggad just nu
  *
  */
 public class App
 {
-    final static private int windowSize = 600;
+    final static private int WINDOW_SIZE = 600;
 
     /**
-     * Lägger till alla sidor samt mvc controllers, huvud appen
+     * Lägger till alla sidor samt mvc controllers, huvudappen
      */
-    public App() {
+    private App() {
 	final CardLayout cl = new CardLayout();
 	final JPanel cont = new JPanel();
 	final CardSwitcher switcher = new CardSwitcher(cont, cl);
@@ -48,7 +47,7 @@ public class App
 	final JFrame frame = new JFrame();
 	frame.add(cont);
 	frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-	frame.setSize(windowSize, windowSize);
+	frame.setSize(WINDOW_SIZE, WINDOW_SIZE);
 	frame.setResizable(false);
 	frame.setVisible(true);
     }

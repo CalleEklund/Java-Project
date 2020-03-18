@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.Loan;
 import classes.User;
-import texthandlers.SaveData;
+import texthandlers.Database;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -23,21 +23,23 @@ import static javax.swing.SwingConstants.TOP;
  */
 public class MainPage extends JPanel
 {
-    final static private int titleFontSize = 38;
-    final static private int loanTitleFontSize = 30;
-    final static private int breadFontSize = 18;
+    final static private int TITLE_FONT_SIZE = 38;
+    final static private int LOAN_TITLE_FONT_SIZE = 30;
+    final static private int BREAD_FONT_SIZE = 18;
+    final static private int TEXT_AREA_COLUMN_SIZE = 20;
 
-    static Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
-    static Font loantitleFont = new Font(Font.SERIF, Font.PLAIN, loanTitleFontSize);
-    static Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 
-    final JButton addNewLoan = new JButton("lägg till lån");
-    final JLabel titlelbl = new JLabel("*BUDGET*");
-    final JButton logOutbtn = new JButton("Logga ut");
-    static JTabbedPane loanPanes = new JTabbedPane(TOP);
+    private static Font titleFont = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    private static Font loantitleFont = new Font(Font.SERIF, Font.PLAIN, LOAN_TITLE_FONT_SIZE);
+    private static Font breadFont = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
-    final SaveData sd = new SaveData();
-    User currentUser = null;
+    private final JButton addNewLoan = new JButton("lägg till lån");
+    private final JLabel titlelbl = new JLabel("*BUDGET*");
+    private final JButton logOutbtn = new JButton("Logga ut");
+    private static JTabbedPane loanPanes = new JTabbedPane(TOP);
+
+    private final Database db;
+    private User currentUser = null;
 
     /**
      * Layout init.
@@ -45,6 +47,7 @@ public class MainPage extends JPanel
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
     public MainPage(CardSwitcher switcher) {
+	db = new Database();
 	setLayout(new MigLayout("fillx"));
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
@@ -136,7 +139,7 @@ public class MainPage extends JPanel
 	JTextField amounttf = new JTextField(String.valueOf(l.getAmount()));
 	JTextField intresttf = new JTextField(String.valueOf(l.getIntrest()));
 	JTextField amortizationtf = new JTextField(String.valueOf(l.getAmortization()));
-	JTextArea descriptionta = new JTextArea(l.getDescription(), 4, 20);
+	JTextArea descriptionta = new JTextArea(l.getDescription(), 4, TEXT_AREA_COLUMN_SIZE);
 
 	amounttf.setEditable(false);
 	intresttf.setEditable(false);
@@ -180,6 +183,38 @@ public class MainPage extends JPanel
 	return p;
     }
 
+    public static Font getTitleFont() {
+	return titleFont;
+    }
+
+    public static void setTitleFont(Font titleFont) {
+	MainPage.titleFont = titleFont;
+    }
+
+    public static Font getLoantitleFont() {
+	return loantitleFont;
+    }
+
+    public static void setLoantitleFont(Font loantitleFont) {
+	MainPage.loantitleFont = loantitleFont;
+    }
+
+    public static Font getBreadFont() {
+	return breadFont;
+    }
+
+    public static void setBreadFont(Font breadFont) {
+	MainPage.breadFont = breadFont;
+    }
+
+    public static JTabbedPane getLoanPanes() {
+	return loanPanes;
+    }
+
+    public static void setLoanPanes(JTabbedPane loanPanes) {
+	MainPage.loanPanes = loanPanes;
+    }
+
     /**
      * Sätta den inloggade användare till currentUser
      *
@@ -187,11 +222,12 @@ public class MainPage extends JPanel
      */
     public void setCurrentUser(User loggedInUser) {
 
-	if(sd.checkIfUserExists(loggedInUser)){
-	    currentUser = sd.getUser(loggedInUser.getEmail(),loggedInUser.getPassword());
+        if(db.userExists(loggedInUser.getEmail())){
+            currentUser = db.getUser(loggedInUser.getEmail());
 	}else{
-	    currentUser = loggedInUser;
+            currentUser = loggedInUser;
 	}
+
 	makePages(currentUser.getUserLoans());
     }
 
@@ -201,8 +237,28 @@ public class MainPage extends JPanel
      * @param currentLoan De senaste skapta lånet
      */
     public void addLoanToUser(final Loan currentLoan) {
-	sd.saveLoan(currentUser, currentLoan);
-	currentUser = sd.getUser(currentUser.getEmail(), currentUser.getPassword());
+        db.addLoanToUser(currentUser,currentLoan);
+        currentUser = db.getUser(currentUser.getEmail());
 	makePages(currentUser.getUserLoans());
+    }
+
+    public JButton getAddNewLoan() {
+	return addNewLoan;
+    }
+
+    public JLabel getTitlelbl() {
+	return titlelbl;
+    }
+
+    public JButton getLogOutbtn() {
+	return logOutbtn;
+    }
+
+    public Database getDb() {
+	return db;
+    }
+
+    public User getCurrentUser() {
+	return currentUser;
     }
 }

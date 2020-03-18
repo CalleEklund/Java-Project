@@ -81,12 +81,21 @@ public class User
 	return userLoans;
     }
 
+
     /**
      * metoden equals kollar om lösenord samt email är lika
      **/
-    public boolean equals(final User o) {
-	return Objects.equals(password, o.password) && Objects.equals(email, o.email);
+    @Override public boolean equals(final Object o) {
+	if (this == o) return true;
+	if (o == null || getClass() != o.getClass()) return false;
+	final User user = (User) o;
+	return Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
+
+    @Override public int hashCode() {
+	return Objects.hash(email, password);
+    }
+
 
     @Override public String toString() {
 	return "User{" + "uid='" + uid + '\'' + ", name='" + name + '\'' + ", email='" + email + '\'' + ", password='" +

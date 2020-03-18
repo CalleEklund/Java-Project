@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
-import texthandlers.SaveData;
+import texthandlers.Database;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +16,17 @@ import java.awt.event.ActionListener;
 public class LoginPage extends JPanel
 {
 
+    final static private int TEXT_AREA_COLUMN_SIZE = 20;
+
 
     private JLabel errorMessagelbl;
 
     private JButton logInbtn;
 
-    private JTextField emailInput = new JTextField(20);
-    private JPasswordField passwordInput = new JPasswordField(20);
+    private JTextField emailInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
+    private JPasswordField passwordInput = new JPasswordField(TEXT_AREA_COLUMN_SIZE);
 
-    private SaveData sd = new SaveData();
+    private Database db;
 
     /**
      * Layout init.
@@ -32,7 +34,7 @@ public class LoginPage extends JPanel
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
     public LoginPage(CardSwitcher switcher) {
-
+	db = new Database();
 
 	setLayout(new MigLayout("fillx"));
 
@@ -66,10 +68,6 @@ public class LoginPage extends JPanel
 	Action logInuser = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
-		/**
-		 * TODO:
-		 *  - kolla indata mot en databas
-		 **/
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
 		User newUser = new User(email, password);
@@ -77,7 +75,7 @@ public class LoginPage extends JPanel
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else {
-		    if (sd.checkIfUserExists(newUser)) {
+		    if (db.userExists(email)) {
 			errorMessagelbl.setText("");
 			switcher.switchTo("mainPage");
 		    } else {
@@ -119,8 +117,8 @@ public class LoginPage extends JPanel
      * @return True/False beroende på om giltig input eller inte
      */
     public boolean validateInput(User user) {
-	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
-	if (user.getEmail().length() == 0 || user.getPassword().length() == 0) {
+	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
+	if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
 	    errorMessagelbl.setText("tom indata");
 	    return false;
 	} else if (!user.getEmail().matches(regex)) {
@@ -138,9 +136,8 @@ public class LoginPage extends JPanel
      */
     public User getLoggedInUser() {
 	String email = emailInput.getText();
-	String password = new String(passwordInput.getPassword());
-	User loggedInUser = sd.getUser(email, password);
-	if(loggedInUser == null){
+	User loggedInUser = db.getUser(email);
+	if (loggedInUser == null) {
 	    return new User();
 	}
 	return loggedInUser;

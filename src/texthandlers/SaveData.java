@@ -21,7 +21,7 @@ public class SaveData
     private File file;
     private FileWriter primaryWriter = null;
     private Gson gson;
-    private ArrayList<User> userData;
+    private ArrayList<User> userData = null;
 
     /**
      * Sätter sparfilen,

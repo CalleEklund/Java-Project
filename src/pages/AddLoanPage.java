@@ -23,6 +23,10 @@ import java.util.Properties;
  */
 public class AddLoanPage extends JPanel
 {
+    final static private int TEXT_FIELD_COLUMN_SIZE = 15;
+    final static private int TEXT_AREA_COLUMN_SIZE = 20;
+
+
 
     private JLabel errorMessagelbl = new JLabel();
 
@@ -34,12 +38,12 @@ public class AddLoanPage extends JPanel
     private JDatePickerImpl loanstartDate = new JDatePickerImpl(datePanelStart, new DateComponentFormatter());
     private JDatePickerImpl loanendDate = new JDatePickerImpl(datePanelEnd, new DateComponentFormatter());
 
-    private JTextField loanTitle = new JTextField(15);
+    private JTextField loanTitle = new JTextField(TEXT_FIELD_COLUMN_SIZE);
     private JTextField loanInterest = new JTextField(8);
-    private JTextField loanAmount = new JTextField(15);
-    private JTextField loanAmortization = new JTextField(15);
+    private JTextField loanAmount = new JTextField(TEXT_FIELD_COLUMN_SIZE);
+    private JTextField loanAmortization = new JTextField(TEXT_FIELD_COLUMN_SIZE);
 
-    private JTextArea loanDescription = new JTextArea(4, 20);
+    private JTextArea loanDescription = new JTextArea(4, TEXT_AREA_COLUMN_SIZE);
 
     private JButton addLoan = new JButton("Lägg till lån");
 
@@ -119,7 +123,10 @@ public class AddLoanPage extends JPanel
 	addLoan.addActionListener(toMainPage);
 	add(addLoan, "spanx,alignx center,gap 0 0 10 0");
 
-	//TEST ta bort sen
+	/**
+	 * TODO:
+	 *  - ta bort innan inlämmning
+	 */
 	int test = 1000;
 	loanTitle.setText("Test");
 	loanDescription.setText("testdesc");
@@ -167,7 +174,7 @@ public class AddLoanPage extends JPanel
      * @param date DateModel datum
      * @return LocalDate datum
      */
-    public LocalDate convertToLocalDate(DateModel date) {
+    public LocalDate convertToLocalDate(DateModel<?> date) {
 	int dateYear = date.getYear();
 	int dateMonth = date.getMonth();
 	int dateDay = date.getDay();

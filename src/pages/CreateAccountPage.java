@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
-import texthandlers.SaveData;
+import texthandlers.Database;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,21 +15,22 @@ import java.awt.event.ActionEvent;
 public class CreateAccountPage extends JPanel
 {
 
+    final static private int TEXT_AREA_COLUMN_SIZE = 20;
+
     private JLabel errorMessagelbl;
 
     private JTextField nameInput;
     private JTextField emailInput;
     private JPasswordField passwordInput;
 
-    private SaveData sd;
+    private Database db;
 
     /**
      * Layout init.
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
     public CreateAccountPage(CardSwitcher switcher) {
-	sd = new SaveData();
-
+	db = new Database();
 
 	setLayout(new MigLayout("fillx"));
 
@@ -53,15 +54,15 @@ public class CreateAccountPage extends JPanel
 
 
 	add(namelbl, "alignx center,gap 0 0 30 0");
-	nameInput = new JTextField(20);
+	nameInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
 	add(nameInput, "wrap, h 30");
 
 	add(emaillbl, "alignx center,gap 0 0 30 0");
-	emailInput = new JTextField(20);
+	emailInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
 	add(emailInput, "wrap, h 30");
 
 	add(passwordlbl, "alignx center,gap 0 0 30 0");
-	passwordInput = new JPasswordField(20);
+	passwordInput = new JPasswordField(TEXT_AREA_COLUMN_SIZE);
 	add(passwordInput, "wrap, h 30");
 
 	errorMessagelbl = new JLabel();
@@ -118,9 +119,9 @@ public class CreateAccountPage extends JPanel
      * @param u från User klassen
      */
     public void saveUserToFile(User u) {
-	if (!sd.checkIfUserExists(u)) {
-	    sd.addNewUser(u);
-	} else {
+	if(!db.userExists(u.getEmail())){
+	    db.insertUser(u);
+	}else{
 	    errorMessagelbl.setForeground(Color.red);
 	    errorMessagelbl.setText("Emailen är redan registrerad");
 	}
@@ -146,7 +147,7 @@ public class CreateAccountPage extends JPanel
 	    return false;
 	} catch (NumberFormatException e) {
 	    System.out.println("Error: " + e);
-	    String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
+	    String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
 	    if (name.length() <= 0 || email.length() <= 0 || password.length() <= 0) {
 		errorMessagelbl.setText("tom indata");
 		return false;
