@@ -70,8 +70,7 @@ public class LoginPage extends JPanel
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
-		User newUser = new User(email, password);
-		if (!validateInput(newUser)) {
+		if (!validateInput(email,password)) {
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else {
@@ -116,12 +115,12 @@ public class LoginPage extends JPanel
      * @param user användaren som är inmatad
      * @return True/False beroende på om giltig input eller inte
      */
-    public boolean validateInput(User user) {
+    public boolean validateInput(String email,String password) {
 	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
-	if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
+	if (email.isEmpty() || password.isEmpty()) {
 	    errorMessagelbl.setText("tom indata");
 	    return false;
-	} else if (!user.getEmail().matches(regex)) {
+	} else if (!email.matches(regex)) {
 	    errorMessagelbl.setText("felaktig email");
 	    return false;
 	} else {

@@ -13,11 +13,12 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  * Huvud appen
  *
  * TODO:
- *  - Implementera en abstrakt klass för controllers och för User iaf man skulle vilja skapa flera olika sorters användare,
+ *  - Implementera en abstrakt klass för controllers och för User iaf man skulle vilja skapa flera olika sorters användare (lägg en enum state som förklara vilken sorts användare som finns),
  *  - Kolla hur det ser ut att implementera en interface för att kunna notify vilken användare som inloggad just nu
  *  - Lägg till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andra klasser)
  *  - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml
  *  - Kolla varför getSystemResources inte fungerar i SaveData
+ *  - Titta på att implementera en import samt en export funktion
  *
  */
 public class App

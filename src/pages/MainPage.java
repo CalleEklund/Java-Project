@@ -205,8 +205,8 @@ public class MainPage extends JPanel
      * @param currentLoan De senaste skapta lånet
      */
     public void addLoanToUser(final Loan currentLoan) {
-        db.addLoanToUser(currentUser,currentLoan);
-        currentUser = db.getUser(currentUser.getEmail());
+        db.saveLoanToUser(currentUser,currentLoan);
+	currentUser = db.getUser(currentUser.getEmail());
 	makePages(currentUser.getUserLoans());
     }
 

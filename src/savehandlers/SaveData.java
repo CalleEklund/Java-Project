@@ -32,7 +32,7 @@ public class SaveData
 
 	URL url = ClassLoader.getSystemResource("usersData.json");
 	this.gson = new GsonBuilder().setPrettyPrinting().create();
-	this.file = new File(url.getFile());
+	this.file = new File("usersData.json");
 
 	readFromFile();
 
@@ -43,7 +43,7 @@ public class SaveData
      */
     public void readFromFile() {
 	try {
-	    final FileReader primaryReader = new FileReader(file.getAbsolutePath());
+	    final FileReader primaryReader = new FileReader(file);
 	    this.userData = gson.fromJson(primaryReader, new TypeToken<ArrayList<User>>()
 	    {
 	    }.getType());

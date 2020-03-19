@@ -27,7 +27,7 @@ public class Database
     public Database() {
 	try {
 	    Class.forName("com.mysql.jdbc.Driver");
-	    try{
+	    try {
 		final String user = "tMGM8IRhyq";
 		final String password = "oLJpQFeIgY";
 		this.conn = getConnection(url, user, password);
@@ -41,7 +41,6 @@ public class Database
     }
 
 
-
     public boolean userExists(String userEmail) {
 
 	try {
@@ -52,12 +51,13 @@ public class Database
 		try {
 		    ResultSet rs = preparedStmt.executeQuery();
 		    try {
-			if (!rs.next()) {
-			    System.out.println("No result found");
-			    return false;
-			} else {
-			    return true;
+			while (rs.next()) {
+			    String emailDB = rs.getString("email");
+			    if (emailDB.equals(userEmail)) {
+				return true;
+			    }
 			}
+			return false;
 		    } finally {
 			rs.close();
 		    }
@@ -101,34 +101,39 @@ public class Database
      * @return
      */
     public User getUser(String email) {
+	ArrayList<Loan> userLoansDB = convertToLoan(email);
 	if (userExists(email)) {
-	    final String query = "SELECT * FROM user WHERE email = ?";
-	    ArrayList<Loan> userLoansDB = convertToLoan(email);
-
-	    ResultSet rs = null;
-	    try (PreparedStatement preparedStmt = conn.prepareStatement(query)) {
-
-		preparedStmt.setString(1, email);
-		rs = preparedStmt.executeQuery();
-		while (rs.next()) {
-
-		    String idDB = rs.getString("user.id");
-		    String nameDB = rs.getString("user.name");
-		    String emailDB = rs.getString("user.email");
-		    String passwordDB = rs.getString("user.password");
-
-		    return new User(idDB, nameDB, emailDB, passwordDB, userLoansDB);
+	    try {
+		final String query = "SELECT * FROM user WHERE email = ?";
+		PreparedStatement preparedStmt = conn.prepareStatement(query);
+		try {
+		    preparedStmt.setString(1, email);
+		    try {
+			ResultSet rs = preparedStmt.executeQuery();
+			try {
+			    while (rs.next()) {
+				String idDB = rs.getString("user.id");
+				String nameDB = rs.getString("user.name");
+				String emailDB = rs.getString("user.email");
+				String passwordDB = rs.getString("user.password");
+				User u = new User(emailDB, passwordDB, idDB, nameDB, userLoansDB);
+				return u;
+			    }
+			} finally {
+			    rs.close();
+			}
+		    } catch (SQLException e) {
+			e.printStackTrace();
+		    }
+		} finally {
+		    preparedStmt.close();
 		}
 	    } catch (SQLException e) {
 		e.printStackTrace();
-	    } finally {
-		try {
-		    assert rs != null;
-		    rs.close();
-		} catch (SQLException ignored) {}
 	    }
 
 	}
+
 	return null;
     }
 
@@ -173,8 +178,8 @@ public class Database
 	return temp;
     }
 
-    public void addLoanToUser(User u, Loan l) {
-	String userId = getUser(u.getEmail()).getUid();
+    public void saveLoanToUser(User u, Loan l) {
+	String userId = u.getUid();
 
 	String title = l.getTitle();
 	String desc = l.getDescription();

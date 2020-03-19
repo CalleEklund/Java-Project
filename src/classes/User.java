@@ -7,55 +7,41 @@ import java.util.UUID;
 /**
  * Användare
  */
-public class User
+public class User extends AbstractUser
 {
-    private String uid;
+    private String uid = null;
     private String name;
-    private String email;
-    private String password;
-    private ArrayList<Loan> userLoans;
+    private ArrayList<Loan> userLoans = null;
+
+    public User(final String uid, final String email, final String password, final String name, final String email1,
+		final String password1)
+    {
+	super(uid, email, password);
+	this.name = name;
+    }
 
     public User(String name, String email, String password) {
+	super(email, password);
 	this.uid = UUID.randomUUID().toString();
 	this.name = name;
-	this.email = email;
-	this.password = password;
 	this.userLoans = new ArrayList<>();
     }
-    public User(final String idDB, final String nameDB, final String emailDB, final String passwordDB, final ArrayList<Loan> userLoansDB) {
-	this.uid = idDB;
-	this.name = nameDB;
-	this.email = emailDB;
-	this.password = passwordDB;
-	this.userLoans = userLoansDB;
-    }
-    //login konstruktor, bara misc.test
-    public User(String email,String password) {
-	this.uid = UUID.randomUUID().toString();
-	this.name = "testanvändare";
-	this.email = email;
-	this.password = password;
-	this.userLoans = new ArrayList<>();
-
-    }
-
-    public User(String email) {
-	this.uid = "";
-	this.name = "";
-	this.email = email;
-	this.password = "";
-	this.userLoans = new ArrayList<>();
+    public User(final String emailDB, final String passwordDB, final String uid, final String name, final ArrayList<Loan> userLoans)
+    {
+	super(emailDB, passwordDB);
+	this.uid = uid;
+	this.name = name;
+	this.userLoans = userLoans;
     }
 
     public User() {
+        super();
 	this.uid = "";
 	this.name = "";
-	this.email = "";
-	this.password = "";
 	this.userLoans = new ArrayList<>();
     }
     /**
-     * Setters och getters
+     * Getters
      **/
     public String getUid() {
 	return uid;
