@@ -1,16 +1,16 @@
 package mvc_controllers;
 
-import classes.CardSwitcher;
 import pages.AddLoanPage;
 import pages.LoginPage;
 import pages.MainPage;
 
 
-public abstract class AbstractController
+public abstract class AbstractController implements Controller
 {
     protected MainPage theView;
     protected AddLoanPage theModelLoan = null;
     protected LoginPage theModelLogin = null;
+
     public AbstractController(final MainPage theView, final LoginPage theModel) {
 	this.theView = theView;
 	this.theModelLogin = theModel;
@@ -20,15 +20,16 @@ public abstract class AbstractController
 	this.theModelLoan = theModel;
     }
 
-    public MainPage getTheView() {
+    @Override public MainPage getTheView() {
 	return theView;
     }
 
-    public AddLoanPage getTheModelLoan() {
+    @Override public AddLoanPage getTheModelLoan() {
 	return theModelLoan;
     }
 
-    public LoginPage getTheModelLogin() {
+    @Override public LoginPage getTheModelLogin() {
 	return theModelLogin;
     }
+
 }
