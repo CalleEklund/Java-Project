@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
@@ -149,9 +148,4 @@ public class SaveData
 	return null;
     }
 
-    public static void main(String[] args) throws ClassNotFoundException {
-	SaveData sd = new SaveData();
-//	System.out.println(ClassLoader.getSystemResource("usersData.json").getFile());
-//	System.out.println(sd.file);
-    }
 }

@@ -1,7 +1,6 @@
 package mvc_controllers;
 
 import classes.User;
-import pages.AddLoanPage;
 import pages.LoginPage;
 import pages.MainPage;
 

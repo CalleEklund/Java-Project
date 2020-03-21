@@ -2,17 +2,15 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Användare
  */
 public class User extends AbstractUser
 {
-    private String uid = null;
-    private String name;
+    private String name = null;
     private ArrayList<Loan> userLoans = null;
-    private UserTypes userType;
+    private UserTypes userType = null;
 
     public User(final String uid, final String email, final String password, final String name)
     {
@@ -23,7 +21,6 @@ public class User extends AbstractUser
 
     public User(String name, String email, String password) {
 	super(email, password);
-	this.uid = UUID.randomUUID().toString();
 	this.name = name;
 	this.userLoans = new ArrayList<>();
 	this.userType = UserTypes.ORDINARY;
@@ -34,7 +31,6 @@ public class User extends AbstractUser
 		final ArrayList<Loan> userLoans)
     {
 	super(emailDB, passwordDB);
-	this.uid = uid;
 	this.name = name;
 	this.userLoans = userLoans;
 	this.userType = UserTypes.ORDINARY;
@@ -48,7 +44,6 @@ public class User extends AbstractUser
 
     public User() {
 	super();
-	this.uid = "";
 	this.name = "";
 	this.userLoans = new ArrayList<>();
     }
