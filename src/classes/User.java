@@ -12,12 +12,13 @@ public class User extends AbstractUser
     private String uid = null;
     private String name;
     private ArrayList<Loan> userLoans = null;
+    private UserTypes userType;
 
-    public User(final String uid, final String email, final String password, final String name, final String email1,
-		final String password1)
+    public User(final String uid, final String email, final String password, final String name)
     {
 	super(uid, email, password);
 	this.name = name;
+	this.userType = UserTypes.ORDINARY;
     }
 
     public User(String name, String email, String password) {
@@ -25,21 +26,33 @@ public class User extends AbstractUser
 	this.uid = UUID.randomUUID().toString();
 	this.name = name;
 	this.userLoans = new ArrayList<>();
+	this.userType = UserTypes.ORDINARY;
+
     }
-    public User(final String emailDB, final String passwordDB, final String uid, final String name, final ArrayList<Loan> userLoans)
+
+    public User(final String emailDB, final String passwordDB, final String uid, final String name,
+		final ArrayList<Loan> userLoans)
     {
 	super(emailDB, passwordDB);
 	this.uid = uid;
 	this.name = name;
 	this.userLoans = userLoans;
+	this.userType = UserTypes.ORDINARY;
+
+    }
+    //Admin User
+    public User(String email, String password) {
+	super(email, password);
+	this.userType = UserTypes.ADMIN;
     }
 
     public User() {
-        super();
+	super();
 	this.uid = "";
 	this.name = "";
 	this.userLoans = new ArrayList<>();
     }
+
     /**
      * Getters
      **/

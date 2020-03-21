@@ -21,9 +21,6 @@ public abstract class AbstractUser
     public AbstractUser() {
     }
 
-    public enum UserType
-    {
-	ORDINARY, ADMIN;
-    }
+
 }
 
