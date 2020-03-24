@@ -8,44 +8,51 @@ import java.util.Objects;
  */
 public class User extends AbstractUser
 {
+    private String uid = null;
     private String name = null;
     private ArrayList<Loan> userLoans = null;
     private UserTypes userType = null;
 
-    public User(final String uid, final String email, final String password, final String name)
-    {
-	super(uid, email, password);
-	this.name = name;
-	this.userType = UserTypes.ORDINARY;
-    }
+    //Skapa konto konstruktorer
 
     public User(String name, String email, String password) {
 	super(email, password);
 	this.name = name;
-	this.userLoans = new ArrayList<>();
 	this.userType = UserTypes.ORDINARY;
 
+    }
+
+    //Admin User
+    public User(String email, String password, final UserTypes userType) {
+	super(email, password);
+	this.userType = userType;
     }
 
     public User(final String emailDB, final String passwordDB, final String uid, final String name,
-		final ArrayList<Loan> userLoans)
+		final ArrayList<Loan> userLoans, final UserTypes userTypeDB)
     {
 	super(emailDB, passwordDB);
+	this.uid = uid;
 	this.name = name;
 	this.userLoans = userLoans;
-	this.userType = UserTypes.ORDINARY;
+	this.userType = userTypeDB;
 
     }
-    //Admin User
-    public User(String email, String password) {
+
+    public User(final String id, final String name, final String email, final String password, final UserTypes userType) {
 	super(email, password);
-	this.userType = UserTypes.ADMIN;
+	this.name = name;
+	this.uid = id;
+	this.userType = userType;
+
     }
+
 
     public User() {
 	super();
 	this.name = "";
 	this.userLoans = new ArrayList<>();
+	this.userType = UserTypes.ORDINARY;
     }
 
     /**
@@ -75,6 +82,9 @@ public class User extends AbstractUser
 	return userLoans;
     }
 
+    public UserTypes getUserType() {
+	return userType;
+    }
 
     /**
      * metoden equals kollar om lösenord samt email är lika
@@ -90,9 +100,12 @@ public class User extends AbstractUser
 	return Objects.hash(email, password);
     }
 
+    public boolean compareTo(final User u) {
+	return uid == u.uid && name == u.name && email == u.email && password == u.password && userType == u.userType;
+    }
 
     @Override public String toString() {
-	return "User{" + "uid='" + uid + '\'' + ", name='" + name + '\'' + ", email='" + email + '\'' + ", password='" +
-	       password + '\'' + ", userLoans=" + userLoans + '}';
+	return "User{" + "uid='\"" + uid + ", name='" + name + '\'' + ", userLoans=" + userLoans + ", userType=" + userType +
+	       '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + '}';
     }
 }

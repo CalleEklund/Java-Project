@@ -2,6 +2,7 @@ package texthandlers;
 
 import classes.Loan;
 import classes.User;
+import classes.UserTypes;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
 
@@ -26,7 +28,7 @@ public class Database
 
     public Database() {
 	try {
-	    Class.forName("com.mysql.jdbc.Driver");
+	    Class.forName("com.mysql.jdbc.Driver").newInstance();
 	    try {
 		final String user = "tMGM8IRhyq";
 		final String password = "oLJpQFeIgY";
@@ -35,25 +37,26 @@ public class Database
 		e.printStackTrace();
 	    }
 
-	} catch (ClassNotFoundException e) {
+	} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 	    e.printStackTrace();
 	}
     }
 
 
-    public boolean userExists(String userEmail) {
-
+    public boolean userExists(String userEmail, String userPassword) {
 	try {
 	    final String query = "SELECT * FROM user WHERE email = ?";
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 	    try {
+
 		preparedStmt.setString(1, userEmail);
 		try {
 		    ResultSet rs = preparedStmt.executeQuery();
 		    try {
 			while (rs.next()) {
 			    String emailDB = rs.getString("email");
-			    if (emailDB.equals(userEmail)) {
+			    String passwordDB = rs.getString("password");
+			    if (emailDB.equals(userEmail) && passwordDB.equals(userPassword)) {
 				return true;
 			    }
 			}
@@ -77,32 +80,43 @@ public class Database
 	String name = u.getName();
 	String email = u.getEmail();
 	String password = u.getPassword();
+	int userType;
+	if (u.getUserType().equals(UserTypes.ORDINARY)) {
+	    userType = 0;
+	} else {
+	    userType = 1;
+	}
 
-	final String query = "INSERT INTO user (user.name ,user.password,user.email)" + "VALUES (?,?,?)";
+	try {
+	    final String query = "INSERT INTO user (user.name ,user.password,user.email, user.userType)" + "VALUES (?,?,?,?)";
+	    PreparedStatement preparedStmt = conn.prepareStatement(query);
+	    try {
+		preparedStmt.setString(1, name);
+		preparedStmt.setString(2, password);
+		preparedStmt.setString(3, email);
+		preparedStmt.setInt(4, userType);
 
-	try (PreparedStatement preparedStmt = conn.prepareStatement(query)) {
-
-	    preparedStmt.setString(1, name);
-	    preparedStmt.setString(2, password);
-	    preparedStmt.setString(3, email);
-
-	    preparedStmt.execute();
+		preparedStmt.execute();
+	    } finally {
+		preparedStmt.close();
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-
-
     }
 
     /**
-     * Lägg till så att lån läggas till också query SELECT loan.title FROM loan INNER JOIN user ON loan.user_id = user.id WHERE
-     * user.email = MAIL
+     * Hämtar användare från databasen.
+     * <p>
+     * Warning (is overly nested): behövs för att kunna stänga PreparedStatement samt Resultset och fånga felhanteringen
      *
+     * @param email    användarens email
+     * @param password användarens lösenord
      * @return
      */
-    public User getUser(String email) {
+    public User getUser(String email, String password) {
 	ArrayList<Loan> userLoansDB = convertToLoan(email);
-	if (userExists(email)) {
+	if (userExists(email, password)) {
 	    try {
 		final String query = "SELECT * FROM user WHERE email = ?";
 		PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -112,11 +126,20 @@ public class Database
 			ResultSet rs = preparedStmt.executeQuery();
 			try {
 			    while (rs.next()) {
+				User u;
 				String idDB = rs.getString("user.id");
 				String nameDB = rs.getString("user.name");
 				String emailDB = rs.getString("user.email");
 				String passwordDB = rs.getString("user.password");
-				User u = new User(emailDB, passwordDB, idDB, nameDB, userLoansDB);
+				UserTypes userType;
+				if (rs.getInt("user.userType") == 0) {
+				    userType = UserTypes.ORDINARY;
+				    u = new User(emailDB, passwordDB, idDB, nameDB, userLoansDB, userType);
+
+				} else {
+				    userType = UserTypes.ADMIN;
+				    u = new User(emailDB, passwordDB, userType);
+				}
 				return u;
 			    }
 			} finally {
@@ -212,6 +235,61 @@ public class Database
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    public List<User> getAllData() {
+	List<User> out = new ArrayList<>();
+
+	try {
+	    Statement stmt = conn.createStatement();
+	    try {
+		final String query = "SELECT * FROM user";
+		ResultSet rs = stmt.executeQuery(query);
+		try {
+		    while (rs.next()) {
+			if (rs.getInt("userType") == 0) {
+			    String email = rs.getString("user.email");
+			    ArrayList<Loan> userLoans = convertToLoan(email);
+			    User u =
+				    new User(rs.getString("user.email"), rs.getString("user.password"), rs.getString("user.id"),
+					     rs.getString("user.name"), userLoans, UserTypes.ORDINARY);
+			    out.add(u);
+			}
+		    }
+		} finally {
+		    rs.close();
+		}
+	    } finally {
+		stmt.close();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return out;
+    }
+
+    public void updateData(ArrayList<User> newData) {
+	for (int i = 0; i < newData.size(); i++) {
+	    try {
+		String query = "UPDATE user set name = ?," + "email = ?," + "password = ?" + "WHERE email = ?";
+		PreparedStatement preparedStmt = conn.prepareStatement(query);
+		try {
+		    preparedStmt.setString(1, newData.get(i).getName());
+		    preparedStmt.setString(2, newData.get(i).getEmail());
+		    preparedStmt.setString(3, newData.get(i).getPassword());
+		    preparedStmt.setString(4, newData.get(i).getEmail());
+
+		    preparedStmt.execute();
+
+		} finally {
+		    preparedStmt.close();
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+	}
+
+	System.out.println(newData);
     }
 
     //Sätter id till 1

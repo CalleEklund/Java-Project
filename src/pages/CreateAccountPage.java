@@ -34,25 +34,27 @@ public class CreateAccountPage extends JPanel
 	db = new Database();
 
 	setLayout(new MigLayout("fillx"));
+	final int titleFontSize = 38;
+	final Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
+	final int breadFontSize = 18;
+	final Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 
 	final JPanel formPanel = new JPanel();
 	formPanel.setLayout(new MigLayout("fillx"));
 
+
+
+
 	final JLabel titlelbl = new JLabel("*BUDGET*");
-	final int titleFontSize = 38;
-	final Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
 	final JLabel namelbl = new JLabel("Namn: ");
-	final int breadFontSize = 18;
-	final Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 	namelbl.setFont(breadFont);
 	final JLabel emaillbl = new JLabel("Email: ");
 	emaillbl.setFont(breadFont);
 	final JLabel passwordlbl = new JLabel("Lösenord: ");
 	passwordlbl.setFont(breadFont);
-
 
 	add(namelbl, "alignx center,gap 0 0 30 0");
 	nameInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
@@ -65,9 +67,27 @@ public class CreateAccountPage extends JPanel
 	add(passwordlbl, "alignx center,gap 0 0 30 0");
 	passwordInput = new JPasswordField(TEXT_AREA_COLUMN_SIZE);
 	add(passwordInput, "wrap, h 30");
+	final JPanel buttons = new JPanel();
+
+	final JRadioButton ordinaryUser = new JRadioButton("Vanlig");
+	ordinaryUser.setFont(breadFont);
+	ordinaryUser.setSelected(true);
+	ordinaryUser.setActionCommand("ordinary");
+	final JRadioButton adminUser = new JRadioButton("Admin");
+	adminUser.setFont(breadFont);
+	adminUser.setActionCommand("admin");
+	final ButtonGroup userTypeButtons = new ButtonGroup();
+
+	userTypeButtons.add(ordinaryUser);
+	userTypeButtons.add(adminUser);
+
+	buttons.add(ordinaryUser);
+	buttons.add(adminUser);
+	add(buttons,"wrap, spanx, alignx center");
 
 	errorMessagelbl = new JLabel();
 	add(errorMessagelbl, "wrap,alignx center,spanx");
+
 
 	final JButton createAccount = new JButton("Skapa konto");
 	/**
@@ -77,7 +97,7 @@ public class CreateAccountPage extends JPanel
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
 
-
+		String userType = userTypeButtons.getSelection().getActionCommand();
 		if (!validateInput()) {
 		    nameInput.setText("");
 		    emailInput.setText("");
@@ -86,7 +106,12 @@ public class CreateAccountPage extends JPanel
 		    String name = nameInput.getText();
 		    String email = emailInput.getText();
 		    String password = new String(passwordInput.getPassword());
-		    User newUser = new User(name, email, password);
+		    User newUser;
+		    if (userType.equals("ordinary")){
+			newUser = new User(name, email, password);
+		    }else{
+		        newUser = new User(email,password,userType);
+		    }
 		    errorMessagelbl.setForeground(Color.GREEN);
 		    errorMessagelbl.setText("Konto skapat");
 		    saveUser(newUser);
@@ -120,7 +145,9 @@ public class CreateAccountPage extends JPanel
      * @param u från User klassen
      */
     public void saveUser(User u) {
-	if(!db.userExists(u.getEmail())){
+        String email = u.getEmail();
+        String password = u.getPassword();
+	if(!db.userExists(email,password)){
 	    db.insertUser(u);
 	}else{
 	    errorMessagelbl.setForeground(Color.red);

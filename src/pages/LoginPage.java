@@ -2,6 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
+import classes.UserTypes;
 import net.miginfocom.swing.MigLayout;
 import texthandlers.Database;
 
@@ -70,13 +71,18 @@ public class LoginPage extends JPanel
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
-		if (!validateInput(email,password)) {
+		if (!validateInput(email, password)) {
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else {
-		    if (db.userExists(email)) {
+		    if (db.userExists(email, password)) {
 			errorMessagelbl.setText("");
-			switcher.switchTo("mainPage");
+			User u = db.getUser(email, password);
+			if (u.getUserType().equals(UserTypes.ORDINARY)) {
+			    switcher.switchTo("mainPage");
+			} else {
+			    switcher.switchTo("adminPage");
+			}
 		    } else {
 			errorMessagelbl.setText("Det finns ingen sådan användare");
 		    }
@@ -115,7 +121,7 @@ public class LoginPage extends JPanel
      * @param user användaren som är inmatad
      * @return True/False beroende på om giltig input eller inte
      */
-    public boolean validateInput(String email,String password) {
+    public boolean validateInput(String email, String password) {
 	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
 	if (email.isEmpty() || password.isEmpty()) {
 	    errorMessagelbl.setText("tom indata");
@@ -135,11 +141,13 @@ public class LoginPage extends JPanel
      */
     public User getLoggedInUser() {
 	String email = emailInput.getText();
-	User loggedInUser = db.getUser(email);
-	if (loggedInUser == null) {
-	    return new User();
+	String password = new String(passwordInput.getPassword());
+	if (db.userExists(email, password)) {
+	    User loggedInUser = db.getUser(email, password);
+	    return loggedInUser;
 	}
-	return loggedInUser;
+	return new User();
+
     }
 
     public void addLogInListener(ActionListener listenForLogIn) {

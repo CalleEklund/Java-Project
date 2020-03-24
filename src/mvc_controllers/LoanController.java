@@ -17,10 +17,11 @@ public class LoanController extends AbstractController
         super(theView,theModel);
 	theModel.addAddLoanListener(new AddLoanListener());
     }
+
     private class AddLoanListener implements ActionListener{
 	@Override public void actionPerformed(final ActionEvent actionEvent) {
-	    Loan currentLoan = getTheModelLoan().getCurrentLoan();
-	    theView.addLoanToUser(currentLoan);
+	    Loan currentLoan = theModelLoan.getCurrentLoan();
+	    theViewUser.addLoanToUser(currentLoan);
 	}
     }
 }

@@ -1,5 +1,6 @@
 package pages;
 
+import mvc_controllers.AdminController;
 import mvc_controllers.UserController;
 import classes.CardSwitcher;
 import mvc_controllers.LoanController;
@@ -12,10 +13,12 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 /**
  * Huvud appen
  * <p>
- * TODO: - Kolla hur det ser ut att implementera en interface för att kunna notify vilken användare som inloggad just nu - Lägg
- * till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andra klasser) - Gå
- * igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml - Kolla varför getSystemResources
- * inte fungerar i SaveData - Titta på att implementera en import samt en export funktion
+ * TODO:
+ *  - Kolla hur det ser ut att implementera en interface för att kunna notify vilken användare som inloggad just nu
+ *  - Lägg till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andra klasser)
+ *  - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml
+ *  - Kolla varför getSystemResources inte fungerar i SaveData
+ *  - Titta på att implementera en import samt en export funktion samt en admin sida för att kunna använda enum states
  */
 public class App
 {
@@ -33,8 +36,10 @@ public class App
 	final MainPage mainPage = new MainPage(switcher);
 	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher);
 	final AddLoanPage addLoanPage = new AddLoanPage(switcher);
+	final AdminPage adminPage = new AdminPage(switcher);
 
 	new UserController(logInPage, mainPage);
+	new AdminController(logInPage, adminPage);
 	new LoanController(addLoanPage, mainPage);
 	cont.setLayout(cl);
 
@@ -42,6 +47,7 @@ public class App
 	cont.add(createAccountPage, "createAccountPage");
 	cont.add(mainPage, "mainPage");
 	cont.add(addLoanPage, "addLoanPage");
+	cont.add(adminPage,"adminPage");
 	cl.show(cont, "logInPage");
 
 

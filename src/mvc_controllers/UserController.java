@@ -1,6 +1,7 @@
 package mvc_controllers;
 
 import classes.User;
+import classes.UserTypes;
 import pages.LoginPage;
 import pages.MainPage;
 
@@ -15,14 +16,17 @@ public class UserController extends AbstractController{
     public UserController(LoginPage theModel, MainPage theView) {
         super(theView,theModel);
 
-        theModel.addLogInListener(new LogInListener());
+        theModel.addLogInListener(new UserController.LogInListener());
     }
+
 
     private class LogInListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            User currentUser = getTheModelLogin().getLoggedInUser();
-            theView.setCurrentUser(currentUser);
+            User currentUser = theModelLogin.getLoggedInUser();
+            if(currentUser.getUserType().equals(UserTypes.ORDINARY)){
+                theViewUser.setCurrentUser(currentUser);
+            }
 
         }
 

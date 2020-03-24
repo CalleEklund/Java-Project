@@ -64,6 +64,7 @@ public class MainPage extends JPanel
 	Action logoutUser = new AbstractAction()
 	{
 	    @Override public void actionPerformed(ActionEvent actionEvent) {
+	        currentUser = new User();
 		switcher.switchTo("logInPage");
 	    }
 	};
@@ -189,11 +190,12 @@ public class MainPage extends JPanel
      * @param loggedInUser användare som är inloggad
      */
     public void setCurrentUser(User loggedInUser) {
-
-        if(db.userExists(loggedInUser.getEmail())){
-            currentUser = db.getUser(loggedInUser.getEmail());
+	String email= loggedInUser.getEmail();
+	String password = loggedInUser.getPassword();
+	if(db.userExists(email,password)){
+	    currentUser = db.getUser(email,password);
 	}else{
-            currentUser = loggedInUser;
+	    currentUser = loggedInUser;
 	}
 
 	makePages(currentUser.getUserLoans());
@@ -205,8 +207,10 @@ public class MainPage extends JPanel
      * @param currentLoan De senaste skapta lånet
      */
     public void addLoanToUser(final Loan currentLoan) {
+        String email = currentUser.getEmail();
+        String password = currentUser.getPassword();
         db.saveLoanToUser(currentUser,currentLoan);
-	currentUser = db.getUser(currentUser.getEmail());
+	currentUser = db.getUser(email,password);
 	makePages(currentUser.getUserLoans());
     }
 
