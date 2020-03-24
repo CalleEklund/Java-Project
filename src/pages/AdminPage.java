@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
-import texthandlers.Database;
+import savehandlers.Database;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -39,6 +39,11 @@ public class AdminPage extends JPanel
 
     private List<User> data = null;
 
+    /**
+     * Konstruktor
+     * @param switcher Används från CardSwither klassen som används
+     *                 för att byta sida inom applikationen
+     */
     public AdminPage(CardSwitcher switcher) {
 	db = new Database();
 	setLayout(new MigLayout("fillx, debug"));
@@ -58,6 +63,10 @@ public class AdminPage extends JPanel
 
     }
 
+    /**
+     * Kallas när knappen saveData klickas hämtar all data från tabellen
+     * för att sedan jämföra mot den gamla för att inte belasta databasen med onödig data.
+     */
     private ActionListener saveData = new ActionListener()
     {
 	@Override public void actionPerformed(final ActionEvent actionEvent) {
@@ -85,6 +94,12 @@ public class AdminPage extends JPanel
 	}
     };
 
+    /**
+     * Jämför den gamla tabellen mot den nya
+     * @param oldData Den gamla tabellens data (ArrayList av User)
+     * @param newData Den nya tabellens data (ArrayList av User)
+     * @return returnerar en ArrayList med den ändraden datan
+     */
     private ArrayList<User> getNoDuplicate(List<User> oldData, ArrayList<User> newData) {
 	ArrayList<User> temp = new ArrayList<>();
 	String t = "test";
@@ -96,7 +111,10 @@ public class AdminPage extends JPanel
 	return temp;
     }
 
-
+    /**
+     * Printar den tabellen som fylls med data från databasen, sätter även användarns id och lån
+     * otilgängliga, möjligt att det blir en feature senare.
+     */
     private ActionListener printTable = new ActionListener()
     {
 	@Override public void actionPerformed(final ActionEvent actionEvent) {
@@ -141,6 +159,10 @@ public class AdminPage extends JPanel
 	}
     };
 
+    /**
+     * Sätter den nuvarande inloggade admin användaren
+     * @param loggedinUser den inloggade användaren som sätts från LoginPage
+     */
     public void setCurrentAdmin(User loggedinUser) {
 	currentAdmin = loggedinUser;
     }

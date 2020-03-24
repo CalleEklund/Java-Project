@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>mvc_controllers</OriginalElement>
+  <nodes>
+    <node x="41.5" y="248.0">mvc_controllers.AdminController</node>
+    <node x="272.5" y="79.0">mvc_controllers.AbstractController</node>
+    <node x="301.0" y="248.0">mvc_controllers.UserController</node>
+    <node x="315.0" y="0.0">mvc_controllers.Controller</node>
+    <node x="0.0" y="327.0">mvc_controllers.AdminController.LogInListener</node>
+    <node x="557.0" y="248.0">mvc_controllers.LoanController</node>
+    <node x="512.0" y="327.0">mvc_controllers.LoanController.AddLoanListener</node>
+    <node x="256.0" y="327.0">mvc_controllers.UserController.LogInListener</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="mvc_controllers.LoanController" target="mvc_controllers.AbstractController">
+      <point x="0.0" y="-14.5" />
+      <point x="630.0" y="223.0" />
+      <point x="441.6666666666667" y="223.0" />
+      <point x="67.66666666666669" y="59.5" />
+    </edge>
+    <edge source="mvc_controllers.AbstractController" target="mvc_controllers.Controller">
+      <point x="0.0" y="-59.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="mvc_controllers.UserController" target="mvc_controllers.AbstractController">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="59.5" />
+    </edge>
+    <edge source="mvc_controllers.AdminController.LogInListener" target="mvc_controllers.AdminController">
+      <point x="0.0" y="-26.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="mvc_controllers.LoanController.AddLoanListener" target="mvc_controllers.LoanController">
+      <point x="0.0" y="-26.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="mvc_controllers.AdminController" target="mvc_controllers.AbstractController">
+      <point x="0.0" y="-14.5" />
+      <point x="118.0" y="223.0" />
+      <point x="306.3333333333333" y="223.0" />
+      <point x="-67.66666666666669" y="59.5" />
+    </edge>
+    <edge source="mvc_controllers.UserController.LogInListener" target="mvc_controllers.UserController">
+      <point x="0.0" y="-26.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="242.5" y="93.5" />
+  <SelectedNodes>
+    <node>mvc_controllers.LoanController</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

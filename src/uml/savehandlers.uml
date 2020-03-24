@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>savehandlers</OriginalElement>
+  <nodes>
+    <node x="260.0" y="0.0">savehandlers.Database</node>
+    <node x="0.0" y="0.0">savehandlers.SaveData</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="52.0" y="14.5" />
+  <SelectedNodes>
+    <node>savehandlers.SaveData</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

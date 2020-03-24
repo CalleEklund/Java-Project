@@ -1,4 +1,4 @@
-package texthandlers;
+package savehandlers;
 
 import classes.Loan;
 import classes.User;
@@ -19,13 +19,17 @@ import static java.sql.DriverManager.getConnection;
 public class Database
 {
     /**
-     * * Remote database: https://remotemysql.com/databases.php * phpMyAdmin: https://remotemysql.com/phpmyadmin/index.php *
-     * Help: https://www3.ntu.edu.sg/home/ehchua/programming/java/JDBC_Basic.html
+     * DATABAS HJÄLP LÄNKAR:
+     * Remote database: https://remotemysql.com/databases.php
+     * phpMyAdmin: https://remotemysql.com/phpmyadmin/index.php
      */
     private Connection conn = null;
     private static String url = "jdbc:mysql://remotemysql.com:3306/tMGM8IRhyq";
 
-
+    /**
+     * Konstruktor
+     * Används för att skapa en koppling mot databasen, fånger evetuella fel.
+     */
     public Database() {
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -42,7 +46,13 @@ public class Database
 	}
     }
 
-
+    /**
+     * Kollar om den sökta användaren finns i database, fånger evetuella fel samt
+     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @param userEmail Den sökta användarens email
+     * @param userPassword Den sökta användarens lösenord
+     * @return (boolean) om användaren finns eller inte
+     */
     public boolean userExists(String userEmail, String userPassword) {
 	try {
 	    final String query = "SELECT * FROM user WHERE email = ?";
@@ -76,6 +86,11 @@ public class Database
 	return false;
     }
 
+    /**
+     * Lägger in en användare till databasen, fånger evetuella fel samt
+     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @param u Användaren från User klassen
+     */
     public void insertUser(User u) {
 	String name = u.getName();
 	String email = u.getEmail();
@@ -107,7 +122,6 @@ public class Database
 
     /**
      * Hämtar användare från databasen.
-     * <p>
      * Warning (is overly nested): behövs för att kunna stänga PreparedStatement samt Resultset och fånga felhanteringen
      *
      * @param email    användarens email
@@ -160,6 +174,12 @@ public class Database
 	return null;
     }
 
+    /**
+     * Hämtar användares lån från databasen med en one-to-many relation och konverterar lån till en ArrayList(Loan),
+     * fånger evetuella fel samt stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @param email Den sökta användarens email, använder email istället för id eftersom email också är unikt för varje användare
+     * @return Användarens lån i form av ArrayList(Loan)
+     */
     public ArrayList<Loan> convertToLoan(String email) {
 	ArrayList<Loan> temp = new ArrayList<>();
 	try {
@@ -201,6 +221,12 @@ public class Database
 	return temp;
     }
 
+    /**
+     * Lägger till lån i databas samt skapar koppling till användaren, fånger evetuella fel samt
+     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @param u Den sökta användaren
+     * @param l Den valda lånet som användaren vill lägga till
+     */
     public void saveLoanToUser(User u, Loan l) {
 	String userId = u.getUid();
 
@@ -237,6 +263,12 @@ public class Database
 	}
     }
 
+    /**
+     * Hämtar all användare data från användre som registrerat sig som ORDINARY användare, används enbart i adminsidan
+     * för att kunna monitera samt ändra användarens inloggnings uppgifter, fånger evetuella fel samt
+     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @return En List(User) av alla ORDINARY användare
+     */
     public List<User> getAllData() {
 	List<User> out = new ArrayList<>();
 
@@ -268,7 +300,12 @@ public class Database
 	return out;
     }
 
-    public void updateData(ArrayList<User> newData) {
+    /**
+     * Uppdaterar datan som är ändrar i adminsidan (AdminPage), fånger evetuella fel samt
+     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @param newData Den ändrade data
+     */
+    public void updateData(List<User> newData) {
 	for (int i = 0; i < newData.size(); i++) {
 	    try {
 		String query = "UPDATE user set name = ?," + "email = ?," + "password = ?" + "WHERE email = ?";
@@ -292,7 +329,9 @@ public class Database
 	System.out.println(newData);
     }
 
-    //Sätter id till 1
+    /**
+     * Används inte i applikationen utan mer som en hjälp funktion ifall man skulle vilja resetta id:n i user tabellen
+     */
     public void resetAI() {
 	try {
 	    Statement stmt = conn.createStatement();

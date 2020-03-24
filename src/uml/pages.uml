@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>pages</OriginalElement>
+  <nodes>
+    <node x="342.0" y="0.0">pages.MainPage</node>
+    <node x="421.0" y="430.0">pages.CreateAccountPage</node>
+    <node x="0.0" y="226.0">pages.LoginPage</node>
+    <node x="0.0" y="430.0">pages.AdminPage</node>
+    <node x="295.0" y="329.0">pages.App.Utility</node>
+    <node x="0.0" y="0.0">pages.AddLoanPage</node>
+    <node x="328.5" y="226.0">pages.App</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pages.App.Utility" target="pages.App">
+      <point x="0.0" y="-26.5" />
+      <point x="0.0" y="26.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="370.5" y="258.0" />
+  <SelectedNodes>
+    <node>pages.MainPage</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

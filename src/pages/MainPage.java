@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.Loan;
 import classes.User;
-import texthandlers.Database;
+import savehandlers.Database;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;

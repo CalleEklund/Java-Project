@@ -4,7 +4,7 @@ import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
 import net.miginfocom.swing.MigLayout;
-import texthandlers.Database;
+import savehandlers.Database;
 
 import javax.swing.*;
 import java.awt.*;
@@ -115,12 +115,12 @@ public class LoginPage extends JPanel
 
     }
 
-    /**
-     * Validerar input mot tom sträng samt giltig email, skriver även ut ett felmeddelande om felaktigt input angetts
-     *
-     * @param user användaren som är inmatad
-     * @return True/False beroende på om giltig input eller inte
-     */
+	/**
+	 * Validerar input mot tom sträng samt giltig email, skriver även ut ett felmeddelande om felaktigt input angetts
+	 * @param email användarens email
+	 * @param password användares lösenord
+	 * @return True/False beroende på om giltig input eller inte
+	 */
     public boolean validateInput(String email, String password) {
 	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
 	if (email.isEmpty() || password.isEmpty()) {

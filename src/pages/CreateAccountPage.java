@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import net.miginfocom.swing.MigLayout;
-import texthandlers.Database;
+import savehandlers.Database;
 
 
 import javax.swing.*;
