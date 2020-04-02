@@ -21,7 +21,7 @@ import java.util.Properties;
 /**
  * Lägg till ett lån
  */
-public class AddLoanPage extends JPanel
+public class AddLoanPage extends JPanel implements Page
 {
     final static private int TEXT_FIELD_COLUMN_SIZE = 15;
     final static private int TEXT_AREA_COLUMN_SIZE = 20;
@@ -45,8 +45,8 @@ public class AddLoanPage extends JPanel
 
     private JTextArea loanDescription = new JTextArea(4, TEXT_AREA_COLUMN_SIZE);
 
-    private JButton addLoan = new JButton("Lägg till lån");
-
+    private JButton addLoan;
+    private JButton exit;
     /**
        * Layout init.
        * @param switcher cardlayout för att kunna byta mellan sidorna
@@ -61,14 +61,9 @@ public class AddLoanPage extends JPanel
 	title.setFont(titleFont);
 	add(title, "skip,alignx center,gap 0 0 20 20");
 
-	Action exitToMainPage = new AbstractAction()
-	{
-	    @Override public void actionPerformed(ActionEvent actionEvent) {
-		switcher.switchTo("mainPage");
-	    }
-	};
-	final JButton exit = new JButton("Avsluta");
-	exit.addActionListener(exitToMainPage);
+
+	exit = new JButton("Avsluta");
+	mainPageNotValidated(switcher);
 	add(exit, "wrap,alignx right,w 30");
 
 	final JLabel loanTitlelbl = new JLabel("Rubrik: ");
@@ -112,15 +107,9 @@ public class AddLoanPage extends JPanel
 
 	errorMessagelbl.setForeground(Color.RED);
 	add(errorMessagelbl, "wrap,alignx center,spanx");
-	Action toMainPage = new AbstractAction()
-	{
-	    @Override public void actionPerformed(ActionEvent actionEvent) {
-		if (validateInput()) {
-		    switcher.switchTo("mainPage");
-		}
-	    }
-	};
-	addLoan.addActionListener(toMainPage);
+
+	addLoan = new JButton("Lägg till lån");
+	mainPageValidated(switcher);
 	add(addLoan, "spanx,alignx center,gap 0 0 10 0");
 
 	/**
@@ -134,6 +123,26 @@ public class AddLoanPage extends JPanel
 	loanAmortization.setText(String.valueOf(test));
 	loanInterest.setText(String.valueOf(test));
 
+    }
+
+    private void mainPageNotValidated(final CardSwitcher switcher){
+        exit.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+		switchPage(switcher,"mainPage");
+	    }
+	});
+    }
+
+    private void mainPageValidated(final CardSwitcher switcher){
+        addLoan.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+		if(validateInput()){
+		    switchPage(switcher,"mainPage");
+		}
+	    }
+	});
     }
 
     /**
@@ -204,6 +213,10 @@ public class AddLoanPage extends JPanel
 
     public void addAddLoanListener(ActionListener listenForAddLoan) {
 	addLoan.addActionListener(listenForAddLoan);
+    }
+
+    @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
+	switcher.switchTo(newPage);
     }
 }
 

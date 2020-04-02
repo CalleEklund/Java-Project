@@ -10,13 +10,14 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminPage extends JPanel
+public class AdminPage extends JPanel implements Page
 {
     final static private int TITLE_FONT_SIZE = 38;
     final static private int BREAD_FONT_SIZE = 18;
@@ -41,10 +42,11 @@ public class AdminPage extends JPanel
 
     /**
      * Konstruktor
-     * @param switcher Används från CardSwither klassen som används
-     *                 för att byta sida inom applikationen
+     *
+     * @param switcher Används från CardSwither klassen som används för att byta sida inom applikationen
      */
     public AdminPage(CardSwitcher switcher) {
+
 	db = new Database();
 	setLayout(new MigLayout("fillx, debug"));
 	titlelbl.setFont(titleFont);
@@ -56,16 +58,29 @@ public class AdminPage extends JPanel
 	btns.add(logOutbtn);
 	add(btns, "alignx right,wrap");
 
+	logOut(switcher);
 
 	showData.addActionListener(printTable);
 	savebtn.addActionListener(saveData);
 
 
+
     }
 
+    private void logOut(final CardSwitcher switcher) {
+	logOutbtn.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+
+	        switchPage(switcher, "logInPage");
+	    }
+	});
+    }
+
+
     /**
-     * Kallas när knappen saveData klickas hämtar all data från tabellen
-     * för att sedan jämföra mot den gamla för att inte belasta databasen med onödig data.
+     * Kallas när knappen saveData klickas hämtar all data från tabellen för att sedan jämföra mot den gamla för att inte
+     * belasta databasen med onödig data.
      */
     private ActionListener saveData = new ActionListener()
     {
@@ -96,6 +111,7 @@ public class AdminPage extends JPanel
 
     /**
      * Jämför den gamla tabellen mot den nya
+     *
      * @param oldData Den gamla tabellens data (ArrayList av User)
      * @param newData Den nya tabellens data (ArrayList av User)
      * @return returnerar en ArrayList med den ändraden datan
@@ -112,13 +128,13 @@ public class AdminPage extends JPanel
     }
 
     /**
-     * Printar den tabellen som fylls med data från databasen, sätter även användarns id och lån
-     * otilgängliga, möjligt att det blir en feature senare.
+     * Printar den tabellen som fylls med data från databasen, sätter även användarns id och lån otilgängliga, möjligt att det
+     * blir en feature senare.
      */
     private ActionListener printTable = new ActionListener()
     {
 	@Override public void actionPerformed(final ActionEvent actionEvent) {
-	    table = new JTable();
+
 	    String[] columnNames = { "ID", "Namn", "Email", "Lösenord", "Användartyp", "Antal Lån" };
 	    DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)
 	    {
@@ -161,6 +177,7 @@ public class AdminPage extends JPanel
 
     /**
      * Sätter den nuvarande inloggade admin användaren
+     *
      * @param loggedinUser den inloggade användaren som sätts från LoginPage
      */
     public void setCurrentAdmin(User loggedinUser) {
@@ -168,4 +185,7 @@ public class AdminPage extends JPanel
     }
 
 
+    @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
+	switcher.switchTo(newPage);
+    }
 }

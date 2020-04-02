@@ -11,25 +11,30 @@ import java.awt.event.ActionListener;
 /**
  * En klass för att kunna temporärt lagra en användare mellan de olika sidorna
  */
-public class UserController extends AbstractController{
+public class UserController extends AbstractController
+{
 
     public UserController(LoginPage theModel, MainPage theView) {
-        super(theView,theModel);
+	super(theView, theModel);
 
-        theModel.addLogInListener(new UserController.LogInListener());
+	theModel.addLogInListener(new UserController.LogInListener());
     }
 
 
-    private class LogInListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            User currentUser = theModelLogin.getLoggedInUser();
-            if(currentUser.getUserType().equals(UserTypes.ORDINARY)){
-                theViewUser.setCurrentUser(currentUser);
-            }
+    private class LogInListener implements ActionListener
+    {
+	@Override public void actionPerformed(ActionEvent actionEvent) {
+	    updateView();
+	}
 
-        }
 
+    }
+
+    @Override public void updateView() {
+	User currentUser = theModelLogin.getLoggedInUser();
+	if (currentUser.getUserType().equals(UserTypes.ORDINARY)) {
+	    theViewUser.setCurrentUser(currentUser);
+	}
 
     }
 }

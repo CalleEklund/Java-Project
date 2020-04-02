@@ -13,6 +13,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -21,7 +22,7 @@ import static javax.swing.SwingConstants.TOP;
 /**
  * Huvudsidan för användaren och dess lån
  */
-public class MainPage extends JPanel
+public class MainPage extends JPanel implements Page
 {
     final static private int TITLE_FONT_SIZE = 38;
     final static private int LOAN_TITLE_FONT_SIZE = 30;
@@ -53,35 +54,40 @@ public class MainPage extends JPanel
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
 	add(addNewLoan, "");
 	add(logOutbtn, "alignx right,wrap");
-	Action addLoan = new AbstractAction()
-	{
-	    @Override public void actionPerformed(ActionEvent actionEvent) {
-		switcher.switchTo("addLoanPage");
-	    }
-	};
 
-	addNewLoan.addActionListener(addLoan);
-	Action logoutUser = new AbstractAction()
-	{
-	    @Override public void actionPerformed(ActionEvent actionEvent) {
-	        currentUser = new User();
-		switcher.switchTo("logInPage");
-	    }
-	};
-	logOutbtn.addActionListener(logoutUser);
+	addLoanPage(switcher);
+	logOut(switcher);
+
 	add(loanPanes, "grow,pushy,spanx");
 
 
     }
 
+
+    private void logOut(final CardSwitcher switcher) {
+	logOutbtn.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+		currentUser = new User();
+		switchPage(switcher, "logInPage");
+	    }
+	});
+    }
+    private void addLoanPage(final CardSwitcher switcher){
+        addNewLoan.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+		switchPage(switcher, "addLoanPage");
+
+	    }
+	});
+    }
     /**
-     * ta bort static
-     *
      * Gör Jtabbedpanes för varje lån som finns för användaren
      *
      * @param userLoans inloggade användares lån
      */
-    private static void makePages(ArrayList<Loan> userLoans) {
+    private void makePages(ArrayList<Loan> userLoans) {
 	JPanel loanPanel = new JPanel();
 	if (!userLoans.isEmpty()) {
 	    loanPanes.removeAll();
@@ -190,11 +196,11 @@ public class MainPage extends JPanel
      * @param loggedInUser användare som är inloggad
      */
     public void setCurrentUser(User loggedInUser) {
-	String email= loggedInUser.getEmail();
+	String email = loggedInUser.getEmail();
 	String password = loggedInUser.getPassword();
-	if(db.userExists(email,password)){
-	    currentUser = db.getUser(email,password);
-	}else{
+	if (db.userExists(email, password)) {
+	    currentUser = db.getUser(email, password);
+	} else {
 	    currentUser = loggedInUser;
 	}
 
@@ -207,11 +213,14 @@ public class MainPage extends JPanel
      * @param currentLoan De senaste skapta lånet
      */
     public void addLoanToUser(final Loan currentLoan) {
-        String email = currentUser.getEmail();
-        String password = currentUser.getPassword();
-        db.saveLoanToUser(currentUser,currentLoan);
-	currentUser = db.getUser(email,password);
+	String email = currentUser.getEmail();
+	String password = currentUser.getPassword();
+	db.saveLoanToUser(currentUser, currentLoan);
+	currentUser = db.getUser(email, password);
 	makePages(currentUser.getUserLoans());
     }
 
+    @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
+	switcher.switchTo(newPage);
+    }
 }

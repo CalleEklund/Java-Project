@@ -15,18 +15,13 @@ public class User extends AbstractUser
 
     //Skapa konto konstruktorer
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, final UserTypes userType) {
 	super(email, password);
 	this.name = name;
-	this.userType = UserTypes.ORDINARY;
-
-    }
-
-    //Admin User
-    public User(String email, String password, final UserTypes userType) {
-	super(email, password);
 	this.userType = userType;
+
     }
+
 
     public User(final String emailDB, final String passwordDB, final String uid, final String name,
 		final ArrayList<Loan> userLoans, final UserTypes userTypeDB)

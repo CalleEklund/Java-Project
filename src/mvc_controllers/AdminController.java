@@ -10,17 +10,24 @@ import java.awt.event.ActionListener;
 public class AdminController extends AbstractController
 {
     public AdminController(LoginPage theModel, AdminPage theView) {
-	super(theView,theModel);
+	super(theView, theModel);
 
 	theModel.addLogInListener(new AdminController.LogInListener());
     }
 
+    @Override public void updateView() {
+	User currentUser = theModelLogin.getLoggedInUser();
+	theViewAdmin.setCurrentAdmin(currentUser);
+
+    }
+
+
     private class LogInListener implements ActionListener
     {
-	@Override
-	public void actionPerformed(ActionEvent actionEvent) {
-	    User currentUser = theModelLogin.getLoggedInUser();
-	    theViewAdmin.setCurrentAdmin(currentUser);
+	@Override public void actionPerformed(ActionEvent actionEvent) {
+	    updateView();
 	}
     }
+
+
 }

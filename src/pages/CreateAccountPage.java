@@ -2,6 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
+import classes.UserTypes;
 import net.miginfocom.swing.MigLayout;
 import savehandlers.Database;
 
@@ -9,16 +10,22 @@ import savehandlers.Database;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Skapa konto sidan
  */
-public class CreateAccountPage extends JPanel
+public class CreateAccountPage extends JPanel implements Page
 {
 
     final static private int TEXT_AREA_COLUMN_SIZE = 20;
 
     private JLabel errorMessagelbl;
+
+    private JButton toLoginPage;
+    private JButton createAccount;
+
+    private ButtonGroup userTypeButtons;
 
     private JTextField nameInput;
     private JTextField emailInput;
@@ -28,6 +35,7 @@ public class CreateAccountPage extends JPanel
 
     /**
      * Layout init.
+     *
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
     public CreateAccountPage(CardSwitcher switcher) {
@@ -41,8 +49,6 @@ public class CreateAccountPage extends JPanel
 
 	final JPanel formPanel = new JPanel();
 	formPanel.setLayout(new MigLayout("fillx"));
-
-
 
 
 	final JLabel titlelbl = new JLabel("*BUDGET*");
@@ -76,27 +82,45 @@ public class CreateAccountPage extends JPanel
 	final JRadioButton adminUser = new JRadioButton("Admin");
 	adminUser.setFont(breadFont);
 	adminUser.setActionCommand("admin");
-	final ButtonGroup userTypeButtons = new ButtonGroup();
+	userTypeButtons = new ButtonGroup();
 
 	userTypeButtons.add(ordinaryUser);
 	userTypeButtons.add(adminUser);
 
 	buttons.add(ordinaryUser);
 	buttons.add(adminUser);
-	add(buttons,"wrap, spanx, alignx center");
+	add(buttons, "wrap, spanx, alignx center");
 
 	errorMessagelbl = new JLabel();
 	add(errorMessagelbl, "wrap,alignx center,spanx");
 
 
-	final JButton createAccount = new JButton("Skapa konto");
-	/**
-	 * Kollar valideringen och sparanvändare
-	 */
-	final Action createAcc = new AbstractAction()
-	{
-	    @Override public void actionPerformed(ActionEvent actionEvent) {
+	createAccount = new JButton("Skapa konto");
 
+	logOut(switcher);
+
+	add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
+	final JLabel noAccountlbl = new JLabel("har du redan ett konto ?");
+	add(noAccountlbl, "wrap,alignx center,spanx");
+
+
+	toLoginPage = new JButton("Logga in");
+	logInPage(switcher);
+	add(toLoginPage, "wrap,alignx center,spanx");
+
+	final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
+	add(copyrightlbl, "spanx,alignx right,gap 0 0 120 0");
+
+    }
+
+
+    /**
+     * Kollar valideringen och sparar användaren
+     */
+    private void logOut(final CardSwitcher switcher) {
+	createAccount.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		String userType = userTypeButtons.getSelection().getActionCommand();
 		if (!validateInput()) {
 		    nameInput.setText("");
@@ -107,10 +131,10 @@ public class CreateAccountPage extends JPanel
 		    String email = emailInput.getText();
 		    String password = new String(passwordInput.getPassword());
 		    User newUser;
-		    if (userType.equals("ordinary")){
-			newUser = new User(name, email, password);
-		    }else{
-		        newUser = new User(email,password,userType);
+		    if (userType.equals("ordinary")) {
+			newUser = new User(name, email, password, UserTypes.ORDINARY);
+		    } else {
+			newUser = new User(name,email, password,  UserTypes.ADMIN);
 		    }
 		    errorMessagelbl.setForeground(Color.GREEN);
 		    errorMessagelbl.setText("Konto skapat");
@@ -118,46 +142,37 @@ public class CreateAccountPage extends JPanel
 
 		}
 	    }
-	};
-	createAccount.addActionListener(createAcc);
+	});
+    }
 
-	add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
-	final JLabel noAccountlbl = new JLabel("har du redan ett konto ?");
-	add(noAccountlbl, "wrap,alignx center,spanx");
-
-	Action changePage = new AbstractAction()
+    private void logInPage(final CardSwitcher switcher) {
+	toLoginPage.addActionListener(new ActionListener()
 	{
-	    @Override public void actionPerformed(ActionEvent actionEvent) {
-		switcher.switchTo("logInPage");
+	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+		switchPage(switcher, "logInPage");
 	    }
-	};
-	final JButton toLoginPage = new JButton("Logga in");
-	toLoginPage.addActionListener(changePage);
-	add(toLoginPage, "wrap,alignx center,spanx");
-
-	final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
-	add(copyrightlbl, "spanx,alignx right,gap 0 0 120 0");
-
+	});
     }
 
     /**
      * Kolla om användare u finns finns i "databasen", om inte spara användaren i textfilen
+     *
      * @param u från User klassen
      */
     public void saveUser(User u) {
-        String email = u.getEmail();
-        String password = u.getPassword();
-	if(!db.userExists(email,password)){
+	String email = u.getEmail();
+	String password = u.getPassword();
+	if (!db.userExists(email, password)) {
 	    db.insertUser(u);
-	}else{
+	} else {
 	    errorMessagelbl.setForeground(Color.red);
 	    errorMessagelbl.setText("Emailen är redan registrerad");
 	}
     }
 
     /**
-     * Validerar input om giltigt namn,lösenord samt email angetts
-     * ger ett felmeddelande till använder som fel input angetts
+     * Validerar input om giltigt namn,lösenord samt email angetts ger ett felmeddelande till använder som fel input angetts
+     *
      * @return True/False beroende på om giltig input eller inte
      */
     public boolean validateInput() {
@@ -188,5 +203,9 @@ public class CreateAccountPage extends JPanel
 	}
 
 
+    }
+
+    @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
+	switcher.switchTo(newPage);
     }
 }

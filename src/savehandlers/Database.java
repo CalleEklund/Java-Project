@@ -152,7 +152,7 @@ public class Database
 
 				} else {
 				    userType = UserTypes.ADMIN;
-				    u = new User(emailDB, passwordDB, userType);
+				    u = new User(nameDB,emailDB, passwordDB, userType);
 				}
 				return u;
 			    }
@@ -307,26 +307,26 @@ public class Database
      */
     public void updateData(List<User> newData) {
 	for (int i = 0; i < newData.size(); i++) {
-	    try {
-		String query = "UPDATE user set name = ?," + "email = ?," + "password = ?" + "WHERE email = ?";
-		PreparedStatement preparedStmt = conn.prepareStatement(query);
-		try {
-		    preparedStmt.setString(1, newData.get(i).getName());
-		    preparedStmt.setString(2, newData.get(i).getEmail());
-		    preparedStmt.setString(3, newData.get(i).getPassword());
-		    preparedStmt.setString(4, newData.get(i).getEmail());
-
-		    preparedStmt.execute();
-
-		} finally {
-		    preparedStmt.close();
-		}
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
+	    System.out.println(newData.get(i));
+//	    try {
+//		String query = "UPDATE user set name = ?," + "email = ?," + "password = ?" + "WHERE email = ?";
+//		PreparedStatement preparedStmt = conn.prepareStatement(query);
+//		try {
+//		    preparedStmt.setString(1, newData.get(i).getName());
+//		    preparedStmt.setString(2, newData.get(i).getEmail());
+//		    preparedStmt.setString(3, newData.get(i).getPassword());
+//		    preparedStmt.setString(4, newData.get(i).getEmail());
+//
+//		    preparedStmt.execute();
+//
+//		} finally {
+//		    preparedStmt.close();
+//		}
+//	    } catch (SQLException e) {
+//		e.printStackTrace();
+//	    }
 	}
 
-	System.out.println(newData);
     }
 
     /**

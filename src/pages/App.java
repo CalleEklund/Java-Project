@@ -19,6 +19,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  *  - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml
  *  - Kolla varför getSystemResources inte fungerar i SaveData
  *  - Titta på att implementera en import samt en export funktion
+ *  - Lägg til så att admin användare kan ta bort samt lägga till användare.
  */
 public class App
 {

@@ -3,30 +3,47 @@
   <ID>JAVA</ID>
   <OriginalElement>pages</OriginalElement>
   <nodes>
-    <node x="342.0" y="0.0">pages.MainPage</node>
-    <node x="421.0" y="430.0">pages.CreateAccountPage</node>
-    <node x="0.0" y="226.0">pages.LoginPage</node>
-    <node x="0.0" y="430.0">pages.AdminPage</node>
-    <node x="295.0" y="329.0">pages.App.Utility</node>
-    <node x="0.0" y="0.0">pages.AddLoanPage</node>
-    <node x="328.5" y="226.0">pages.App</node>
+    <node x="291.5625" y="0.0">savehandlers.Database</node>
+    <node x="573.5" y="33.0">pages.Page</node>
+    <node x="673.0" y="195.0">pages.MainPage</node>
+    <node x="0.0" y="216.0">pages.CreateAccountPage</node>
+    <node x="255.0" y="195.0">pages.LoginPage</node>
+    <node x="461.0" y="195.0">pages.AdminPage</node>
+    <node x="876.0" y="195.0">pages.AddLoanPage</node>
+    <node x="511.7578125" y="370.0">pages.App</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="pages.App.Utility" target="pages.App">
-      <point x="0.0" y="-26.5" />
-      <point x="0.0" y="26.5" />
+    <edge source="pages.CreateAccountPage" target="pages.Page">
+      <point x="78.33333333333331" y="-26.5" />
+      <point x="195.83333333333331" y="165.0" />
+      <point x="583.0" y="165.0" />
+      <point x="-28.5" y="14.5" />
+    </edge>
+    <edge source="pages.MainPage" target="pages.Page">
+      <point x="61.0" y="-47.5" />
+      <point x="825.5" y="115.0" />
+      <point x="640.0" y="115.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="pages.AdminPage" target="pages.Page">
+      <point x="64.0" y="-47.5" />
+      <point x="9.5" y="14.5" />
+    </edge>
+    <edge source="pages.LoginPage" target="pages.Page">
+      <point x="62.0" y="-47.5" />
+      <point x="410.0" y="175.0" />
+      <point x="602.0" y="175.0" />
+      <point x="-9.5" y="14.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="370.5" y="258.0" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="540.0" y="211.5" />
   <SelectedNodes>
-    <node>pages.MainPage</node>
+    <node>savehandlers.Database</node>
   </SelectedNodes>
   <Categories>
-    <Category>Inner Classes</Category>
-    <Category>Properties</Category>
-    <Category>Methods</Category>
     <Category>Constructors</Category>
+    <Category>Properties</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
