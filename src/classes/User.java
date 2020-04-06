@@ -100,7 +100,7 @@ public class User extends AbstractUser
     }
 
     @Override public String toString() {
-	return "User{" + "uid='\"" + uid + ", name='" + name + '\'' + ", userLoans=" + userLoans + ", userType=" + userType +
-	       '\'' + ", email='" + email + '\'' + ", password='" + password + '\'' + '}';
+	return "User{" + "uid='" + uid + '\'' + ", name='" + name + '\'' + ", email='" + email + '\'' + ", password='" +
+	       password + '\'' + ", userType=" + userType + ", userLoans=" + userLoans + '}';
     }
 }

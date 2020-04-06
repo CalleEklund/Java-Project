@@ -19,23 +19,21 @@ import static java.sql.DriverManager.getConnection;
 public class Database
 {
     /**
-     * DATABAS HJÄLP LÄNKAR:
-     * Remote database: https://remotemysql.com/databases.php
-     * phpMyAdmin: https://remotemysql.com/phpmyadmin/index.php
+     * DATABAS HJÄLP LÄNKAR: Remote database: https://remotemysql.com/databases.php phpMyAdmin:
+     * https://remotemysql.com/phpmyadmin/index.php
      */
     private Connection conn = null;
-    private static String url = "jdbc:mysql://remotemysql.com:3306/tMGM8IRhyq";
+    private static String url = "jdbc:mysql://localhost/tddd78";
 
     /**
-     * Konstruktor
-     * Används för att skapa en koppling mot databasen, fånger evetuella fel.
+     * Konstruktor Används för att skapa en koppling mot databasen, fånger evetuella fel.
      */
     public Database() {
 	try {
 	    Class.forName("com.mysql.jdbc.Driver").newInstance();
 	    try {
-		final String user = "tMGM8IRhyq";
-		final String password = "oLJpQFeIgY";
+		final String user = "root";
+		final String password = "";
 		this.conn = getConnection(url, user, password);
 	    } catch (SQLException e) {
 		e.printStackTrace();
@@ -47,9 +45,10 @@ public class Database
     }
 
     /**
-     * Kollar om den sökta användaren finns i database, fånger evetuella fel samt
-     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
-     * @param userEmail Den sökta användarens email
+     * Kollar om den sökta användaren finns i database, fånger evetuella fel samt stänger kopplingen mot databasen för att inte
+     * skapa dubbelskrivningar.
+     *
+     * @param userEmail    Den sökta användarens email
      * @param userPassword Den sökta användarens lösenord
      * @return (boolean) om användaren finns eller inte
      */
@@ -87,8 +86,9 @@ public class Database
     }
 
     /**
-     * Lägger in en användare till databasen, fånger evetuella fel samt
-     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * Lägger in en användare till databasen, fånger evetuella fel samt stänger kopplingen mot databasen för att inte skapa
+     * dubbelskrivningar.
+     *
      * @param u Användaren från User klassen
      */
     public void insertUser(User u) {
@@ -121,12 +121,12 @@ public class Database
     }
 
     /**
-     * Hämtar användare från databasen.
-     * Warning (is overly nested): behövs för att kunna stänga PreparedStatement samt Resultset och fånga felhanteringen
+     * Hämtar användare från databasen. Warning (is overly nested): behövs för att kunna stänga PreparedStatement samt Resultset
+     * och fånga felhanteringen
      *
      * @param email    användarens email
      * @param password användarens lösenord
-     * @return
+     * @return användare och dess lån
      */
     public User getUser(String email, String password) {
 	ArrayList<Loan> userLoansDB = convertToLoan(email);
@@ -152,7 +152,7 @@ public class Database
 
 				} else {
 				    userType = UserTypes.ADMIN;
-				    u = new User(nameDB,emailDB, passwordDB, userType);
+				    u = new User(nameDB, emailDB, passwordDB, userType);
 				}
 				return u;
 			    }
@@ -175,9 +175,11 @@ public class Database
     }
 
     /**
-     * Hämtar användares lån från databasen med en one-to-many relation och konverterar lån till en ArrayList(Loan),
-     * fånger evetuella fel samt stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
-     * @param email Den sökta användarens email, använder email istället för id eftersom email också är unikt för varje användare
+     * Hämtar användares lån från databasen med en one-to-many relation och konverterar lån till en ArrayList(Loan), fånger
+     * evetuella fel samt stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     *
+     * @param email Den sökta användarens email, använder email istället för id eftersom email också är unikt för varje
+     *              användare
      * @return Användarens lån i form av ArrayList(Loan)
      */
     public ArrayList<Loan> convertToLoan(String email) {
@@ -222,8 +224,9 @@ public class Database
     }
 
     /**
-     * Lägger till lån i databas samt skapar koppling till användaren, fånger evetuella fel samt
-     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * Lägger till lån i databas samt skapar koppling till användaren, fånger evetuella fel samt stänger kopplingen mot
+     * databasen för att inte skapa dubbelskrivningar.
+     *
      * @param u Den sökta användaren
      * @param l Den valda lånet som användaren vill lägga till
      */
@@ -264,9 +267,10 @@ public class Database
     }
 
     /**
-     * Hämtar all användare data från användre som registrerat sig som ORDINARY användare, används enbart i adminsidan
-     * för att kunna monitera samt ändra användarens inloggnings uppgifter, fånger evetuella fel samt
-     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * Hämtar all användare data från användre som registrerat sig som ORDINARY användare, används enbart i adminsidan för att
+     * kunna monitera samt ändra användarens inloggnings uppgifter, fånger evetuella fel samt stänger kopplingen mot databasen
+     * för att inte skapa dubbelskrivningar.
+     *
      * @return En List(User) av alla ORDINARY användare
      */
     public List<User> getAllData() {
@@ -301,32 +305,52 @@ public class Database
     }
 
     /**
-     * Uppdaterar datan som är ändrar i adminsidan (AdminPage), fånger evetuella fel samt
-     * stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * Uppdaterar datan som är ändrad i adminsidan (AdminPage), om det inte går att uppdatera användaren så skapas en ny. Fångar
+     * evetuella fel samt stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     *
      * @param newData Den ändrade data
      */
     public void updateData(List<User> newData) {
 	for (int i = 0; i < newData.size(); i++) {
-	    System.out.println(newData.get(i));
-//	    try {
-//		String query = "UPDATE user set name = ?," + "email = ?," + "password = ?" + "WHERE email = ?";
-//		PreparedStatement preparedStmt = conn.prepareStatement(query);
-//		try {
-//		    preparedStmt.setString(1, newData.get(i).getName());
-//		    preparedStmt.setString(2, newData.get(i).getEmail());
-//		    preparedStmt.setString(3, newData.get(i).getPassword());
-//		    preparedStmt.setString(4, newData.get(i).getEmail());
-//
-//		    preparedStmt.execute();
-//
-//		} finally {
-//		    preparedStmt.close();
-//		}
-//	    } catch (SQLException e) {
-//		e.printStackTrace();
-//	    }
+	    try {
+		final String query = "REPLACE INTO user (id,name,email,password) VALUES (?,?,?,?)";
+		PreparedStatement preparedStmt = conn.prepareStatement(query);
+		try {
+		    preparedStmt.setString(1, newData.get(i).getUid());
+		    preparedStmt.setString(2, newData.get(i).getName());
+		    preparedStmt.setString(3, newData.get(i).getEmail());
+		    preparedStmt.setString(4, newData.get(i).getPassword());
+
+		    preparedStmt.execute();
+
+		} finally {
+		    preparedStmt.close();
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
 
+    }
+
+    /**
+     * Tar bort en användare samt deras lån från databasen.
+     * Fångar evetuella fel samt stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * @param u den sökta användare önskad att radera
+     */
+    public void removeUser(User u) {
+	try {
+	    final String query = "DELETE from user where email = ?";
+	    PreparedStatement preparedStmt = conn.prepareStatement(query);
+	    try {
+		preparedStmt.setString(1, u.getEmail());
+		preparedStmt.execute();
+	    } finally {
+		preparedStmt.close();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**

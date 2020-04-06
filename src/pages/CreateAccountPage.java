@@ -3,6 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
+import classes.Validator;
 import net.miginfocom.swing.MigLayout;
 import savehandlers.Database;
 
@@ -32,6 +33,7 @@ public class CreateAccountPage extends JPanel implements Page
     private JPasswordField passwordInput;
 
     private Database db;
+    private Validator validator = new Validator();
 
     /**
      * Layout init.
@@ -122,24 +124,28 @@ public class CreateAccountPage extends JPanel implements Page
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		String userType = userTypeButtons.getSelection().getActionCommand();
-		if (!validateInput()) {
-		    nameInput.setText("");
-		    emailInput.setText("");
-		    passwordInput.setText("");
+		String name = nameInput.getText();
+		String email = emailInput.getText();
+		String password = new String(passwordInput.getPassword());
+		User newUser;
+		if (userType.equals("ordinary")) {
+		    newUser = new User(name, email, password, UserTypes.ORDINARY);
 		} else {
-		    String name = nameInput.getText();
-		    String email = emailInput.getText();
-		    String password = new String(passwordInput.getPassword());
-		    User newUser;
-		    if (userType.equals("ordinary")) {
-			newUser = new User(name, email, password, UserTypes.ORDINARY);
-		    } else {
-			newUser = new User(name,email, password,  UserTypes.ADMIN);
-		    }
-		    errorMessagelbl.setForeground(Color.GREEN);
-		    errorMessagelbl.setText("Konto skapat");
-		    saveUser(newUser);
+		    newUser = new User(name, email, password, UserTypes.ADMIN);
+		}
+		if (validator.validateEmptyInput(name) || validator.validateEmptyInput(email) ||
+		    validator.validateEmptyInput(password)) {
+		    errorMessagelbl.setText("tom indata");
 
+		} else if (!validator.validateEmail(email)) {
+		    errorMessagelbl.setText("felaktig email");
+		} else if (!validator.validateIsString(name) || !validator.validateIsString(email) ||
+			   !validator.validateIsString(password)) {
+		    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
+
+		} else {
+		    saveUser(newUser);
+		    errorMessagelbl.setText("Konto skapat");
 		}
 	    }
 	});
@@ -169,42 +175,6 @@ public class CreateAccountPage extends JPanel implements Page
 	    errorMessagelbl.setText("Emailen är redan registrerad");
 	}
     }
-
-    /**
-     * Validerar input om giltigt namn,lösenord samt email angetts ger ett felmeddelande till använder som fel input angetts
-     *
-     * @return True/False beroende på om giltig input eller inte
-     */
-    public boolean validateInput() {
-	errorMessagelbl.setForeground(Color.red);
-	String name = nameInput.getText();
-	String email = emailInput.getText();
-	String password = new String(passwordInput.getPassword());
-
-
-	try {
-	    Integer.parseInt(name);
-	    Integer.parseInt(email);
-	    Integer.parseInt(password);
-	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
-	    return false;
-	} catch (NumberFormatException e) {
-	    System.out.println("Error: " + e);
-	    String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
-	    if (name.length() <= 0 || email.length() <= 0 || password.length() <= 0) {
-		errorMessagelbl.setText("tom indata");
-		return false;
-	    } else if (!email.matches(regex)) {
-		errorMessagelbl.setText("felaktig email");
-		return false;
-	    } else {
-		return true;
-	    }
-	}
-
-
-    }
-
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }

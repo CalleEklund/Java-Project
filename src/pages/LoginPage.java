@@ -3,6 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
+import classes.Validator;
 import net.miginfocom.swing.MigLayout;
 import savehandlers.Database;
 
@@ -29,6 +30,7 @@ public class LoginPage extends JPanel implements Page
     private JPasswordField passwordInput = new JPasswordField(TEXT_AREA_COLUMN_SIZE);
 
     private Database db;
+    private Validator validator = new Validator();
 
     /**
      * Layout init.
@@ -101,9 +103,13 @@ public class LoginPage extends JPanel implements Page
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
-		if (!validateInput(email, password)) {
+		if (validator.validateEmptyInput(email) || validator.validateEmptyInput(password)) {
+		    errorMessagelbl.setText("Tom indata");
 		    emailInput.setText("");
 		    passwordInput.setText("");
+		} else if (!validator.validateEmail(email)) {
+		    errorMessagelbl.setText("Felaktig email");
+		    emailInput.setText("");
 		} else {
 		    if (db.userExists(email, password)) {
 			errorMessagelbl.setText("");
@@ -120,27 +126,6 @@ public class LoginPage extends JPanel implements Page
 	    }
 	});
     }
-
-    /**
-     * Validerar input mot tom sträng samt giltig email, skriver även ut ett felmeddelande om felaktigt input angetts
-     *
-     * @param email    användarens email
-     * @param password användares lösenord
-     * @return True/False beroende på om giltig input eller inte
-     */
-    public boolean validateInput(String email, String password) {
-	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
-	if (email.isEmpty() || password.isEmpty()) {
-	    errorMessagelbl.setText("tom indata");
-	    return false;
-	} else if (!email.matches(regex)) {
-	    errorMessagelbl.setText("felaktig email");
-	    return false;
-	} else {
-	    return true;
-	}
-    }
-
     /**
      * Sätta den nuvarande inloggade användaren
      *

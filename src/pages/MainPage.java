@@ -138,10 +138,10 @@ public class MainPage extends JPanel implements Page
 
 
 	JLabel title = new JLabel(l.getTitle());
-	JLabel amount = new JLabel("Mängd kvar:");
-	JLabel intrest = new JLabel("Ränta");
-	JLabel amortization = new JLabel("Insats per månad");
-	JLabel description = new JLabel("Beskrivning");
+	JLabel amount = new JLabel("Lånebelopp: ");
+	JLabel intrest = new JLabel("Ränta: ");
+	JLabel amortization = new JLabel("Amortering: ");
+	JLabel description = new JLabel("Beskrivning: ");
 
 	JTextField amounttf = new JTextField(String.valueOf(l.getAmount()));
 	JTextField intresttf = new JTextField(String.valueOf(l.getIntrest()));
