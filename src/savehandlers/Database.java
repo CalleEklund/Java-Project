@@ -334,8 +334,9 @@ public class Database
     }
 
     /**
-     * Tar bort en användare samt deras lån från databasen.
-     * Fångar evetuella fel samt stänger kopplingen mot databasen för att inte skapa dubbelskrivningar.
+     * Tar bort en användare samt deras lån från databasen. Fångar evetuella fel samt stänger kopplingen mot databasen för att
+     * inte skapa dubbelskrivningar.
+     *
      * @param u den sökta användare önskad att radera
      */
     public void removeUser(User u) {
@@ -351,6 +352,18 @@ public class Database
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    /**
+     * Stänger databas kopplingen samt fångar eventuella fel
+     */
+    private void closeConnection() {
+	try {
+	    conn.close();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+
     }
 
     /**
