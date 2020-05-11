@@ -3,7 +3,7 @@ package pages;
 import classes.CardSwitcher;
 import classes.Loan;
 import classes.User;
-import savehandlers.Database;
+import handlers.Database;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -198,6 +198,7 @@ public class MainPage extends JPanel implements Page
     public void setCurrentUser(User loggedInUser) {
 	String email = loggedInUser.getEmail();
 	String password = loggedInUser.getPassword();
+
 	if (db.userExists(email, password)) {
 	    currentUser = db.getUser(email, password);
 	} else {

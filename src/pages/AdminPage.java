@@ -4,7 +4,7 @@ import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
 import classes.Validator;
-import savehandlers.Database;
+import handlers.Database;
 
 import net.miginfocom.swing.MigLayout;
 

@@ -1,5 +1,6 @@
 package pages;
 
+import handlers.Loggertest;
 import mvc_controllers.AdminController;
 import mvc_controllers.UserController;
 import classes.CardSwitcher;
@@ -7,33 +8,36 @@ import mvc_controllers.LoanController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.logging.Logger;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  * Huvud appen
  * <p>
- * TODO:
- *  - Lägg till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andra klasser)
- *  - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml
- *  - Implementera Loggning funktionallitet
- *  - Titta på att implementera en import samt en export funktion
+ * TODO: - Lägg till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andra
+ * klasser) - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml - Implementera
+ * Loggning funktionallitet - Titta på att implementera en import samt en export funktion
  */
 public class App
 {
     final static private int WINDOW_SIZE = 600;
+    Loggertest logger;
 
     /**
-     * Lägger till alla sidor samt mvc controllers, huvudappen
-     * Warning (Result of 'new UserController()','new AdminController()','new LoanController()','new App()' is ignored),
-     * eftersom klassen inte används utan bara behöver instansieras
+     * Lägger till alla sidor samt mvc controllers, huvudappen Warning (Result of 'new UserController()','new
+     * AdminController()','new LoanController()','new App()' is ignored), eftersom klassen inte används utan bara behöver
+     * instansieras
      */
     private App() {
+	logger = new Loggertest();
+
+//	logger.disableConsoleOutput();
 
 	final CardLayout cl = new CardLayout();
 	final JPanel cont = new JPanel();
 	final CardSwitcher switcher = new CardSwitcher(cont, cl);
-	final LoginPage logInPage = new LoginPage(switcher);
+	final LoginPage logInPage = new LoginPage(switcher, logger);
 	final MainPage mainPage = new MainPage(switcher);
 	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher);
 	final AddLoanPage addLoanPage = new AddLoanPage(switcher);
@@ -48,7 +52,7 @@ public class App
 	cont.add(createAccountPage, "createAccountPage");
 	cont.add(mainPage, "mainPage");
 	cont.add(addLoanPage, "addLoanPage");
-	cont.add(adminPage,"adminPage");
+	cont.add(adminPage, "adminPage");
 	cl.show(cont, "logInPage");
 
 
@@ -59,6 +63,7 @@ public class App
 	frame.setResizable(false);
 	frame.setVisible(true);
     }
+
 
 
     public enum Utility

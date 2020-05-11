@@ -1,4 +1,4 @@
-package savehandlers;
+package handlers;
 
 import classes.Loan;
 import classes.User;

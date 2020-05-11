@@ -5,7 +5,7 @@ import classes.User;
 import classes.UserTypes;
 import classes.Validator;
 import net.miginfocom.swing.MigLayout;
-import savehandlers.Database;
+import handlers.Database;
 
 
 import javax.swing.*;

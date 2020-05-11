@@ -4,13 +4,15 @@ import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
 import classes.Validator;
+import handlers.Loggertest;
 import net.miginfocom.swing.MigLayout;
-import savehandlers.Database;
+import handlers.Database;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 /**
  * Logga in
@@ -32,14 +34,17 @@ public class LoginPage extends JPanel implements Page
     private Database db;
     private Validator validator = new Validator();
 
+    private Loggertest logInLogger = null;
+
     /**
      * Layout init.
      *
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
-    public LoginPage(CardSwitcher switcher) {
-	db = new Database();
+    public LoginPage(CardSwitcher switcher, Loggertest logger) {
+	logInLogger = logger;
 
+	db = new Database();
 	setLayout(new MigLayout("fillx"));
 
 	final int titleFontSize = 38;
@@ -105,10 +110,12 @@ public class LoginPage extends JPanel implements Page
 		String password = new String(passwordInput.getPassword());
 		if (validator.validateEmptyInput(email) || validator.validateEmptyInput(password)) {
 		    errorMessagelbl.setText("Tom indata");
+		    logInLogger.logMsg(Level.WARNING,"tom indata vid inloggning");
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else if (!validator.validateEmail(email)) {
 		    errorMessagelbl.setText("Felaktig email");
+		    logInLogger.logMsg(Level.WARNING,"felaktigt email vid inloggning");
 		    emailInput.setText("");
 		} else {
 		    if (db.userExists(email, password)) {
@@ -121,11 +128,14 @@ public class LoginPage extends JPanel implements Page
 			}
 		    } else {
 			errorMessagelbl.setText("Det finns ingen sådan användare");
+			logInLogger.logMsg(Level.WARNING,"felaktig användare");
+
 		    }
 		}
 	    }
 	});
     }
+
     /**
      * Sätta den nuvarande inloggade användaren
      *

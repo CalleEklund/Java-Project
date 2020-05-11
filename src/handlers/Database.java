@@ -1,4 +1,4 @@
-package savehandlers;
+package handlers;
 
 import classes.Loan;
 import classes.User;
@@ -23,14 +23,14 @@ public class Database
      * https://remotemysql.com/phpmyadmin/index.php
      */
     private Connection conn = null;
-    private static String url = "jdbc:mysql://localhost/tddd78";
+    private static String url = "jdbc:mysql://localhost/tddd78?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
 
     /**
      * Konstruktor Används för att skapa en koppling mot databasen, fånger evetuella fel.
      */
     public Database() {
 	try {
-	    Class.forName("com.mysql.jdbc.Driver").newInstance();
+	    Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 	    try {
 		final String user = "root";
 		final String password = "";
