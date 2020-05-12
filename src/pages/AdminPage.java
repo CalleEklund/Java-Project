@@ -6,6 +6,7 @@ import classes.UserTypes;
 import classes.Validator;
 import handlers.Database;
 
+import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 public class AdminPage extends JPanel implements Page
 {
@@ -45,18 +47,20 @@ public class AdminPage extends JPanel implements Page
     private User currentAdmin = null;
     private final Database db;
     private Validator validator = new Validator();
+    private LoggerBudget adminLogger = null;
+
 
     private List<User> data = null;
 
     /**
-     * Konstruktor
-     * Den klass används för att administera de vanliga användarna som är registrerade i applikationen,
-     * man kan även lägga till samt ta bort användare.
+     * Konstruktor Den klass används för att administera de vanliga användarna som är registrerade i applikationen, man kan även
+     * lägga till samt ta bort användare.
+     *
      * @param switcher Används från CardSwither klassen som används för att byta sida inom applikationen
      */
-    public AdminPage(CardSwitcher switcher) {
-
-	db = new Database();
+    public AdminPage(CardSwitcher switcher, LoggerBudget logger) {
+	adminLogger = logger;
+	db = new Database(logger);
 	setLayout(new MigLayout("fillx"));
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
@@ -89,9 +93,8 @@ public class AdminPage extends JPanel implements Page
     }
 
     /**
-     * Kallas på när removeUserbtn knappen klickas som sedan skapar en JOptionpane
-     * som ger dig valet vilken använder du vill readera baserat på id. Kallar sedan på databasfunktionen
-     * som raderar användarande från databasen.
+     * Kallas på när removeUserbtn knappen klickas som sedan skapar en JOptionpane som ger dig valet vilken använder du vill
+     * readera baserat på id. Kallar sedan på databasfunktionen som raderar användarande från databasen.
      */
     private ActionListener removeUser = new ActionListener()
     {
@@ -109,15 +112,16 @@ public class AdminPage extends JPanel implements Page
 	    int index = (int) getUserFromTable(s)[1];
 
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
-	    if(possibilities.length != 0 && s != null){
+	    if (possibilities.length != 0 && s != null) {
 		model.removeRow(index);
 		db.removeUser(u);
+		adminLogger.logMsg(Level.INFO, "Tog bort användare med email: " + u.getEmail());
+
 	    }
 	}
     };
     /**
      * Lägger till en ny rad i tabellen vilket gör det möjligt att skapa en ny användare genom att fylla i inloggningsuppgifter
-     *
      */
     private ActionListener addNewUser = new ActionListener()
     {
@@ -133,8 +137,9 @@ public class AdminPage extends JPanel implements Page
     };
 
     /**
-     * Hämtar de ids som finns i tabellen, används för att illustrera vilket id den ny användaren skulle få,
-     * samt vilka ids som finns tillgängliga för radering
+     * Hämtar de ids som finns i tabellen, används för att illustrera vilket id den ny användaren skulle få, samt vilka ids som
+     * finns tillgängliga för radering
+     *
      * @return En lista av de tillgängliga id:n
      */
     private List<Integer> getCurrentIds() {
@@ -150,6 +155,7 @@ public class AdminPage extends JPanel implements Page
 
     /**
      * Tar bort tabellen, samt skickar användare till inloggningssidan.
+     *
      * @param switcher
      */
     private void logOut(final CardSwitcher switcher) {
@@ -159,12 +165,14 @@ public class AdminPage extends JPanel implements Page
 		mainCont.removeAll();
 		mainCont.revalidate();
 		switchPage(switcher, "logInPage");
+		adminLogger.logMsg(Level.INFO, "Loggade ut från adminsida med email: " + currentAdmin.getEmail());
 	    }
 	});
     }
 
     /**
      * Hämtar en användare i från tabellen givet ett sökt id
+     *
      * @param searchedId den sökta id:t
      * @return en använder i formen av klassen User
      */
@@ -193,6 +201,7 @@ public class AdminPage extends JPanel implements Page
 
     /**
      * Kollar så att det inte finns några tomma rader i tabellen.
+     *
      * @return true/false
      */
     private boolean validCheck() {
@@ -239,7 +248,10 @@ public class AdminPage extends JPanel implements Page
 		    }
 		    changedData = getNoDuplicate(data, changedData);
 		}
-
+		List<String> updatedDataIndexs = new ArrayList<>();
+		for (User updatedUser : changedData) {
+		    updatedDataIndexs.add(updatedUser.getEmail());
+		}
 		List<String> wrongEmailId = new ArrayList<>();
 		for (User u : changedData) {
 		    if (!validator.validateEmail(u.getEmail())) {
@@ -254,9 +266,11 @@ public class AdminPage extends JPanel implements Page
 								     JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		    if (dialogResult == JOptionPane.YES_OPTION) {
 			db.updateData(changedData);
+			adminLogger.logMsg(Level.INFO, "Uppdaterade användar tabellen vid email: " + updatedDataIndexs);
 		    }
 		} else {
 		    db.updateData(changedData);
+		    adminLogger.logMsg(Level.INFO, "Uppdaterade användar tabellen vid email: " + updatedDataIndexs);
 		}
 	    }
 

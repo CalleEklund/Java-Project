@@ -4,6 +4,7 @@ import classes.CardSwitcher;
 import classes.Loan;
 import classes.User;
 import handlers.Database;
+import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -16,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import static javax.swing.SwingConstants.TOP;
 
@@ -40,15 +42,18 @@ public class MainPage extends JPanel implements Page
     private static JTabbedPane loanPanes = new JTabbedPane(TOP);
 
     private final Database db;
+    private LoggerBudget mainPageLogger = null;
     private User currentUser = null;
+
 
     /**
      * Layout init.
      *
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
-    public MainPage(CardSwitcher switcher) {
-	db = new Database();
+    public MainPage(CardSwitcher switcher, LoggerBudget logger) {
+	mainPageLogger = logger;
+	db = new Database(logger);
 	setLayout(new MigLayout("fillx"));
 	titlelbl.setFont(titleFont);
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
@@ -68,13 +73,15 @@ public class MainPage extends JPanel implements Page
 	logOutbtn.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
+		mainPageLogger.logMsg(Level.INFO, "Loggade ut med email: " + currentUser.getEmail());
 		currentUser = new User();
 		switchPage(switcher, "logInPage");
 	    }
 	});
     }
-    private void addLoanPage(final CardSwitcher switcher){
-        addNewLoan.addActionListener(new ActionListener()
+
+    private void addLoanPage(final CardSwitcher switcher) {
+	addNewLoan.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		switchPage(switcher, "addLoanPage");
@@ -82,6 +89,7 @@ public class MainPage extends JPanel implements Page
 	    }
 	});
     }
+
     /**
      * Gör Jtabbedpanes för varje lån som finns för användaren
      *
@@ -217,6 +225,8 @@ public class MainPage extends JPanel implements Page
 	String email = currentUser.getEmail();
 	String password = currentUser.getPassword();
 	db.saveLoanToUser(currentUser, currentLoan);
+	mainPageLogger.logMsg(Level.INFO, "La till lån med titel: " + currentLoan.getTitle() + " till användare med email: " +
+					  currentUser.getEmail());
 	currentUser = db.getUser(email, password);
 	makePages(currentUser.getUserLoans());
     }

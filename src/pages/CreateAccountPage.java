@@ -4,6 +4,7 @@ import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
 import classes.Validator;
+import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
 import handlers.Database;
 
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 /**
  * Skapa konto sidan
@@ -34,14 +36,17 @@ public class CreateAccountPage extends JPanel implements Page
 
     private Database db;
     private Validator validator = new Validator();
+    private LoggerBudget createAccountLogger = null;
+
 
     /**
      * Layout init.
      *
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
-    public CreateAccountPage(CardSwitcher switcher) {
-	db = new Database();
+    public CreateAccountPage(CardSwitcher switcher, LoggerBudget logger) {
+	createAccountLogger = logger;
+	db = new Database(logger);
 
 	setLayout(new MigLayout("fillx"));
 	final int titleFontSize = 38;
@@ -145,6 +150,8 @@ public class CreateAccountPage extends JPanel implements Page
 
 		} else {
 		    saveUser(newUser);
+		    createAccountLogger
+			    .logMsg(Level.INFO, "Skapade " + newUser.getUserType() + " med email: " + newUser.getEmail());
 		    errorMessagelbl.setText("Konto skapat");
 		}
 	    }
@@ -175,6 +182,7 @@ public class CreateAccountPage extends JPanel implements Page
 	    errorMessagelbl.setText("Emailen är redan registrerad");
 	}
     }
+
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }

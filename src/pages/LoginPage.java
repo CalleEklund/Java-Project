@@ -4,7 +4,7 @@ import classes.CardSwitcher;
 import classes.User;
 import classes.UserTypes;
 import classes.Validator;
-import handlers.Loggertest;
+import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
 import handlers.Database;
 
@@ -34,17 +34,17 @@ public class LoginPage extends JPanel implements Page
     private Database db;
     private Validator validator = new Validator();
 
-    private Loggertest logInLogger = null;
+    private LoggerBudget logInLogger = null;
 
     /**
      * Layout init.
      *
      * @param switcher cardlayout för att kunna byta mellan sidorna
      */
-    public LoginPage(CardSwitcher switcher, Loggertest logger) {
+    public LoginPage(CardSwitcher switcher, LoggerBudget logger) {
 	logInLogger = logger;
 
-	db = new Database();
+	db = new Database(logger);
 	setLayout(new MigLayout("fillx"));
 
 	final int titleFontSize = 38;
@@ -121,6 +121,7 @@ public class LoginPage extends JPanel implements Page
 		    if (db.userExists(email, password)) {
 			errorMessagelbl.setText("");
 			User u = db.getUser(email, password);
+			logInLogger.logMsg(Level.INFO,"Korrekt inloggning med email: "+u.getEmail());
 			if (u.getUserType().equals(UserTypes.ORDINARY)) {
 			    switchPage(switcher, "mainPage");
 			} else {

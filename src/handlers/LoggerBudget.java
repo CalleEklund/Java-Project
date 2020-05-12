@@ -9,12 +9,12 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class Loggertest
+public class LoggerBudget
 {
     private static final LogManager LOG_MANAGER = LogManager.getLogManager();
-    private static Logger LOGGER = Logger.getLogger("pages");
+    private static final Logger LOGGER = Logger.getLogger("pages");
 
-    public Loggertest() {
+    public LoggerBudget() {
 	try {
 	    LOG_MANAGER.readConfiguration(ClassLoader.getSystemResourceAsStream("logger.properties"));
 	    LOGGER.fine("Conf Loaded");

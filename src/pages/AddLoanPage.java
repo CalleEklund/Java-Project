@@ -2,6 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.Loan;
+import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.impl.DateComponentFormatter;
@@ -17,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Lägg till ett lån
@@ -25,7 +27,6 @@ public class AddLoanPage extends JPanel implements Page
 {
     final static private int TEXT_FIELD_COLUMN_SIZE = 15;
     final static private int TEXT_AREA_COLUMN_SIZE = 20;
-
 
 
     private JLabel errorMessagelbl = new JLabel();
@@ -47,11 +48,17 @@ public class AddLoanPage extends JPanel implements Page
 
     private JButton addLoan;
     private JButton exit;
+
+    private LoggerBudget addLoanLogger = null;
+
     /**
-       * Layout init.
-       * @param switcher cardlayout för att kunna byta mellan sidorna
-       */
-    public AddLoanPage(CardSwitcher switcher) {
+     * Layout init.
+     *
+     * @param switcher cardlayout för att kunna byta mellan sidorna
+     */
+    public AddLoanPage(CardSwitcher switcher, LoggerBudget logger) {
+	addLoanLogger = logger;
+
 	setLayout(new MigLayout("fillx"));
 	modelStart.setValue(Calendar.getInstance().getTime());
 	modelEnd.setValue(Calendar.getInstance().getTime());
@@ -63,7 +70,7 @@ public class AddLoanPage extends JPanel implements Page
 
 
 	exit = new JButton("Avsluta");
-	mainPageNotValidated(switcher);
+	toMainPage(switcher);
 	add(exit, "wrap,alignx right,w 30");
 
 	final JLabel loanTitlelbl = new JLabel("Rubrik: ");
@@ -125,21 +132,21 @@ public class AddLoanPage extends JPanel implements Page
 
     }
 
-    private void mainPageNotValidated(final CardSwitcher switcher){
-        exit.addActionListener(new ActionListener()
+    private void toMainPage(final CardSwitcher switcher) {
+	exit.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
-		switchPage(switcher,"mainPage");
+		switchPage(switcher, "mainPage");
 	    }
 	});
     }
 
-    private void mainPageValidated(final CardSwitcher switcher){
-        addLoan.addActionListener(new ActionListener()
+    private void mainPageValidated(final CardSwitcher switcher) {
+	addLoan.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
-		if(validateInput()){
-		    switchPage(switcher,"mainPage");
+		if (validateInput()) {
+		    switchPage(switcher, "mainPage");
 		}
 	    }
 	});
@@ -147,6 +154,7 @@ public class AddLoanPage extends JPanel implements Page
 
     /**
      * Validerar input
+     *
      * @return True/False beroende på om giltig input eller inte
      */
     public boolean validateInput() {
@@ -162,17 +170,24 @@ public class AddLoanPage extends JPanel implements Page
 	    amount = Integer.parseInt(loanAmount.getText());
 	} catch (NumberFormatException e) {
 	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
+	    addLoanLogger.logMsg(Level.WARNING,"Ogiltig inmatning (bokstäver ist för siffror)");
 	    System.out.println("Error: " + e);
 	    return false;
 	}
 	if (title.isEmpty() || intrest <= 0 || amortization <= 0 || description.isEmpty() || amount <= 0) {
 	    errorMessagelbl.setText("Tomma fält");
+	    addLoanLogger.logMsg(Level.WARNING,"Tomma fält");
+
 	    return false;
 	} else if (endDateInput.isBefore(startDateInput)) {
 	    errorMessagelbl.setText("Start datum före slut datum");
+	    addLoanLogger.logMsg(Level.WARNING,"Start datum före slut datum");
+
 	    return false;
 	} else if (endDateInput.isEqual(startDateInput)) {
 	    errorMessagelbl.setText("Start datum samma som slut datum");
+	    addLoanLogger.logMsg(Level.WARNING,"Start datum samma som slut datum");
+
 	    return false;
 	}
 	return true;
@@ -180,6 +195,7 @@ public class AddLoanPage extends JPanel implements Page
 
     /**
      * Konverterar DateModel datum till ett LocalDate datum
+     *
      * @param date DateModel datum
      * @return LocalDate datum
      */
@@ -192,6 +208,7 @@ public class AddLoanPage extends JPanel implements Page
 
     /**
      * Ger LoanController tillgång till currentLoan
+     *
      * @return nuvarnde lån
      */
     public Loan getCurrentLoan()

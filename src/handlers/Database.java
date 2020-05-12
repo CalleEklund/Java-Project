@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import static java.sql.DriverManager.getConnection;
 
@@ -24,11 +25,14 @@ public class Database
      */
     private Connection conn = null;
     private static String url = "jdbc:mysql://localhost/tddd78?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
+    private LoggerBudget databaseLogger = null;
 
     /**
-     * Konstruktor Används för att skapa en koppling mot databasen, fånger evetuella fel.
+     * Konstruktor Används för att skapa en koppling mot databasen, fånger evetuella fel. Warning (Call to
+     * 'DriverManager.getConnection()'): Hittar ingen lösning på detta men det är inget som påverka programmet.
      */
-    public Database() {
+    public Database(LoggerBudget logger) {
+	databaseLogger = logger;
 	try {
 	    Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 	    try {
@@ -36,10 +40,13 @@ public class Database
 		final String password = "";
 		this.conn = getConnection(url, user, password);
 	    } catch (SQLException e) {
+		databaseLogger.logMsg(Level.SEVERE, "Gick inte att koppla till databasen");
 		e.printStackTrace();
 	    }
 
 	} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte hitta databas drivers");
+
 	    e.printStackTrace();
 	}
     }
@@ -74,12 +81,16 @@ public class Database
 			rs.close();
 		    }
 		} catch (SQLException e) {
+		    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett Resultset -> felaktig PreparedStatement");
+
 		    e.printStackTrace();
 		}
 	    } finally {
 		preparedStmt.close();
 	    }
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
+
 	    e.printStackTrace();
 	}
 	return false;
@@ -116,6 +127,8 @@ public class Database
 		preparedStmt.close();
 	    }
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
+
 	    e.printStackTrace();
 	}
     }
@@ -160,12 +173,15 @@ public class Database
 			    rs.close();
 			}
 		    } catch (SQLException e) {
+			databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett Resultset -> felaktig PreparedStatement");
 			e.printStackTrace();
 		    }
 		} finally {
 		    preparedStmt.close();
 		}
 	    } catch (SQLException e) {
+		databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
+
 		e.printStackTrace();
 	    }
 
@@ -211,6 +227,7 @@ public class Database
 			rs.close();
 		    }
 		} catch (SQLException e) {
+		    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett Resultset -> felaktig PreparedStatement");
 		    e.printStackTrace();
 		}
 	    } finally {
@@ -218,6 +235,7 @@ public class Database
 	    }
 
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
 	    e.printStackTrace();
 	}
 	return temp;
@@ -262,6 +280,7 @@ public class Database
 		preparedStmt.close();
 	    }
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
 	    e.printStackTrace();
 	}
     }
@@ -299,6 +318,8 @@ public class Database
 		stmt.close();
 	    }
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett Statement -> felaktig i databas kopplingen");
+
 	    e.printStackTrace();
 	}
 	return out;
@@ -327,6 +348,8 @@ public class Database
 		    preparedStmt.close();
 		}
 	    } catch (SQLException e) {
+		databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
+
 		e.printStackTrace();
 	    }
 	}
@@ -350,6 +373,8 @@ public class Database
 		preparedStmt.close();
 	    }
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett PrepareStatement -> felaktig input i queryn");
+
 	    e.printStackTrace();
 	}
     }
@@ -361,6 +386,7 @@ public class Database
 	try {
 	    conn.close();
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Fel vi kopplingen av databasen");
 	    e.printStackTrace();
 	}
 
@@ -381,6 +407,7 @@ public class Database
 		stmt.close();
 	    }
 	} catch (SQLException e) {
+	    databaseLogger.logMsg(Level.SEVERE, "Fel vi kopplingen av databasen");
 	    e.printStackTrace();
 	}
 

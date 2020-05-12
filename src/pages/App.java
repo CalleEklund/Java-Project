@@ -1,6 +1,6 @@
 package pages;
 
-import handlers.Loggertest;
+import handlers.LoggerBudget;
 import mvc_controllers.AdminController;
 import mvc_controllers.UserController;
 import classes.CardSwitcher;
@@ -8,7 +8,6 @@ import mvc_controllers.LoanController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.logging.Logger;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -22,7 +21,6 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class App
 {
     final static private int WINDOW_SIZE = 600;
-    Loggertest logger;
 
     /**
      * Lägger till alla sidor samt mvc controllers, huvudappen Warning (Result of 'new UserController()','new
@@ -30,18 +28,16 @@ public class App
      * instansieras
      */
     private App() {
-	logger = new Loggertest();
-
-//	logger.disableConsoleOutput();
+	LoggerBudget logger = new LoggerBudget();
 
 	final CardLayout cl = new CardLayout();
 	final JPanel cont = new JPanel();
 	final CardSwitcher switcher = new CardSwitcher(cont, cl);
 	final LoginPage logInPage = new LoginPage(switcher, logger);
-	final MainPage mainPage = new MainPage(switcher);
-	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher);
-	final AddLoanPage addLoanPage = new AddLoanPage(switcher);
-	final AdminPage adminPage = new AdminPage(switcher);
+	final MainPage mainPage = new MainPage(switcher, logger);
+	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher, logger);
+	final AddLoanPage addLoanPage = new AddLoanPage(switcher, logger);
+	final AdminPage adminPage = new AdminPage(switcher, logger);
 
 	new UserController(logInPage, mainPage);
 	new AdminController(logInPage, adminPage);
@@ -63,7 +59,6 @@ public class App
 	frame.setResizable(false);
 	frame.setVisible(true);
     }
-
 
 
     public enum Utility
