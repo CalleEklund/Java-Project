@@ -17,6 +17,12 @@ public abstract class AbstractUser
     protected AbstractUser() {
     }
 
+    public String getEmail() {
+	return email;
+    }
 
+    public String getPassword() {
+	return password;
+    }
 }
 

@@ -22,6 +22,12 @@ public class LoginPage extends JPanel implements Page
 
     final static private int TEXT_AREA_COLUMN_SIZE = 20;
 
+    final static int TITLE_FONT_SIZE = 38;
+    final static int BREAD_FONT_SIZE = 18;
+
+    final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+
 
     private JLabel errorMessagelbl;
 
@@ -47,18 +53,14 @@ public class LoginPage extends JPanel implements Page
 	db = new Database(logger);
 	setLayout(new MigLayout("fillx"));
 
-	final int titleFontSize = 38;
-	Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
 	final JLabel titlelbl = new JLabel("*BUDGET*");
-	titlelbl.setFont(titleFont);
+	titlelbl.setFont(TITLE_FONT);
 	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
-	final int breadFontSize = 18;
-	Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 	final JLabel emaillbl = new JLabel("Email: ");
-	emaillbl.setFont(breadFont);
+	emaillbl.setFont(BREAD_FONT);
 	final JLabel passwordlbl = new JLabel("Lösenord: ");
-	passwordlbl.setFont(breadFont);
+	passwordlbl.setFont(BREAD_FONT);
 
 
 	add(emaillbl, "alignx center,gap 0 0 80 0");
@@ -110,18 +112,18 @@ public class LoginPage extends JPanel implements Page
 		String password = new String(passwordInput.getPassword());
 		if (validator.validateEmptyInput(email) || validator.validateEmptyInput(password)) {
 		    errorMessagelbl.setText("Tom indata");
-		    logInLogger.logMsg(Level.WARNING,"tom indata vid inloggning");
+		    logInLogger.logMsg(Level.WARNING, "tom indata vid inloggning");
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else if (!validator.validateEmail(email)) {
 		    errorMessagelbl.setText("Felaktig email");
-		    logInLogger.logMsg(Level.WARNING,"felaktigt email vid inloggning");
+		    logInLogger.logMsg(Level.WARNING, "felaktigt email vid inloggning");
 		    emailInput.setText("");
 		} else {
 		    if (db.userExists(email, password)) {
 			errorMessagelbl.setText("");
 			User u = db.getUser(email, password);
-			logInLogger.logMsg(Level.INFO,"Korrekt inloggning med email: "+u.getEmail());
+			logInLogger.logMsg(Level.INFO, "Korrekt inloggning med email: " + u.getEmail());
 			if (u.getUserType().equals(UserTypes.ORDINARY)) {
 			    switchPage(switcher, "mainPage");
 			} else {
@@ -129,7 +131,7 @@ public class LoginPage extends JPanel implements Page
 			}
 		    } else {
 			errorMessagelbl.setText("Det finns ingen sådan användare");
-			logInLogger.logMsg(Level.WARNING,"felaktig användare");
+			logInLogger.logMsg(Level.WARNING, "felaktig användare");
 
 		    }
 		}

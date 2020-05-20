@@ -59,7 +59,6 @@ public class SaveData
 	try {
 	    this.primaryWriter = new FileWriter(file);
 	    this.primaryWriter.write(gson.toJson(userData));
-	    System.out.println("write success");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	} finally {

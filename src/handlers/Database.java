@@ -399,10 +399,10 @@ public class Database
 	try {
 	    Statement stmt = conn.createStatement();
 	    try {
-		final String queryuser = "ALTER TABLE user AUTO_INCREMENT=0";
-		stmt.execute(queryuser);
-		final String queryloan = "ALTER TABLE loan AUTO_INCREMENT=0";
-		stmt.execute(queryloan);
+		final String queryUser = "ALTER TABLE user AUTO_INCREMENT=0";
+		stmt.execute(queryUser);
+		final String queryLoan = "ALTER TABLE loan AUTO_INCREMENT=0";
+		stmt.execute(queryLoan);
 	    } finally {
 		stmt.close();
 	    }

@@ -61,14 +61,6 @@ public class User extends AbstractUser
 	return name;
     }
 
-    public String getEmail() {
-	return email;
-    }
-
-    public String getPassword() {
-	return password;
-    }
-
     public void addUserLoan(Loan l) {
 	userLoans.add(l);
     }

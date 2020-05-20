@@ -24,10 +24,17 @@ public class AdminPage extends JPanel implements Page
 {
     final static private int TITLE_FONT_SIZE = 38;
     final static private int BREAD_FONT_SIZE = 18;
-    public static final int ROW_HEIGHT = 20;
+    final static private int ROW_HEIGHT = 20;
+    final static private int Y_INSETS = 7;
+    final static private int X_INSETS = 1;
+    final static int ID_INDEX = 0;
+    final static int NAME_INDEX = 1;
+    final static int EMAIL_INDEX = 2;
+    final static int PASSWORD_INDEX = 3;
+    final static int USER_TYPE_INDEX = 4;
 
-    private static Font titleFont = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
-    private static Font breadFont = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+    final static private Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    final static private Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
     private final JLabel titlelbl = new JLabel("*BUDGET ADMIN*");
 
@@ -62,20 +69,20 @@ public class AdminPage extends JPanel implements Page
 	adminLogger = logger;
 	db = new Database(logger);
 	setLayout(new MigLayout("fillx"));
-	titlelbl.setFont(titleFont);
+	titlelbl.setFont(TITLE_FONT);
 	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
 
 	final JPanel btns = new JPanel();
 	btns.add(addUserbtn);
-	addUserbtn.setMargin(new Insets(1, 7, 1, 7));
+	addUserbtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
 	btns.add(removeUserbtn);
-	removeUserbtn.setMargin(new Insets(1, 7, 1, 7));
+	removeUserbtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
 	btns.add(showDatabtn);
-	showDatabtn.setMargin(new Insets(1, 7, 1, 7));
+	showDatabtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
 	btns.add(savebtn);
-	savebtn.setMargin(new Insets(1, 7, 1, 7));
+	savebtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
 	btns.add(logOutbtn);
-	logOutbtn.setMargin(new Insets(1, 7, 1, 7));
+	logOutbtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
 	add(btns, "spanx,wrap,alignx right");
 
 	removeUserbtn.setEnabled(false);
@@ -147,7 +154,7 @@ public class AdminPage extends JPanel implements Page
 	DefaultTableModel model = (DefaultTableModel) table.getModel();
 
 	for (int i = 0; i < table.getRowCount(); i++) {
-	    int currentId = Integer.parseInt(model.getValueAt(i, 0).toString());
+	    int currentId = Integer.parseInt(model.getValueAt(i, ID_INDEX).toString());
 	    ids.add(currentId);
 	}
 	return ids;
@@ -179,14 +186,15 @@ public class AdminPage extends JPanel implements Page
     private Object[] getUserFromTable(String searchedId) {
 	User searchedUser = null;
 	int index = -1;
+
 	for (int i = 0; i < table.getRowCount(); i++) {
 	    if (table.getValueAt(i, 0).toString().equals(searchedId)) {
-		String id = table.getValueAt(i, 0).toString();
-		String name = table.getValueAt(i, 1).toString();
-		String email = table.getValueAt(i, 2).toString();
-		String password = table.getValueAt(i, 3).toString();
+		String id = table.getValueAt(i, ID_INDEX).toString();
+		String name = table.getValueAt(i, NAME_INDEX).toString();
+		String email = table.getValueAt(i, EMAIL_INDEX).toString();
+		String password = table.getValueAt(i, PASSWORD_INDEX).toString();
 		UserTypes userType;
-		if (table.getValueAt(i, 4).toString().equals(UserTypes.ORDINARY)) {
+		if (table.getValueAt(i, USER_TYPE_INDEX).toString().equals(UserTypes.ORDINARY)) {
 		    userType = UserTypes.ORDINARY;
 		} else {
 		    userType = UserTypes.ADMIN;
@@ -233,12 +241,12 @@ public class AdminPage extends JPanel implements Page
 		ArrayList<User> changedData = new ArrayList<>();
 		if (table != null) {
 		    for (int i = 0; i < table.getRowCount(); i++) {
-			String id = table.getValueAt(i, 0).toString();
-			String name = (String) table.getValueAt(i, 1);
-			String email = (String) table.getValueAt(i, 2);
-			String password = (String) table.getValueAt(i, 3);
+			String id = table.getValueAt(i, ID_INDEX).toString();
+			String name = (String) table.getValueAt(i, NAME_INDEX);
+			String email = (String) table.getValueAt(i, EMAIL_INDEX);
+			String password = (String) table.getValueAt(i, PASSWORD_INDEX);
 			UserTypes userType;
-			if (UserTypes.ORDINARY.equals(table.getValueAt(i, 4))) {
+			if (UserTypes.ORDINARY.equals(table.getValueAt(i, USER_TYPE_INDEX))) {
 			    userType = UserTypes.ORDINARY;
 			} else {
 			    userType = UserTypes.ADMIN;
@@ -308,7 +316,7 @@ public class AdminPage extends JPanel implements Page
 	    DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)
 	    {
 		@Override public boolean isCellEditable(final int row, final int column) {
-		    return column == 1 || column == 2 || column == 3 || column == 4;
+		    return column == NAME_INDEX || column == EMAIL_INDEX || column == PASSWORD_INDEX || column == USER_TYPE_INDEX;
 		}
 	    };
 
@@ -318,11 +326,11 @@ public class AdminPage extends JPanel implements Page
 	    data = db.getAllData();
 	    Object[] rowData = new Object[6];
 	    for (int i = 0; i < db.getAllData().size(); i++) {
-		rowData[0] = data.get(i).getUid();
-		rowData[1] = data.get(i).getName();
-		rowData[2] = data.get(i).getEmail();
-		rowData[3] = data.get(i).getPassword();
-		rowData[4] = data.get(i).getUserType();
+		rowData[ID_INDEX] = data.get(i).getUid();
+		rowData[NAME_INDEX] = data.get(i).getName();
+		rowData[EMAIL_INDEX] = data.get(i).getEmail();
+		rowData[PASSWORD_INDEX] = data.get(i).getPassword();
+		rowData[USER_TYPE_INDEX] = data.get(i).getUserType();
 		rowData[5] = data.get(i).getUserLoans().size();
 		tableModel.addRow(rowData);
 
@@ -330,7 +338,7 @@ public class AdminPage extends JPanel implements Page
 	    table.setRowHeight(ROW_HEIGHT);
 	    table.setModel(tableModel);
 
-	    TableColumn userTypeCol = table.getColumnModel().getColumn(4);
+	    TableColumn userTypeCol = table.getColumnModel().getColumn(USER_TYPE_INDEX);
 	    comboBox = new JComboBox<>();
 	    comboBox.addItem("ORDINARY");
 	    comboBox.addItem("ADMIN");
@@ -348,10 +356,10 @@ public class AdminPage extends JPanel implements Page
     /**
      * Sätter den nuvarande inloggade admin användaren
      *
-     * @param loggedinUser den inloggade användaren som sätts från LoginPage
+     * @param loggedInUser den inloggade användaren som sätts från LoginPage
      */
-    public void setCurrentAdmin(User loggedinUser) {
-	currentAdmin = loggedinUser;
+    public void setCurrentAdmin(User loggedInUser) {
+	currentAdmin = loggedInUser;
     }
 
 

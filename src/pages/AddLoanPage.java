@@ -27,6 +27,12 @@ public class AddLoanPage extends JPanel implements Page
 {
     final static private int TEXT_FIELD_COLUMN_SIZE = 15;
     final static private int TEXT_AREA_COLUMN_SIZE = 20;
+    final static private int TEXT_AREA_INSETS = 10;
+
+    final static int TITLE_FONT_SIZE = 38;
+    final static int BREAD_FONT_SIZE = 18;
+    final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
 
     private JLabel errorMessagelbl = new JLabel();
@@ -36,8 +42,8 @@ public class AddLoanPage extends JPanel implements Page
     private UtilDateModel modelEnd = new UtilDateModel();
     private JDatePanelImpl datePanelEnd = new JDatePanelImpl(modelEnd, new Properties());
 
-    private JDatePickerImpl loanstartDate = new JDatePickerImpl(datePanelStart, new DateComponentFormatter());
-    private JDatePickerImpl loanendDate = new JDatePickerImpl(datePanelEnd, new DateComponentFormatter());
+    private JDatePickerImpl loanStartDate = new JDatePickerImpl(datePanelStart, new DateComponentFormatter());
+    private JDatePickerImpl loanEndDate = new JDatePickerImpl(datePanelEnd, new DateComponentFormatter());
 
     private JTextField loanTitle = new JTextField(TEXT_FIELD_COLUMN_SIZE);
     private JTextField loanInterest = new JTextField(8);
@@ -63,9 +69,7 @@ public class AddLoanPage extends JPanel implements Page
 	modelStart.setValue(Calendar.getInstance().getTime());
 	modelEnd.setValue(Calendar.getInstance().getTime());
 	final JLabel title = new JLabel("Lägg till lån");
-	final int titleFontSize = 38;
-	final Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
-	title.setFont(titleFont);
+	title.setFont(TITLE_FONT);
 	add(title, "skip,alignx center,gap 0 0 20 20");
 
 
@@ -74,41 +78,39 @@ public class AddLoanPage extends JPanel implements Page
 	add(exit, "wrap,alignx right,w 30");
 
 	final JLabel loanTitlelbl = new JLabel("Rubrik: ");
-	final int breadFontSize = 18;
-	final Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
-	loanTitlelbl.setFont(breadFont);
+	loanTitlelbl.setFont(BREAD_FONT);
 	add(loanTitlelbl, "alignx right,gap 0 0 20 0");
 	add(loanTitle, "wrap, h 30");
 
 	final JLabel loanStartDatelbl = new JLabel("Startdatum: ");
-	loanStartDatelbl.setFont(breadFont);
+	loanStartDatelbl.setFont(BREAD_FONT);
 	add(loanStartDatelbl, "alignx right,gap 0 0 20 0");
-	add(loanstartDate, "wrap,aligny bottom, h 20");
+	add(loanStartDate, "wrap,aligny bottom, h 20");
 
 	final JLabel loanEndDatelbl = new JLabel("Slutdatum: ");
-	loanEndDatelbl.setFont(breadFont);
+	loanEndDatelbl.setFont(BREAD_FONT);
 	add(loanEndDatelbl, "alignx right,gap 0 0 20 0");
-	add(loanendDate, "wrap, aligny bottom,h 20");
+	add(loanEndDate, "wrap, aligny bottom,h 20");
 
 	final JLabel loanAmountlbl = new JLabel("Mängd: ");
-	loanAmountlbl.setFont(breadFont);
+	loanAmountlbl.setFont(BREAD_FONT);
 	add(loanAmountlbl, "alignx right,gap 0 0 20 0");
 	add(loanAmount, "wrap, h 30");
 
 	final JLabel loanInterestlbl = new JLabel("Ränta(%): ");
-	loanInterestlbl.setFont(breadFont);
+	loanInterestlbl.setFont(BREAD_FONT);
 	add(loanInterestlbl, "alignx right,gap 0 0 20 0");
 	add(loanInterest, "wrap, h 30");
 
 	final JLabel loanAmortizationlbl = new JLabel("Ammortering(kr): ");
-	loanAmortizationlbl.setFont(breadFont);
+	loanAmortizationlbl.setFont(BREAD_FONT);
 	add(loanAmortizationlbl, "alignx right,gap 0 0 20 0");
 	add(loanAmortization, "wrap, h 30");
 
 	final JLabel loanDescriptionlbl = new JLabel("Beskrivning:");
-	loanDescriptionlbl.setFont(breadFont);
+	loanDescriptionlbl.setFont(BREAD_FONT);
 	Border border = BorderFactory.createLineBorder(Color.BLACK);
-	loanDescription.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+	loanDescription.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS)));
 	add(loanDescriptionlbl, "alignx right,gap 0 0 20 0");
 	add(loanDescription, "wrap,spanx,alignx right,gapright 60");
 
@@ -162,8 +164,8 @@ public class AddLoanPage extends JPanel implements Page
 	int amount, amortization;
 	String title = loanTitle.getText();
 	String description = loanDescription.getText();
-	LocalDate startDateInput = convertToLocalDate(loanstartDate.getModel());
-	LocalDate endDateInput = convertToLocalDate(loanendDate.getModel());
+	LocalDate startDateInput = convertToLocalDate(loanStartDate.getModel());
+	LocalDate endDateInput = convertToLocalDate(loanEndDate.getModel());
 	try {
 	    intrest = Double.parseDouble(loanInterest.getText());
 	    amortization = Integer.parseInt(loanAmortization.getText());
@@ -171,7 +173,7 @@ public class AddLoanPage extends JPanel implements Page
 	} catch (NumberFormatException e) {
 	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
 	    addLoanLogger.logMsg(Level.WARNING,"Ogiltig inmatning (bokstäver ist för siffror)");
-	    System.out.println("Error: " + e);
+	    e.printStackTrace();
 	    return false;
 	}
 	if (title.isEmpty() || intrest <= 0 || amortization <= 0 || description.isEmpty() || amount <= 0) {
@@ -215,8 +217,8 @@ public class AddLoanPage extends JPanel implements Page
     {
 	String title = loanTitle.getText();
 	String description = loanDescription.getText();
-	LocalDate startDateInput = convertToLocalDate(loanstartDate.getModel());
-	LocalDate endDateInput = convertToLocalDate(loanendDate.getModel());
+	LocalDate startDateInput = convertToLocalDate(loanStartDate.getModel());
+	LocalDate endDateInput = convertToLocalDate(loanEndDate.getModel());
 	double intrest = Double.parseDouble(loanInterest.getText());
 	int amortization = Integer.parseInt(loanAmortization.getText());
 	int amount = Integer.parseInt(loanAmount.getText());

@@ -23,6 +23,12 @@ public class CreateAccountPage extends JPanel implements Page
 
     final static private int TEXT_AREA_COLUMN_SIZE = 20;
 
+    final static int TITLE_FONT_SIZE = 38;
+    final static int BREAD_FONT_SIZE = 18;
+
+    final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+
     private JLabel errorMessagelbl;
 
     private JButton toLoginPage;
@@ -49,25 +55,21 @@ public class CreateAccountPage extends JPanel implements Page
 	db = new Database(logger);
 
 	setLayout(new MigLayout("fillx"));
-	final int titleFontSize = 38;
-	final Font titleFont = new Font(Font.SERIF, Font.PLAIN, titleFontSize);
-	final int breadFontSize = 18;
-	final Font breadFont = new Font(Font.SERIF, Font.PLAIN, breadFontSize);
 
 	final JPanel formPanel = new JPanel();
 	formPanel.setLayout(new MigLayout("fillx"));
 
 
 	final JLabel titlelbl = new JLabel("*BUDGET*");
-	titlelbl.setFont(titleFont);
+	titlelbl.setFont(TITLE_FONT);
 	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
 	final JLabel namelbl = new JLabel("Namn: ");
-	namelbl.setFont(breadFont);
+	namelbl.setFont(BREAD_FONT);
 	final JLabel emaillbl = new JLabel("Email: ");
-	emaillbl.setFont(breadFont);
+	emaillbl.setFont(BREAD_FONT);
 	final JLabel passwordlbl = new JLabel("Lösenord: ");
-	passwordlbl.setFont(breadFont);
+	passwordlbl.setFont(BREAD_FONT);
 
 	add(namelbl, "alignx center,gap 0 0 30 0");
 	nameInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
@@ -83,11 +85,11 @@ public class CreateAccountPage extends JPanel implements Page
 	final JPanel buttons = new JPanel();
 
 	final JRadioButton ordinaryUser = new JRadioButton("Vanlig");
-	ordinaryUser.setFont(breadFont);
+	ordinaryUser.setFont(BREAD_FONT);
 	ordinaryUser.setSelected(true);
 	ordinaryUser.setActionCommand("ordinary");
 	final JRadioButton adminUser = new JRadioButton("Admin");
-	adminUser.setFont(breadFont);
+	adminUser.setFont(BREAD_FONT);
 	adminUser.setActionCommand("admin");
 	userTypeButtons = new ButtonGroup();
 

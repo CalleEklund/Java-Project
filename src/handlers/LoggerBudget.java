@@ -11,23 +11,28 @@ import java.util.logging.SimpleFormatter;
 
 public class LoggerBudget
 {
+    final static private String LOGGER_PROPERTIES = "logger.properties";
+    final static private String LOG_FILE_LOCATION = "res/budget_logs.log";
+
     private static final LogManager LOG_MANAGER = LogManager.getLogManager();
     private static final Logger LOGGER = Logger.getLogger("pages");
 
     public LoggerBudget() {
 	try {
-	    LOG_MANAGER.readConfiguration(ClassLoader.getSystemResourceAsStream("logger.properties"));
+	    LOG_MANAGER.readConfiguration(ClassLoader.getSystemResourceAsStream(LOGGER_PROPERTIES));
 	    LOGGER.fine("Conf Loaded");
 	} catch (IOException e) {
 	    LOGGER.log(Level.SEVERE, "Error in loading configuration", e);
+	    e.printStackTrace();
 	}
 	try {
 	    Formatter simpleFormatter = new SimpleFormatter();
-	    Handler fileHandler = new FileHandler("res/budget_logs.log");
+	    Handler fileHandler = new FileHandler(LOG_FILE_LOCATION);
 	    fileHandler.setFormatter(simpleFormatter);
 	    LOGGER.addHandler(fileHandler);
 	} catch (IOException e) {
 	    LOGGER.log(Level.SEVERE, "Error occur in FileHandler", e);
+	    e.printStackTrace();
 	}
 
 
@@ -49,8 +54,5 @@ public class LoggerBudget
     public void logMsg(Level level, String msg) {
 	LOGGER.log(level, msg);
     }
-//    public static void main(String[] args) {
-//	new handlers.Logger();
-//    }
 }
 
