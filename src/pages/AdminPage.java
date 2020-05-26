@@ -58,7 +58,7 @@ public class AdminPage extends JPanel implements Page
     private User currentAdmin = null;
     private final Database db;
     private Validator validator = new Validator();
-    private LoggerBudget adminLogger = null;
+    private LoggerBudget adminLogger;
 
 
     private List<User> data = null;
@@ -201,7 +201,7 @@ public class AdminPage extends JPanel implements Page
 		String email = table.getValueAt(i, EMAIL_INDEX).toString();
 		String password = table.getValueAt(i, PASSWORD_INDEX).toString();
 		UserType userType;
-		if (table.getValueAt(i, USER_TYPE_INDEX).toString().equals(UserType.ORDINARY)) {
+		if (table.getValueAt(i, USER_TYPE_INDEX).toString().equals(UserType.ORDINARY.toString())) {
 		    userType = UserType.ORDINARY;
 		} else {
 		    userType = UserType.ADMIN;

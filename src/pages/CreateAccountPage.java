@@ -42,7 +42,7 @@ public class CreateAccountPage extends JPanel implements Page
 
     private Database db;
     private Validator validator = new Validator();
-    private LoggerBudget createAccountLogger = null;
+    private LoggerBudget createAccountLogger;
 
 
     /**

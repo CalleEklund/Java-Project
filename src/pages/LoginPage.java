@@ -40,7 +40,7 @@ public class LoginPage extends JPanel implements Page
     private Database db;
     private Validator validator = new Validator();
 
-    private LoggerBudget logInLogger = null;
+    private LoggerBudget logInLogger;
 
     /**
      * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
@@ -168,7 +168,7 @@ public class LoginPage extends JPanel implements Page
     /**
      * Lägger till en lyssnare för den inloggade användaren.
      *
-     * @param listenForAddLoan
+     * @param listenForLogIn Lyssnare för inloggade användare
      */
     public void addLogInListener(ActionListener listenForLogIn) {
 	logInbtn.addActionListener(listenForLogIn);

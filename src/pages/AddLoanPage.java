@@ -55,7 +55,7 @@ public class AddLoanPage extends JPanel implements Page
     private JButton addLoan;
     private JButton exit;
 
-    private LoggerBudget addLoanLogger = null;
+    private LoggerBudget addLoanLogger;
 
     /**
      * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
@@ -143,12 +143,7 @@ public class AddLoanPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void toMainPage(final CardSwitcher switcher) {
-	exit.addActionListener(new ActionListener()
-	{
-	    @Override public void actionPerformed(final ActionEvent actionEvent) {
-		switchPage(switcher, "mainPage");
-	    }
-	});
+	exit.addActionListener(actionEvent -> switchPage(switcher, "mainPage"));
     }
 
     /**
@@ -246,7 +241,7 @@ public class AddLoanPage extends JPanel implements Page
     /**
      * Lägger till en lyssnare för nyskapade lån som behövs från LoanController
      *
-     * @param listenForAddLoan
+     * @param listenForAddLoan Lyssnare för nyskapde lån
      */
     public void addAddLoanListener(ActionListener listenForAddLoan) {
 	addLoan.addActionListener(listenForAddLoan);

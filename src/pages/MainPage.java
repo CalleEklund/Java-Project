@@ -42,7 +42,7 @@ public class MainPage extends JPanel implements Page
     private static JTabbedPane loanPanes = new JTabbedPane(TOP);
 
     private final Database db;
-    private LoggerBudget mainPageLogger = null;
+    private LoggerBudget mainPageLogger;
     private User currentUser = null;
 
 

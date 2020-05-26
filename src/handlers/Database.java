@@ -25,7 +25,7 @@ public class Database
      */
     private Connection conn = null;
     private String url = "jdbc:mysql://localhost/tddd78?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
-    private LoggerBudget databaseLogger = null;
+    private LoggerBudget databaseLogger;
 
     /**
      * Konstruktor Används för att skapa en koppling mot databasen, fånger evetuella fel. Warning (Call to
