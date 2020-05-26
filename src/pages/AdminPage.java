@@ -2,7 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
-import classes.UserTypes;
+import classes.UserType;
 import classes.Validator;
 import handlers.Database;
 
@@ -20,21 +20,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * Den grafiska sidan som ger admin användare tillgång till att skapa/ta bort samt ändra användare.
+ */
+
 public class AdminPage extends JPanel implements Page
 {
-    final static private int TITLE_FONT_SIZE = 38;
-    final static private int BREAD_FONT_SIZE = 18;
-    final static private int ROW_HEIGHT = 20;
-    final static private int Y_INSETS = 7;
-    final static private int X_INSETS = 1;
-    final static int ID_INDEX = 0;
-    final static int NAME_INDEX = 1;
-    final static int EMAIL_INDEX = 2;
-    final static int PASSWORD_INDEX = 3;
-    final static int USER_TYPE_INDEX = 4;
+    private final static int TITLE_FONT_SIZE = 38;
+    private final static int BREAD_FONT_SIZE = 18;
+    private final static int ROW_HEIGHT = 20;
+    private final static int Y_INSETS = 7;
+    private final static int X_INSETS = 1;
+    private final static int ID_INDEX = 0;
+    private final static int NAME_INDEX = 1;
+    private final static int EMAIL_INDEX = 2;
+    private final static int PASSWORD_INDEX = 3;
+    private final static int USER_TYPE_INDEX = 4;
 
-    final static private Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
-    final static private Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+    private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
     private final JLabel titlelbl = new JLabel("*BUDGET ADMIN*");
 
@@ -60,10 +64,11 @@ public class AdminPage extends JPanel implements Page
     private List<User> data = null;
 
     /**
-     * Konstruktor Den klass används för att administera de vanliga användarna som är registrerade i applikationen, man kan även
-     * lägga till samt ta bort användare.
+     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
-     * @param switcher Används från CardSwither klassen som används för att byta sida inom applikationen
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
      */
     public AdminPage(CardSwitcher switcher, LoggerBudget logger) {
 	adminLogger = logger;
@@ -136,8 +141,8 @@ public class AdminPage extends JPanel implements Page
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
 	    List<Integer> ids = getCurrentIds();
 	    int newId = Collections.max(ids) + 1;
-	    model.insertRow(table.getRowCount(), new Object[] { newId, "", "", "", UserTypes.ORDINARY, 0 });
-	    User u = new User(String.valueOf(newId), "", "", "", UserTypes.ORDINARY);
+	    model.insertRow(table.getRowCount(), new Object[] { newId, "", "", "", UserType.ORDINARY, 0 });
+	    User u = new User(String.valueOf(newId), "", "", "", UserType.ORDINARY);
 	    data.add(u);
 
 	}
@@ -161,9 +166,10 @@ public class AdminPage extends JPanel implements Page
     }
 
     /**
-     * Tar bort tabellen, samt skickar användare till inloggningssidan.
+     * Loggar ut användare samt loggar vilken användare som har loggats ut sätter den nuvarande inloggade användare till en
+     * "tom" användare. Tar bort tabellen.
      *
-     * @param switcher
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void logOut(final CardSwitcher switcher) {
 	logOutbtn.addActionListener(new ActionListener()
@@ -171,6 +177,7 @@ public class AdminPage extends JPanel implements Page
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		mainCont.removeAll();
 		mainCont.revalidate();
+		currentAdmin = new User();
 		switchPage(switcher, "logInPage");
 		adminLogger.logMsg(Level.INFO, "Loggade ut från adminsida med email: " + currentAdmin.getEmail());
 	    }
@@ -193,11 +200,11 @@ public class AdminPage extends JPanel implements Page
 		String name = table.getValueAt(i, NAME_INDEX).toString();
 		String email = table.getValueAt(i, EMAIL_INDEX).toString();
 		String password = table.getValueAt(i, PASSWORD_INDEX).toString();
-		UserTypes userType;
-		if (table.getValueAt(i, USER_TYPE_INDEX).toString().equals(UserTypes.ORDINARY)) {
-		    userType = UserTypes.ORDINARY;
+		UserType userType;
+		if (table.getValueAt(i, USER_TYPE_INDEX).toString().equals(UserType.ORDINARY)) {
+		    userType = UserType.ORDINARY;
 		} else {
-		    userType = UserTypes.ADMIN;
+		    userType = UserType.ADMIN;
 		}
 		index = i;
 		searchedUser = new User(id, name, email, password, userType);
@@ -245,11 +252,11 @@ public class AdminPage extends JPanel implements Page
 			String name = (String) table.getValueAt(i, NAME_INDEX);
 			String email = (String) table.getValueAt(i, EMAIL_INDEX);
 			String password = (String) table.getValueAt(i, PASSWORD_INDEX);
-			UserTypes userType;
-			if (UserTypes.ORDINARY.equals(table.getValueAt(i, USER_TYPE_INDEX))) {
-			    userType = UserTypes.ORDINARY;
+			UserType userType;
+			if (UserType.ORDINARY.equals(table.getValueAt(i, USER_TYPE_INDEX))) {
+			    userType = UserType.ORDINARY;
 			} else {
-			    userType = UserTypes.ADMIN;
+			    userType = UserType.ADMIN;
 			}
 			User curr = new User(id, name, email, password, userType);
 			changedData.add(new User(id, name, email, password, userType));
@@ -304,8 +311,7 @@ public class AdminPage extends JPanel implements Page
     }
 
     /**
-     * Printar den tabellen som fylls med data från databasen, sätter även användarns id och lån otilgängliga, möjligt att det
-     * blir en feature senare.
+     * Printar den tabellen som fylls med data från databasen, sätter även användarns id och lån otilgängliga.
      */
     private ActionListener printTable = new ActionListener()
     {
@@ -316,12 +322,14 @@ public class AdminPage extends JPanel implements Page
 	    DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)
 	    {
 		@Override public boolean isCellEditable(final int row, final int column) {
-		    return column == NAME_INDEX || column == EMAIL_INDEX || column == PASSWORD_INDEX || column == USER_TYPE_INDEX;
+		    return column == NAME_INDEX || column == EMAIL_INDEX || column == PASSWORD_INDEX ||
+			   column == USER_TYPE_INDEX;
 		}
 	    };
 
 	    addUserbtn.setEnabled(true);
 	    removeUserbtn.setEnabled(true);
+	    showDatabtn.setEnabled(false);
 
 	    data = db.getAllData();
 	    Object[] rowData = new Object[6];
@@ -362,7 +370,12 @@ public class AdminPage extends JPanel implements Page
 	currentAdmin = loggedInUser;
     }
 
-
+    /**
+     * Interface krav från Page interface som gör det möjligt att byta mellan de olika sidorna.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param newPage  Den nya sidan som övergånge ska gå till.
+     */
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }

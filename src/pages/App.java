@@ -14,9 +14,9 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 /**
  * Huvud appen
  * <p>
- * TODO: - Lägg till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andra
- * klasser) - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml - Implementera
- * Loggning funktionallitet - Titta på att implementera en import samt en export funktion
+ * TODO: - Lägg till mer beksrivande och förklarande docstring ovanför varje klass  (syfte, användning, relation till andraklasser)
+ *	 - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml
+ *	 - Titta på att implementera en import samt en export funktion
  */
 public class App
 {

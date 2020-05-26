@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * En klass för att kunna temporärt lagra ett lån mellan de olika sidorna
+ * Loankontroller som sköter vilken lån som skapas för tillfället.
  */
 public class LoanController extends AbstractController
 {
@@ -18,6 +18,9 @@ public class LoanController extends AbstractController
 	theModel.addAddLoanListener(new AddLoanListener());
     }
 
+    /**
+     * En lyssnare som kallas på när ett nytt lån skapas.
+     */
     private class AddLoanListener implements ActionListener
     {
 	@Override public void actionPerformed(final ActionEvent actionEvent) {
@@ -25,10 +28,13 @@ public class LoanController extends AbstractController
 	}
     }
 
+    /**
+     * Om det finns ett skapat lån så läggs lånet till den inloggade användaren.
+     */
     @Override public void updateView() {
-	if (theModelLoan.getCurrentLoan() != null) {
-	    Loan currentLoan = theModelLoan.getCurrentLoan();
-	    theViewUser.addLoanToUser(currentLoan);
+	if (modelLoan.getCurrentLoan() != null) {
+	    Loan currentLoan = modelLoan.getCurrentLoan();
+	    viewUser.addLoanToUser(currentLoan);
 	}
     }
 }

@@ -5,27 +5,30 @@ import pages.AdminPage;
 import pages.LoginPage;
 import pages.MainPage;
 
-
+/**
+ * Abstrakt klass för MVC kontroller som sköter information överföringen mellan de olika grafiska sidorna. En varsin konstruktor
+ * för varje kontroller eftersom de hanteras olika.
+ */
 public abstract class AbstractController implements Controller
 {
-    protected MainPage theViewUser = null;
-    protected AdminPage theViewAdmin = null;
-    protected AddLoanPage theModelLoan = null;
-    protected LoginPage theModelLogin = null;
+    protected MainPage viewUser = null;
+    protected AdminPage viewAdmin = null;
+    protected AddLoanPage modelLoan = null;
+    protected LoginPage modelLogin = null;
 
     protected AbstractController(final MainPage theView, final LoginPage theModel) {
-	this.theViewUser = theView;
-	this.theModelLogin = theModel;
+	this.viewUser = theView;
+	this.modelLogin = theModel;
     }
 
     protected AbstractController(final MainPage theView, final AddLoanPage theModel) {
-	this.theViewUser = theView;
-	this.theModelLoan = theModel;
+	this.viewUser = theView;
+	this.modelLoan = theModel;
     }
 
     protected AbstractController(final AdminPage theView, final LoginPage theModel) {
-	this.theViewAdmin = theView;
-	this.theModelLogin = theModel;
+	this.viewAdmin = theView;
+	this.modelLogin = theModel;
     }
 
 

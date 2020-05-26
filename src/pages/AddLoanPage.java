@@ -21,18 +21,18 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 /**
- * Lägg till ett lån
+ * Den grafiska sidan som skapar ett nytt lån till den nuvarande inloggade användaren.
  */
 public class AddLoanPage extends JPanel implements Page
 {
-    final static private int TEXT_FIELD_COLUMN_SIZE = 15;
-    final static private int TEXT_AREA_COLUMN_SIZE = 20;
-    final static private int TEXT_AREA_INSETS = 10;
+    private final static int TEXT_FIELD_COLUMN_SIZE = 15;
+    private final static int TEXT_AREA_COLUMN_SIZE = 20;
+    private final static int TEXT_AREA_INSETS = 10;
 
-    final static int TITLE_FONT_SIZE = 38;
-    final static int BREAD_FONT_SIZE = 18;
-    final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
-    final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+    private final static int TITLE_FONT_SIZE = 38;
+    private final static int BREAD_FONT_SIZE = 18;
+    private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
 
     private JLabel errorMessagelbl = new JLabel();
@@ -58,9 +58,11 @@ public class AddLoanPage extends JPanel implements Page
     private LoggerBudget addLoanLogger = null;
 
     /**
-     * Layout init.
+     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * andra sidor möjligt.
      *
-     * @param switcher cardlayout för att kunna byta mellan sidorna
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
      */
     public AddLoanPage(CardSwitcher switcher, LoggerBudget logger) {
 	addLoanLogger = logger;
@@ -110,7 +112,8 @@ public class AddLoanPage extends JPanel implements Page
 	final JLabel loanDescriptionlbl = new JLabel("Beskrivning:");
 	loanDescriptionlbl.setFont(BREAD_FONT);
 	Border border = BorderFactory.createLineBorder(Color.BLACK);
-	loanDescription.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS)));
+	loanDescription.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory
+		.createEmptyBorder(TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS)));
 	add(loanDescriptionlbl, "alignx right,gap 0 0 20 0");
 	add(loanDescription, "wrap,spanx,alignx right,gapright 60");
 
@@ -134,6 +137,11 @@ public class AddLoanPage extends JPanel implements Page
 
     }
 
+    /**
+     * Skickar tillbaka användare till startsidan och avbryter skapning av ett nytt lån.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     */
     private void toMainPage(final CardSwitcher switcher) {
 	exit.addActionListener(new ActionListener()
 	{
@@ -143,6 +151,11 @@ public class AddLoanPage extends JPanel implements Page
 	});
     }
 
+    /**
+     * Skickar tillbaka användare med ett nytt lån skapat.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     */
     private void mainPageValidated(final CardSwitcher switcher) {
 	addLoan.addActionListener(new ActionListener()
 	{
@@ -172,23 +185,23 @@ public class AddLoanPage extends JPanel implements Page
 	    amount = Integer.parseInt(loanAmount.getText());
 	} catch (NumberFormatException e) {
 	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
-	    addLoanLogger.logMsg(Level.WARNING,"Ogiltig inmatning (bokstäver ist för siffror)");
+	    addLoanLogger.logMsg(Level.WARNING, "Ogiltig inmatning (bokstäver ist för siffror)");
 	    e.printStackTrace();
 	    return false;
 	}
 	if (title.isEmpty() || intrest <= 0 || amortization <= 0 || description.isEmpty() || amount <= 0) {
 	    errorMessagelbl.setText("Tomma fält");
-	    addLoanLogger.logMsg(Level.WARNING,"Tomma fält");
+	    addLoanLogger.logMsg(Level.WARNING, "Tomma fält");
 
 	    return false;
 	} else if (endDateInput.isBefore(startDateInput)) {
 	    errorMessagelbl.setText("Start datum före slut datum");
-	    addLoanLogger.logMsg(Level.WARNING,"Start datum före slut datum");
+	    addLoanLogger.logMsg(Level.WARNING, "Start datum före slut datum");
 
 	    return false;
 	} else if (endDateInput.isEqual(startDateInput)) {
 	    errorMessagelbl.setText("Start datum samma som slut datum");
-	    addLoanLogger.logMsg(Level.WARNING,"Start datum samma som slut datum");
+	    addLoanLogger.logMsg(Level.WARNING, "Start datum samma som slut datum");
 
 	    return false;
 	}
@@ -230,10 +243,21 @@ public class AddLoanPage extends JPanel implements Page
 
     }
 
+    /**
+     * Lägger till en lyssnare för nyskapade lån som behövs från LoanController
+     *
+     * @param listenForAddLoan
+     */
     public void addAddLoanListener(ActionListener listenForAddLoan) {
 	addLoan.addActionListener(listenForAddLoan);
     }
 
+    /**
+     * Interface krav från Page interface som gör det möjligt att byta mellan de olika sidorna.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param newPage Den nya sidan som övergånge ska gå till.
+     */
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }

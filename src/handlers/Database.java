@@ -2,7 +2,7 @@ package handlers;
 
 import classes.Loan;
 import classes.User;
-import classes.UserTypes;
+import classes.UserType;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -24,12 +24,12 @@ public class Database
      * https://remotemysql.com/phpmyadmin/index.php
      */
     private Connection conn = null;
-    private static String url = "jdbc:mysql://localhost/tddd78?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
+    private String url = "jdbc:mysql://localhost/tddd78?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
     private LoggerBudget databaseLogger = null;
 
     /**
      * Konstruktor Används för att skapa en koppling mot databasen, fånger evetuella fel. Warning (Call to
-     * 'DriverManager.getConnection()'): Hittar ingen lösning på detta men det är inget som påverka programmet.
+     * 'DriverManager.getConnection()'): Hittar ingen lösning på detta men det är inget som påverkar programmet.
      */
     public Database(LoggerBudget logger) {
 	databaseLogger = logger;
@@ -107,7 +107,7 @@ public class Database
 	String email = u.getEmail();
 	String password = u.getPassword();
 	int userType;
-	if (u.getUserType().equals(UserTypes.ORDINARY)) {
+	if (u.getUserType().equals(UserType.ORDINARY)) {
 	    userType = 0;
 	} else {
 	    userType = 1;
@@ -158,13 +158,13 @@ public class Database
 				String nameDB = rs.getString("user.name");
 				String emailDB = rs.getString("user.email");
 				String passwordDB = rs.getString("user.password");
-				UserTypes userType;
+				UserType userType;
 				if (rs.getInt("user.userType") == 0) {
-				    userType = UserTypes.ORDINARY;
+				    userType = UserType.ORDINARY;
 				    u = new User(emailDB, passwordDB, idDB, nameDB, userLoansDB, userType);
 
 				} else {
-				    userType = UserTypes.ADMIN;
+				    userType = UserType.ADMIN;
 				    u = new User(nameDB, emailDB, passwordDB, userType);
 				}
 				return u;
@@ -307,7 +307,7 @@ public class Database
 			    ArrayList<Loan> userLoans = convertToLoan(email);
 			    User u =
 				    new User(rs.getString("user.email"), rs.getString("user.password"), rs.getString("user.id"),
-					     rs.getString("user.name"), userLoans, UserTypes.ORDINARY);
+					     rs.getString("user.name"), userLoans, UserType.ORDINARY);
 			    out.add(u);
 			}
 		    }

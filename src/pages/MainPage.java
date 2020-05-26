@@ -22,23 +22,23 @@ import java.util.logging.Level;
 import static javax.swing.SwingConstants.TOP;
 
 /**
- * Huvudsidan för användaren och dess lån
+ * Den grafiska sidan som ger tillgång till användarens nuvarande samt möjligheten att skapa ett nytt lån.
  */
 public class MainPage extends JPanel implements Page
 {
-    final static private int TITLE_FONT_SIZE = 38;
-    final static private int LOAN_TITLE_FONT_SIZE = 30;
-    final static private int BREAD_FONT_SIZE = 18;
-    final static private int TEXT_AREA_COLUMN_SIZE = 20;
+    private final static int TITLE_FONT_SIZE = 38;
+    private final static int LOAN_TITLE_FONT_SIZE = 30;
+    private final static int BREAD_FONT_SIZE = 18;
+    private final static int TEXT_AREA_COLUMN_SIZE = 20;
 
 
-    private static Font titleFont = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
-    private static Font loantitleFont = new Font(Font.SERIF, Font.PLAIN, LOAN_TITLE_FONT_SIZE);
-    private static Font breadFont = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+    private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    private final static Font LOAN_TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, LOAN_TITLE_FONT_SIZE);
+    private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
-    private final JButton addNewLoan = new JButton("lägg till lån");
-    private final JLabel titlelbl = new JLabel("*BUDGET*");
-    private final JButton logOutbtn = new JButton("Logga ut");
+    private final JButton addNewLoan = new JButton("Lägg till lån");
+    private final JLabel titleLbl = new JLabel("*BUDGET*");
+    private final JButton logOutBtn = new JButton("Logga ut");
     private static JTabbedPane loanPanes = new JTabbedPane(TOP);
 
     private final Database db;
@@ -47,18 +47,20 @@ public class MainPage extends JPanel implements Page
 
 
     /**
-     * Layout init.
+     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
-     * @param switcher cardlayout för att kunna byta mellan sidorna
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
      */
     public MainPage(CardSwitcher switcher, LoggerBudget logger) {
 	mainPageLogger = logger;
 	db = new Database(logger);
 	setLayout(new MigLayout("fillx"));
-	titlelbl.setFont(titleFont);
-	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
+	titleLbl.setFont(TITLE_FONT);
+	add(titleLbl, "wrap,alignx center,spanx,gap 0 0 20 20");
 	add(addNewLoan, "");
-	add(logOutbtn, "alignx right,wrap");
+	add(logOutBtn, "alignx right,wrap");
 
 	addLoanPage(switcher);
 	logOut(switcher);
@@ -68,9 +70,14 @@ public class MainPage extends JPanel implements Page
 
     }
 
-
+    /**
+     * Loggar ut användare samt loggar vilken användare som har loggats ut sätter den nuvarande inloggade användare till en
+     * "tom" användare.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     */
     private void logOut(final CardSwitcher switcher) {
-	logOutbtn.addActionListener(new ActionListener()
+	logOutBtn.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		mainPageLogger.logMsg(Level.INFO, "Loggade ut med email: " + currentUser.getEmail());
@@ -80,6 +87,11 @@ public class MainPage extends JPanel implements Page
 	});
     }
 
+    /**
+     * Skickar användare till sidan där nya lån skapas.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     */
     private void addLoanPage(final CardSwitcher switcher) {
 	addNewLoan.addActionListener(new ActionListener()
 	{
@@ -107,14 +119,13 @@ public class MainPage extends JPanel implements Page
 		index++;
 	    }
 	} else {
-
 	    loanPanes.removeAll();
 	    loanPanes.insertTab("Inga lån", null, loanPanel, null, 0);
 	}
     }
 
     /**
-     * Gör GUI för lånet
+     * Skapar de grafiska för varje lån som är skapt av användaren.
      *
      * @param l Lån av klassen classes.Loan
      * @return returnerar GUI:n för det lånet
@@ -161,34 +172,34 @@ public class MainPage extends JPanel implements Page
 	amortizationtf.setEditable(false);
 	descriptionta.setEditable(false);
 
-	title.setFont(loantitleFont);
+	title.setFont(LOAN_TITLE_FONT);
 	p.add(title, "wrap,alignx left,w 30");
 
 	p.add(loanstartDate);
 	p.add(loanendDate, "wrap");
 
-	amount.setFont(breadFont);
-	amounttf.setFont(breadFont);
+	amount.setFont(BREAD_FONT);
+	amounttf.setFont(BREAD_FONT);
 	p.add(amount, "alignx center");
 	p.add(amounttf, "wrap");
 
-	amount.setFont(breadFont);
-	amounttf.setFont(breadFont);
+	amount.setFont(BREAD_FONT);
+	amounttf.setFont(BREAD_FONT);
 	p.add(amount, "alignx center");
 	p.add(amounttf, "wrap");
 
-	intrest.setFont(breadFont);
-	intresttf.setFont(breadFont);
+	intrest.setFont(BREAD_FONT);
+	intresttf.setFont(BREAD_FONT);
 	p.add(intrest, "alignx center");
 	p.add(intresttf, "wrap");
 
-	amortization.setFont(breadFont);
-	amortizationtf.setFont(breadFont);
+	amortization.setFont(BREAD_FONT);
+	amortizationtf.setFont(BREAD_FONT);
 	p.add(amortization, "alignx center");
 	p.add(amortizationtf, "wrap");
 
-	description.setFont(breadFont);
-	descriptionta.setFont(breadFont);
+	description.setFont(BREAD_FONT);
+	descriptionta.setFont(BREAD_FONT);
 	descriptionta.setLineWrap(true);
 	descriptionta.setWrapStyleWord(true);
 	p.add(description, "alignx center");
@@ -199,9 +210,9 @@ public class MainPage extends JPanel implements Page
     }
 
     /**
-     * Sätta den inloggade användare till currentUser
+     * Sätter den nuvarande inloggade "vanliga" användaren.
      *
-     * @param loggedInUser användare som är inloggad
+     * @param loggedInUser den inloggade användaren som sätts från LoginPage
      */
     public void setCurrentUser(User loggedInUser) {
 	String email = loggedInUser.getEmail();
@@ -217,7 +228,8 @@ public class MainPage extends JPanel implements Page
     }
 
     /**
-     * Lägger till de nyligen skapta lånet till användaren samt gör en ny panel för de lånet
+     * Lägger till de nyligen skapta lånet till användaren samt gör en ny panel för de lånet. Loggar även den nyligen skapta
+     * lånet.
      *
      * @param currentLoan De senaste skapta lånet
      */
@@ -231,6 +243,12 @@ public class MainPage extends JPanel implements Page
 	makePages(currentUser.getUserLoans());
     }
 
+    /**
+     * Interface krav från Page interface som gör det möjligt att byta mellan de olika sidorna.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param newPage  Den nya sidan som övergånge ska gå till.
+     */
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }

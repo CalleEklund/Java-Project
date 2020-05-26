@@ -1,9 +1,15 @@
 package classes;
 
+
+/**
+ * Validator klassen som används för att validera inputer vid bland annat kontoskapning men även vid inloggningen.
+ */
 public class Validator
 {
     public boolean validateEmptyInput(String input) {
+
 	return input.isEmpty();
+
     }
 
     public boolean validateIsString(String input) {
@@ -18,6 +24,7 @@ public class Validator
 
     public boolean validateEmail(String input) {
 	String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+[.])+[\\w]+[\\w]$";
+
 	return input.matches(regex);
     }
 }

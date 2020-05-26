@@ -1,4 +1,4 @@
-package handlers;
+package misc;
 
 import classes.Loan;
 import classes.User;
@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Sparar till textfil
+ * Sparar till textfil, används inte eftersom lagringen har bytts till en databas.
  */
 public class SaveData
 {

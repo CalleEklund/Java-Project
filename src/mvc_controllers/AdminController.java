@@ -1,11 +1,16 @@
 package mvc_controllers;
 
 import classes.User;
+import classes.UserType;
 import pages.AdminPage;
 import pages.LoginPage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+/**
+ * Adminkontroller som sköter vilken adminanvändare som är inloggad.
+ */
 
 public class AdminController extends AbstractController
 {
@@ -15,13 +20,20 @@ public class AdminController extends AbstractController
 	theModel.addLogInListener(new AdminController.LogInListener());
     }
 
+    /**
+     * Uppdater view med vilken admin använder som är inloggad med den datan som skickas från modellen
+     */
     @Override public void updateView() {
-	User currentUser = theModelLogin.getLoggedInUser();
-	theViewAdmin.setCurrentAdmin(currentUser);
+	User currentUser = modelLogin.getLoggedInUser();
+	if (currentUser.getUserType().equals(UserType.ADMIN)) {
+	    viewAdmin.setCurrentAdmin(currentUser);
+	}
 
     }
 
-
+    /**
+     * En lyssnare som kallas på när en användare loggar in.
+     */
     private class LogInListener implements ActionListener
     {
 	@Override public void actionPerformed(ActionEvent actionEvent) {

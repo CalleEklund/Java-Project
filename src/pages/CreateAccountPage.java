@@ -2,7 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
-import classes.UserTypes;
+import classes.UserType;
 import classes.Validator;
 import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
@@ -16,18 +16,18 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 
 /**
- * Skapa konto sidan
+ * Den grafiska sidan som skapar en ny användare samt sparar den till databasen.
  */
 public class CreateAccountPage extends JPanel implements Page
 {
 
-    final static private int TEXT_AREA_COLUMN_SIZE = 20;
+    private final static int TEXT_AREA_COLUMN_SIZE = 20;
 
-    final static int TITLE_FONT_SIZE = 38;
-    final static int BREAD_FONT_SIZE = 18;
+    private final static int TITLE_FONT_SIZE = 38;
+    private final static int BREAD_FONT_SIZE = 18;
 
-    final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
-    final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+    private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
     private JLabel errorMessagelbl;
 
@@ -46,9 +46,11 @@ public class CreateAccountPage extends JPanel implements Page
 
 
     /**
-     * Layout init.
+     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
-     * @param switcher cardlayout för att kunna byta mellan sidorna
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
      */
     public CreateAccountPage(CardSwitcher switcher, LoggerBudget logger) {
 	createAccountLogger = logger;
@@ -106,7 +108,7 @@ public class CreateAccountPage extends JPanel implements Page
 
 	createAccount = new JButton("Skapa konto");
 
-	logOut(switcher);
+	toMainPage(switcher);
 
 	add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
 	final JLabel noAccountlbl = new JLabel("har du redan ett konto ?");
@@ -124,9 +126,11 @@ public class CreateAccountPage extends JPanel implements Page
 
 
     /**
-     * Kollar valideringen och sparar användaren
+     * Validerar användares input samt skickar användaren till inloggningssidan.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
-    private void logOut(final CardSwitcher switcher) {
+    private void toMainPage(final CardSwitcher switcher) {
 	createAccount.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
@@ -136,18 +140,23 @@ public class CreateAccountPage extends JPanel implements Page
 		String password = new String(passwordInput.getPassword());
 		User newUser;
 		if (userType.equals("ordinary")) {
-		    newUser = new User(name, email, password, UserTypes.ORDINARY);
+		    newUser = new User(name, email, password, UserType.ORDINARY);
 		} else {
-		    newUser = new User(name, email, password, UserTypes.ADMIN);
+		    newUser = new User(name, email, password, UserType.ADMIN);
 		}
 		if (validator.validateEmptyInput(name) || validator.validateEmptyInput(email) ||
 		    validator.validateEmptyInput(password)) {
-		    errorMessagelbl.setText("tom indata");
+		    createAccountLogger.logMsg(Level.WARNING,"Tom indata");
+		    errorMessagelbl.setText("Tom indata");
 
 		} else if (!validator.validateEmail(email)) {
-		    errorMessagelbl.setText("felaktig email");
+		    createAccountLogger.logMsg(Level.WARNING,"Felaktig email");
+
+		    errorMessagelbl.setText("Felaktig email");
 		} else if (!validator.validateIsString(name) || !validator.validateIsString(email) ||
 			   !validator.validateIsString(password)) {
+		    createAccountLogger.logMsg(Level.WARNING,"Ogiltig inmatning (bokstäver ist för siffror)");
+
 		    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
 
 		} else {
@@ -160,6 +169,11 @@ public class CreateAccountPage extends JPanel implements Page
 	});
     }
 
+    /**
+     * Används när användare inte vill skapa en ny användare utan bara gå tillbaka till inloggningssidan.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     */
     private void logInPage(final CardSwitcher switcher) {
 	toLoginPage.addActionListener(new ActionListener()
 	{
@@ -170,7 +184,7 @@ public class CreateAccountPage extends JPanel implements Page
     }
 
     /**
-     * Kolla om användare u finns finns i "databasen", om inte spara användaren i textfilen
+     * Kollar om användare finns i database, om inte ge felmeddelande till användaren annars spara användare.
      *
      * @param u från User klassen
      */
@@ -182,9 +196,15 @@ public class CreateAccountPage extends JPanel implements Page
 	} else {
 	    errorMessagelbl.setForeground(Color.red);
 	    errorMessagelbl.setText("Emailen är redan registrerad");
+	    createAccountLogger.logMsg(Level.WARNING,"Email är redan registrerad");
 	}
     }
-
+    /**
+     * Interface krav från Page interface som gör det möjligt att byta mellan de olika sidorna.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param newPage Den nya sidan som övergånge ska gå till.
+     */
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }

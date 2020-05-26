@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 /**
- * Lån
+ * Lån klassen som innehåller all nödvändig ett Lån har i detta program. Samt Getters för alla instansvariabler.
  */
 public class Loan
 {
@@ -21,18 +21,6 @@ public class Loan
 		LocalDate endDate)
     {
 	this.uid = UUID.randomUUID().toString();
-	this.title = title;
-	this.description = description;
-	this.intrest = intrest;
-	this.amount = amount;
-	this.amortization = amortization;
-	this.startDate = startDate;
-	this.endDate = endDate;
-    }
-    public Loan(String id,String title, String description, double intrest, int amount, int amortization, LocalDate startDate,
-		LocalDate endDate)
-    {
-	this.uid = id;
 	this.title = title;
 	this.description = description;
 	this.intrest = intrest;
@@ -75,9 +63,8 @@ public class Loan
     }
 
 
-
     @Override public String toString() {
-	return "title="+title + ", description='" + description +", intrest='" +
-	       intrest + ", startDate=" + startDate + ", endDate=" + endDate;
+	return "title=" + title + ", description='" + description + ", intrest='" + intrest + ", startDate=" + startDate +
+	       ", endDate=" + endDate;
     }
 }

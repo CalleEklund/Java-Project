@@ -3,43 +3,78 @@
   <ID>JAVA</ID>
   <OriginalElement>pages</OriginalElement>
   <nodes>
-    <node x="291.5625" y="0.0">savehandlers.Database</node>
-    <node x="573.5" y="33.0">pages.Page</node>
-    <node x="673.0" y="195.0">pages.MainPage</node>
-    <node x="0.0" y="216.0">pages.CreateAccountPage</node>
-    <node x="255.0" y="195.0">pages.LoginPage</node>
-    <node x="461.0" y="195.0">pages.AdminPage</node>
-    <node x="876.0" y="195.0">pages.AddLoanPage</node>
-    <node x="511.7578125" y="370.0">pages.App</node>
+    <node x="686.9035714285714" y="0.0">pages.Page</node>
+    <node x="0.0" y="79.0">pages.MainPage</node>
+    <node x="1169.0" y="100.0">pages.CreateAccountPage</node>
+    <node x="882.0" y="79.0">pages.LoginPage</node>
+    <node x="589.0" y="79.0">pages.AdminPage</node>
+    <node x="283.99999999999994" y="79.0">pages.AddLoanPage</node>
+    <node x="688.8321428571428" y="319.0">pages.App</node>
   </nodes>
   <notes />
   <edges>
+    <edge source="pages.LoginPage" target="pages.Page">
+      <point x="0.0" y="-47.5" />
+      <point x="1015.5" y="59.0" />
+      <point x="740.1035714285714" y="59.0" />
+      <point x="15.200000000000045" y="14.5" />
+    </edge>
+    <edge source="pages.AddLoanPage" target="pages.Page">
+      <point x="0.0" y="-47.5" />
+      <point x="426.49999999999994" y="59.0" />
+      <point x="709.7035714285713" y="59.0" />
+      <point x="-15.200000000000045" y="14.5" />
+    </edge>
+    <edge source="pages.App" target="pages.AddLoanPage">
+      <point x="-12.300000000000068" y="-26.5" />
+      <point x="713.5321428571427" y="204.0" />
+      <point x="497.74999999999994" y="204.0" />
+      <point x="71.25" y="47.5" />
+    </edge>
+    <edge source="pages.App" target="pages.CreateAccountPage">
+      <point x="28.700000000000045" y="-26.5" />
+      <point x="754.5321428571428" y="224.0" />
+      <point x="1248.0" y="224.0" />
+      <point x="-79.0" y="26.5" />
+    </edge>
     <edge source="pages.CreateAccountPage" target="pages.Page">
-      <point x="78.33333333333331" y="-26.5" />
-      <point x="195.83333333333331" y="165.0" />
-      <point x="583.0" y="165.0" />
-      <point x="-28.5" y="14.5" />
+      <point x="0.0" y="-26.5" />
+      <point x="1327.0" y="49.0" />
+      <point x="755.3035714285713" y="49.0" />
+      <point x="30.399999999999977" y="14.5" />
+    </edge>
+    <edge source="pages.App" target="pages.AdminPage">
+      <point x="-4.100000000000023" y="-26.5" />
+      <point x="721.7321428571428" y="194.0" />
+      <point x="657.25" y="194.0" />
+      <point x="-68.25" y="47.5" />
+    </edge>
+    <edge source="pages.App" target="pages.LoginPage">
+      <point x="20.5" y="-26.5" />
+      <point x="746.3321428571428" y="214.0" />
+      <point x="1082.25" y="214.0" />
+      <point x="66.75" y="47.5" />
     </edge>
     <edge source="pages.MainPage" target="pages.Page">
-      <point x="61.0" y="-47.5" />
-      <point x="825.5" y="115.0" />
-      <point x="640.0" y="115.0" />
-      <point x="28.5" y="14.5" />
+      <point x="0.0" y="-47.5" />
+      <point x="132.0" y="49.0" />
+      <point x="694.5035714285714" y="49.0" />
+      <point x="-30.399999999999977" y="14.5" />
+    </edge>
+    <edge source="pages.App" target="pages.MainPage">
+      <point x="-36.89999999999998" y="-26.5" />
+      <point x="688.9321428571428" y="234.0" />
+      <point x="66.0" y="234.0" />
+      <point x="-66.0" y="47.5" />
     </edge>
     <edge source="pages.AdminPage" target="pages.Page">
-      <point x="64.0" y="-47.5" />
-      <point x="9.5" y="14.5" />
-    </edge>
-    <edge source="pages.LoginPage" target="pages.Page">
-      <point x="62.0" y="-47.5" />
-      <point x="410.0" y="175.0" />
-      <point x="602.0" y="175.0" />
-      <point x="-9.5" y="14.5" />
+      <point x="0.0" y="-47.5" />
+      <point x="0.0" y="14.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="540.0" y="211.5" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="694.0" y="212.0" />
   <SelectedNodes>
-    <node>savehandlers.Database</node>
+    <node>pages.App</node>
   </SelectedNodes>
   <Categories>
     <Category>Constructors</Category>

@@ -2,7 +2,7 @@ package pages;
 
 import classes.CardSwitcher;
 import classes.User;
-import classes.UserTypes;
+import classes.UserType;
 import classes.Validator;
 import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
@@ -15,18 +15,18 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 
 /**
- * Logga in
+ * Den grafiska sidan som ger admin användare tillgång till att logga in som "vanlig" använder eller admin användare.
  */
 public class LoginPage extends JPanel implements Page
 {
 
-    final static private int TEXT_AREA_COLUMN_SIZE = 20;
+    private final static int TEXT_AREA_COLUMN_SIZE = 20;
 
-    final static int TITLE_FONT_SIZE = 38;
-    final static int BREAD_FONT_SIZE = 18;
+    private final static int TITLE_FONT_SIZE = 38;
+    private final static int BREAD_FONT_SIZE = 18;
 
-    final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
-    final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
+    private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
+    private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
 
     private JLabel errorMessagelbl;
@@ -43,9 +43,11 @@ public class LoginPage extends JPanel implements Page
     private LoggerBudget logInLogger = null;
 
     /**
-     * Layout init.
+     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
-     * @param switcher cardlayout för att kunna byta mellan sidorna
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
      */
     public LoginPage(CardSwitcher switcher, LoggerBudget logger) {
 	logInLogger = logger;
@@ -91,6 +93,11 @@ public class LoginPage extends JPanel implements Page
 
     }
 
+    /**
+     * Skickar användare till skapa konto sidan.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     */
     private void createAccountPage(final CardSwitcher switcher) {
 	toCreateAccountPagebtn.addActionListener(new ActionListener()
 	{
@@ -102,7 +109,10 @@ public class LoginPage extends JPanel implements Page
     }
 
     /**
-     * Validerar indatan samt kollar mot textfil "databasen" skickar vidare användare om rätt användare inmatats
+     * Validerar indatan samt loggar in användare till antingen MainPage eller AdminPage beroende på vilke typ av användare som
+     * loggas in. Samt ger felmeddelande till användare och loggar de eventuella fel som kan uppstå.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void logInUser(final CardSwitcher switcher) {
 	logInbtn.addActionListener(new ActionListener()
@@ -124,14 +134,14 @@ public class LoginPage extends JPanel implements Page
 			errorMessagelbl.setText("");
 			User u = db.getUser(email, password);
 			logInLogger.logMsg(Level.INFO, "Korrekt inloggning med email: " + u.getEmail());
-			if (u.getUserType().equals(UserTypes.ORDINARY)) {
+			if (u.getUserType().equals(UserType.ORDINARY)) {
 			    switchPage(switcher, "mainPage");
 			} else {
 			    switchPage(switcher, "adminPage");
 			}
 		    } else {
 			errorMessagelbl.setText("Det finns ingen sådan användare");
-			logInLogger.logMsg(Level.WARNING, "felaktig användare");
+			logInLogger.logMsg(Level.WARNING, "Felaktig användare");
 
 		    }
 		}
@@ -155,10 +165,21 @@ public class LoginPage extends JPanel implements Page
 
     }
 
+    /**
+     * Lägger till en lyssnare för den inloggade användaren.
+     *
+     * @param listenForAddLoan
+     */
     public void addLogInListener(ActionListener listenForLogIn) {
 	logInbtn.addActionListener(listenForLogIn);
     }
 
+    /**
+     * Interface krav från Page interface som gör det möjligt att byta mellan de olika sidorna.
+     *
+     * @param switcher Cardlayout för att kunna byta mellan sidorna.
+     * @param newPage  Den nya sidan som övergånge ska gå till.
+     */
     @Override public void switchPage(CardSwitcher switcher, String newPage) {
 	switcher.switchTo(newPage);
     }
