@@ -188,7 +188,7 @@ public class CreateAccountPage extends JPanel implements Page
      *
      * @param u från User klassen
      */
-    public void saveUser(User u) {
+    private void saveUser(User u) {
 	String email = u.getEmail();
 	String password = u.getPassword();
 	if (!db.userExists(email, password)) {

@@ -120,11 +120,11 @@ public class AdminPage extends JPanel implements Page
 								  "Ta bort användare", JOptionPane.PLAIN_MESSAGE, null,
 								  possibilities, first));
 
-	    User u = (User) getUserFromTable(s)[0];
-	    int index = (int) getUserFromTable(s)[1];
-
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
-	    if (possibilities.length != 0 && s != null) {
+	    if (possibilities.length != 0 && s != "null") {
+		System.out.println(1);
+		User u = (User) getUserFromTable(s)[0];
+		int index = (int) getUserFromTable(s)[1];
 		model.removeRow(index);
 		db.removeUser(u);
 		adminLogger.logMsg(Level.INFO, "Tog bort användare med email: " + u.getEmail());

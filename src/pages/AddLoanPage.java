@@ -167,7 +167,7 @@ public class AddLoanPage extends JPanel implements Page
      *
      * @return True/False beroende på om giltig input eller inte
      */
-    public boolean validateInput() {
+    private boolean validateInput() {
 	double intrest;
 	int amount, amortization;
 	String title = loanTitle.getText();
@@ -209,7 +209,7 @@ public class AddLoanPage extends JPanel implements Page
      * @param date DateModel datum
      * @return LocalDate datum
      */
-    public LocalDate convertToLocalDate(DateModel<?> date) {
+    private LocalDate convertToLocalDate(DateModel<?> date) {
 	int dateYear = date.getYear();
 	int dateMonth = date.getMonth();
 	int dateDay = date.getDay();
