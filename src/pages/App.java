@@ -12,11 +12,8 @@ import java.awt.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
- * Huvud appen
- * <p>
- * TODO:
- *	 - Gå igenom denna och checka av, https://www.ida.liu.se/~TDDD78/labs/2020/project/grading.shtml
- *	 - Lägg till bilder i projektrapporten
+ * Huvud appen, där programmet körs ifrån, där alla sidor skapas samt alla kontroller sätter även huvud egenskaper för en
+ * cardlayout som sedan används i CardSwitcher
  */
 public class App
 {

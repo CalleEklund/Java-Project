@@ -124,16 +124,6 @@ public class AddLoanPage extends JPanel implements Page
 	mainPageValidated(switcher);
 	add(addLoan, "spanx,alignx center,gap 0 0 10 0");
 
-	/**
-	 * TODO:
-	 *  - ta bort innan inlämmning
-	 */
-	int test = 1000;
-	loanTitle.setText("Test");
-	loanDescription.setText("testdesc");
-	loanAmount.setText(String.valueOf(test));
-	loanAmortization.setText(String.valueOf(test));
-	loanInterest.setText(String.valueOf(test));
 
     }
 
