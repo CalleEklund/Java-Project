@@ -48,7 +48,6 @@ public class Database
 
 	} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 	    databaseProjectLogger.logMsg(Level.SEVERE, "Kunde inte hitta databas drivers");
-
 	    e.printStackTrace();
 	}
     }
