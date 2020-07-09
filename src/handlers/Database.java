@@ -18,12 +18,13 @@ import java.util.logging.Level;
 
 import static java.sql.DriverManager.getConnection;
 
+
+/**
+ * Databas klassen som hanterar all koppling med databasen, det finns extra många try-catches för att kunna fånga fel som finns
+ * i statements som i preparedstatement även i själva resultatet alltså resultsetet.
+ */
 public class Database
 {
-    /**
-     * DATABAS HJÄLP LÄNKAR: Remote database: https://remotemysql.com/databases.php phpMyAdmin:
-     * https://remotemysql.com/phpmyadmin/index.php
-     */
     private Connection conn = null;
     private String url = "jdbc:mysql://localhost/tddd78?useLegacyDatetimeCode=false&serverTimezone=Europe/Berlin";
     private ProjectLogger databaseProjectLogger;
@@ -42,16 +43,21 @@ public class Database
 		this.conn = getConnection(url, user, password);
 	    } catch (SQLException e) {
 		nullDatabase();
+		conn.close();
 		databaseProjectLogger.logMsg(Level.SEVERE, "Gick inte att koppla till databasen");
 		e.printStackTrace();
 	    }
 
-	} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+	} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
 	    databaseProjectLogger.logMsg(Level.SEVERE, "Kunde inte hitta databas drivers");
 	    e.printStackTrace();
 	}
     }
 
+    /**
+     * Anropas om databas koppling inte finns (=null), användaren får en dialog ruta där det förklaras att ingen databaskoppling
+     * finns och programmet avstängs eftersom det inte finns någon funktion som inte användare en databas.
+     */
     private void nullDatabase() {
 	if (conn == null) {
 	    Object[] options = { "OK" };
@@ -95,7 +101,6 @@ public class Database
 		    }
 		} catch (SQLException e) {
 		    databaseProjectLogger.logMsg(Level.SEVERE, "Kunde inte skapa ett Resultset -> felaktig PreparedStatement");
-
 		    e.printStackTrace();
 		}
 	    } finally {
@@ -346,15 +351,15 @@ public class Database
      * @param newData Den ändrade data
      */
     public void updateData(List<User> newData) {
-	for (int i = 0; i < newData.size(); i++) {
+	for (User newDatum : newData) {
 	    try {
 		final String query = "REPLACE INTO user (id,name,email,password) VALUES (?,?,?,?)";
 		PreparedStatement preparedStmt = conn.prepareStatement(query);
 		try {
-		    preparedStmt.setString(1, newData.get(i).getUid());
-		    preparedStmt.setString(2, newData.get(i).getName());
-		    preparedStmt.setString(3, newData.get(i).getEmail());
-		    preparedStmt.setString(4, newData.get(i).getPassword());
+		    preparedStmt.setString(1, newDatum.getUid());
+		    preparedStmt.setString(2, newDatum.getName());
+		    preparedStmt.setString(3, newDatum.getEmail());
+		    preparedStmt.setString(4, newDatum.getPassword());
 
 		    preparedStmt.execute();
 

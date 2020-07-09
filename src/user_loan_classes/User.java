@@ -54,10 +54,6 @@ public class User extends AbstractUser
 	return uid;
     }
 
-    public String getName() {
-	return name;
-    }
-
     public void addUserLoan(Loan l) {
 	userLoans.add(l);
     }

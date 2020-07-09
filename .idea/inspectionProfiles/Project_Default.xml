@@ -498,7 +498,7 @@
       <option name="ignoreAddedToCollection" value="false" />
     </inspection_tool>
     <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,handlers.Database,getConn" />
+      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,handlers.Database,getConn,java.sql.PreparedStatement,executeQuery,java.sql.Connection,prepareStatement|createStatement,java.sql.Statement,executeQuery" />
     </inspection_tool>
     <inspection_tool class="AutoUnboxing" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="AwaitNotInLoop" enabled="true" level="WARNING" enabled_by_default="true" />

@@ -16,7 +16,7 @@ import java.util.logging.SimpleFormatter;
  */
 public class ProjectLogger
 {
-    final static String FILE_SEPERATOR = File.separator;
+    final static private String FILE_SEPERATOR = File.separator;
     final static private String LOGGER_PROPERTIES = "logger.properties";
     final static private String LOG_FILE_LOCATION = "res" + FILE_SEPERATOR + "budget_logs.log";
 
@@ -27,6 +27,7 @@ public class ProjectLogger
 	try {
 	    LOG_MANAGER.readConfiguration(ClassLoader.getSystemResourceAsStream(LOGGER_PROPERTIES));
 	    LOGGER.fine("Conf Loaded");
+
 	} catch (IOException e) {
 	    LOGGER.log(Level.SEVERE, "Error in loading configuration", e);
 	    e.printStackTrace();

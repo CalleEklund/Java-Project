@@ -24,7 +24,6 @@ public abstract class AbstractUser
 
     /**
      * Getter för Email och lösenord.
-     *
      */
     public String getEmail() {
 	return email;
@@ -32,6 +31,10 @@ public abstract class AbstractUser
 
     public String getPassword() {
 	return password;
+    }
+
+    public String getName() {
+	return name;
     }
 }
 
