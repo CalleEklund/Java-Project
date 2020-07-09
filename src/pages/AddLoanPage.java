@@ -1,8 +1,8 @@
 package pages;
 
-import classes.CardSwitcher;
-import classes.Loan;
-import handlers.LoggerBudget;
+import handlers.CardSwitcher;
+import handlers.ProjectLogger;
+import user_loan_classes.Loan;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.impl.DateComponentFormatter;
@@ -35,7 +35,7 @@ public class AddLoanPage extends JPanel implements Page
     private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
 
-    private JLabel errorMessagelbl = new JLabel();
+    private JLabel errorMessageLabel = new JLabel();
 
     private UtilDateModel modelStart = new UtilDateModel();
     private JDatePanelImpl datePanelStart = new JDatePanelImpl(modelStart, new Properties());
@@ -52,20 +52,20 @@ public class AddLoanPage extends JPanel implements Page
 
     private JTextArea loanDescription = new JTextArea(4, TEXT_AREA_COLUMN_SIZE);
 
-    private JButton addLoan;
-    private JButton exit;
+    private JButton addLoanButton;
+    private JButton exitButton;
 
-    private LoggerBudget addLoanLogger;
+    private ProjectLogger addLoanProjectLogger;
 
     /**
-     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * Konstruktor som skapar den grafiska layouten samt sätter en projectLogger för sidan och en switcher som gör övergången till
      * andra sidor möjligt.
      *
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
-     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
+     * @param projectLogger   Loggerklassen som används för att logga varning/info för sidan.
      */
-    public AddLoanPage(CardSwitcher switcher, LoggerBudget logger) {
-	addLoanLogger = logger;
+    public AddLoanPage(CardSwitcher switcher, ProjectLogger projectLogger) {
+	addLoanProjectLogger = projectLogger;
 
 	setLayout(new MigLayout("fillx"));
 	modelStart.setValue(Calendar.getInstance().getTime());
@@ -75,54 +75,54 @@ public class AddLoanPage extends JPanel implements Page
 	add(title, "skip,alignx center,gap 0 0 20 20");
 
 
-	exit = new JButton("Avsluta");
+	exitButton = new JButton("Avsluta");
 	toMainPage(switcher);
-	add(exit, "wrap,alignx right,w 30");
+	add(exitButton, "wrap,alignx right,w 30");
 
-	final JLabel loanTitlelbl = new JLabel("Rubrik: ");
-	loanTitlelbl.setFont(BREAD_FONT);
-	add(loanTitlelbl, "alignx right,gap 0 0 20 0");
+	final JLabel loanTitleLabel = new JLabel("Rubrik: ");
+	loanTitleLabel.setFont(BREAD_FONT);
+	add(loanTitleLabel, "alignx right,gap 0 0 20 0");
 	add(loanTitle, "wrap, h 30");
 
-	final JLabel loanStartDatelbl = new JLabel("Startdatum: ");
-	loanStartDatelbl.setFont(BREAD_FONT);
-	add(loanStartDatelbl, "alignx right,gap 0 0 20 0");
+	final JLabel loanStartDateLabel = new JLabel("Startdatum: ");
+	loanStartDateLabel.setFont(BREAD_FONT);
+	add(loanStartDateLabel, "alignx right,gap 0 0 20 0");
 	add(loanStartDate, "wrap,aligny bottom, h 20");
 
-	final JLabel loanEndDatelbl = new JLabel("Slutdatum: ");
-	loanEndDatelbl.setFont(BREAD_FONT);
-	add(loanEndDatelbl, "alignx right,gap 0 0 20 0");
+	final JLabel loanEndDateLabel = new JLabel("Slutdatum: ");
+	loanEndDateLabel.setFont(BREAD_FONT);
+	add(loanEndDateLabel, "alignx right,gap 0 0 20 0");
 	add(loanEndDate, "wrap, aligny bottom,h 20");
 
-	final JLabel loanAmountlbl = new JLabel("Mängd: ");
-	loanAmountlbl.setFont(BREAD_FONT);
-	add(loanAmountlbl, "alignx right,gap 0 0 20 0");
+	final JLabel loanAmountLabel = new JLabel("Mängd: ");
+	loanAmountLabel.setFont(BREAD_FONT);
+	add(loanAmountLabel, "alignx right,gap 0 0 20 0");
 	add(loanAmount, "wrap, h 30");
 
-	final JLabel loanInterestlbl = new JLabel("Ränta(%): ");
-	loanInterestlbl.setFont(BREAD_FONT);
-	add(loanInterestlbl, "alignx right,gap 0 0 20 0");
+	final JLabel loanInterestLabel = new JLabel("Ränta(%): ");
+	loanInterestLabel.setFont(BREAD_FONT);
+	add(loanInterestLabel, "alignx right,gap 0 0 20 0");
 	add(loanInterest, "wrap, h 30");
 
-	final JLabel loanAmortizationlbl = new JLabel("Ammortering(kr): ");
-	loanAmortizationlbl.setFont(BREAD_FONT);
-	add(loanAmortizationlbl, "alignx right,gap 0 0 20 0");
+	final JLabel loanAmortizationLabel = new JLabel("Ammortering(kr): ");
+	loanAmortizationLabel.setFont(BREAD_FONT);
+	add(loanAmortizationLabel, "alignx right,gap 0 0 20 0");
 	add(loanAmortization, "wrap, h 30");
 
-	final JLabel loanDescriptionlbl = new JLabel("Beskrivning:");
-	loanDescriptionlbl.setFont(BREAD_FONT);
+	final JLabel loanDescriptionLabel = new JLabel("Beskrivning:");
+	loanDescriptionLabel.setFont(BREAD_FONT);
 	Border border = BorderFactory.createLineBorder(Color.BLACK);
 	loanDescription.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory
 		.createEmptyBorder(TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS, TEXT_AREA_INSETS)));
-	add(loanDescriptionlbl, "alignx right,gap 0 0 20 0");
+	add(loanDescriptionLabel, "alignx right,gap 0 0 20 0");
 	add(loanDescription, "wrap,spanx,alignx right,gapright 60");
 
-	errorMessagelbl.setForeground(Color.RED);
-	add(errorMessagelbl, "wrap,alignx center,spanx");
+	errorMessageLabel.setForeground(Color.RED);
+	add(errorMessageLabel, "wrap,alignx center,spanx");
 
-	addLoan = new JButton("Lägg till lån");
+	addLoanButton = new JButton("Lägg till lån");
 	mainPageValidated(switcher);
-	add(addLoan, "spanx,alignx center,gap 0 0 10 0");
+	add(addLoanButton, "spanx,alignx center,gap 0 0 10 0");
 
 
     }
@@ -133,7 +133,7 @@ public class AddLoanPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void toMainPage(final CardSwitcher switcher) {
-	exit.addActionListener(actionEvent -> switchPage(switcher, "mainPage"));
+	exitButton.addActionListener(actionEvent -> switchPage(switcher, "mainPage"));
     }
 
     /**
@@ -142,7 +142,7 @@ public class AddLoanPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void mainPageValidated(final CardSwitcher switcher) {
-	addLoan.addActionListener(new ActionListener()
+	addLoanButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		if (validateInput()) {
@@ -169,24 +169,24 @@ public class AddLoanPage extends JPanel implements Page
 	    amortization = Integer.parseInt(loanAmortization.getText());
 	    amount = Integer.parseInt(loanAmount.getText());
 	} catch (NumberFormatException e) {
-	    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
-	    addLoanLogger.logMsg(Level.WARNING, "Ogiltig inmatning (bokstäver ist för siffror)");
+	    errorMessageLabel.setText("Ogiltig inmatning (bokstäver ist för siffror)");
+	    addLoanProjectLogger.logMsg(Level.WARNING, "Ogiltig inmatning (bokstäver ist för siffror)");
 	    e.printStackTrace();
 	    return false;
 	}
 	if (title.isEmpty() || intrest <= 0 || amortization <= 0 || description.isEmpty() || amount <= 0) {
-	    errorMessagelbl.setText("Tomma fält");
-	    addLoanLogger.logMsg(Level.WARNING, "Tomma fält");
+	    errorMessageLabel.setText("Tomma fält");
+	    addLoanProjectLogger.logMsg(Level.WARNING, "Tomma fält");
 
 	    return false;
 	} else if (endDateInput.isBefore(startDateInput)) {
-	    errorMessagelbl.setText("Start datum före slut datum");
-	    addLoanLogger.logMsg(Level.WARNING, "Start datum före slut datum");
+	    errorMessageLabel.setText("Start datum före slut datum");
+	    addLoanProjectLogger.logMsg(Level.WARNING, "Start datum före slut datum");
 
 	    return false;
 	} else if (endDateInput.isEqual(startDateInput)) {
-	    errorMessagelbl.setText("Start datum samma som slut datum");
-	    addLoanLogger.logMsg(Level.WARNING, "Start datum samma som slut datum");
+	    errorMessageLabel.setText("Start datum samma som slut datum");
+	    addLoanProjectLogger.logMsg(Level.WARNING, "Start datum samma som slut datum");
 
 	    return false;
 	}
@@ -234,7 +234,7 @@ public class AddLoanPage extends JPanel implements Page
      * @param listenForAddLoan Lyssnare för nyskapde lån
      */
     public void addAddLoanListener(ActionListener listenForAddLoan) {
-	addLoan.addActionListener(listenForAddLoan);
+	addLoanButton.addActionListener(listenForAddLoan);
     }
 
     /**
@@ -246,5 +246,6 @@ public class AddLoanPage extends JPanel implements Page
     @Override public void switchPage(final CardSwitcher switcher, final String newPage) {
 	switcher.switchTo(newPage);
     }
+
 }
 

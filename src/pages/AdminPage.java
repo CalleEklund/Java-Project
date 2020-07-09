@@ -1,12 +1,12 @@
 package pages;
 
-import classes.CardSwitcher;
-import classes.User;
-import classes.UserType;
-import classes.Validator;
+import handlers.CardSwitcher;
+import handlers.ProjectLogger;
+import user_loan_classes.User;
+import user_loan_classes.UserType;
+import handlers.Validator;
 import handlers.Database;
 
-import handlers.LoggerBudget;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -40,13 +40,13 @@ public class AdminPage extends JPanel implements Page
     private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
     private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
-    private final JLabel titlelbl = new JLabel("*BUDGET ADMIN*");
+    private final JLabel titleLabel = new JLabel("*BUDGET ADMIN*");
 
-    private final JButton logOutbtn = new JButton("Logga ut");
-    private final JButton savebtn = new JButton("Spara ändringar");
-    private final JButton showDatabtn = new JButton("Visa användare");
-    private final JButton addUserbtn = new JButton("Ny användare");
-    private final JButton removeUserbtn = new JButton("Ta bort användare");
+    private final JButton logOutButton = new JButton("Logga ut");
+    private final JButton saveButton = new JButton("Spara ändringar");
+    private final JButton showDataButton = new JButton("Visa användare");
+    private final JButton addUserButton = new JButton("Ny användare");
+    private final JButton removeUserButton = new JButton("Ta bort användare");
 
 
     private JTable table = new JTable();
@@ -58,54 +58,54 @@ public class AdminPage extends JPanel implements Page
     private User currentAdmin = null;
     private final Database db;
     private Validator validator = new Validator();
-    private LoggerBudget adminLogger;
+    private ProjectLogger adminProjectLogger;
 
 
     private List<User> data = null;
 
     /**
-     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * Konstruktor som skapar den grafiska layouten samt sätter en projectLogger för sidan och en switcher som gör övergången till
      * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
-     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
+     * @param projectLogger   Loggerklassen som används för att logga varning/info för sidan.
      */
-    public AdminPage(CardSwitcher switcher, LoggerBudget logger) {
-	adminLogger = logger;
-	db = new Database(logger);
+    public AdminPage(CardSwitcher switcher, ProjectLogger projectLogger) {
+	adminProjectLogger = projectLogger;
+	db = new Database(projectLogger);
 	setLayout(new MigLayout("fillx"));
-	titlelbl.setFont(TITLE_FONT);
-	add(titlelbl, "wrap,alignx center,spanx,gap 0 0 20 20");
+	titleLabel.setFont(TITLE_FONT);
+	add(titleLabel, "wrap,alignx center,spanx,gap 0 0 20 20");
 
-	final JPanel btns = new JPanel();
-	btns.add(addUserbtn);
-	addUserbtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
-	btns.add(removeUserbtn);
-	removeUserbtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
-	btns.add(showDatabtn);
-	showDatabtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
-	btns.add(savebtn);
-	savebtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
-	btns.add(logOutbtn);
-	logOutbtn.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
-	add(btns, "spanx,wrap,alignx right");
+	final JPanel adminButtons = new JPanel();
+	adminButtons.add(addUserButton);
+	addUserButton.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
+	adminButtons.add(removeUserButton);
+	removeUserButton.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
+	adminButtons.add(showDataButton);
+	showDataButton.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
+	adminButtons.add(saveButton);
+	saveButton.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
+	adminButtons.add(logOutButton);
+	logOutButton.setMargin(new Insets(X_INSETS, Y_INSETS, X_INSETS, Y_INSETS));
+	add(adminButtons, "spanx,wrap,alignx right");
 
-	removeUserbtn.setEnabled(false);
-	addUserbtn.setEnabled(false);
+	removeUserButton.setEnabled(false);
+	addUserButton.setEnabled(false);
 
 	logOut(switcher);
 
 	add(mainCont, "spanx");
-	showDatabtn.addActionListener(printTable);
-	savebtn.addActionListener(saveData);
-	addUserbtn.addActionListener(addNewUser);
-	removeUserbtn.addActionListener(removeUser);
+	showDataButton.addActionListener(printTable);
+	saveButton.addActionListener(saveData);
+	addUserButton.addActionListener(addNewUser);
+	removeUserButton.addActionListener(removeUser);
 
 
     }
 
     /**
-     * Kallas på när removeUserbtn knappen klickas som sedan skapar en JOptionpane som ger dig valet vilken använder du vill
+     * Kallas på när removeUserButton knappen klickas som sedan skapar en JOptionpane som ger dig valet vilken använder du vill
      * readera baserat på id. Kallar sedan på databasfunktionen som raderar användarande från databasen.
      */
     private ActionListener removeUser = new ActionListener()
@@ -127,7 +127,7 @@ public class AdminPage extends JPanel implements Page
 		int index = (int) getUserFromTable(s)[1];
 		model.removeRow(index);
 		db.removeUser(u);
-		adminLogger.logMsg(Level.INFO, "Tog bort användare med email: " + u.getEmail());
+		adminProjectLogger.logMsg(Level.INFO, "Tog bort användare med email: " + u.getEmail());
 
 	    }
 	}
@@ -172,14 +172,14 @@ public class AdminPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void logOut(final CardSwitcher switcher) {
-	logOutbtn.addActionListener(new ActionListener()
+	logOutButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		mainCont.removeAll();
 		mainCont.revalidate();
 		currentAdmin = new User();
 		switchPage(switcher, "logInPage");
-		adminLogger.logMsg(Level.INFO, "Loggade ut från adminsida med email: " + currentAdmin.getEmail());
+		adminProjectLogger.logMsg(Level.INFO, "Loggade ut från adminsida med email: " + currentAdmin.getEmail());
 	    }
 	});
     }
@@ -281,11 +281,11 @@ public class AdminPage extends JPanel implements Page
 								     JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		    if (dialogResult == JOptionPane.YES_OPTION) {
 			db.updateData(changedData);
-			adminLogger.logMsg(Level.INFO, "Uppdaterade användar tabellen vid email: " + updatedDataIndexs);
+			adminProjectLogger.logMsg(Level.INFO, "Uppdaterade användar tabellen vid email: " + updatedDataIndexs);
 		    }
 		} else {
 		    db.updateData(changedData);
-		    adminLogger.logMsg(Level.INFO, "Uppdaterade användar tabellen vid email: " + updatedDataIndexs);
+		    adminProjectLogger.logMsg(Level.INFO, "Uppdaterade användar tabellen vid email: " + updatedDataIndexs);
 		}
 	    }
 
@@ -327,9 +327,9 @@ public class AdminPage extends JPanel implements Page
 		}
 	    };
 
-	    addUserbtn.setEnabled(true);
-	    removeUserbtn.setEnabled(true);
-	    showDatabtn.setEnabled(false);
+	    addUserButton.setEnabled(true);
+	    removeUserButton.setEnabled(true);
+	    showDataButton.setEnabled(false);
 
 	    data = db.getAllData();
 	    Object[] rowData = new Object[6];

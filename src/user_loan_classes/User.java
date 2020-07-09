@@ -1,4 +1,4 @@
-package classes;
+package user_loan_classes;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -12,14 +12,12 @@ import java.util.Objects;
 public class User extends AbstractUser
 {
     private String uid = null;
-    private String name = null;
     private ArrayList<Loan> userLoans = null;
     private UserType userType = null;
 
 
     public User(String name, String email, String password, final UserType userType) {
-	super(email, password);
-	this.name = name;
+	super(email, password,name);
 	this.userType = userType;
 
     }
@@ -28,17 +26,15 @@ public class User extends AbstractUser
     public User(final String emailDB, final String passwordDB, final String uid, final String name,
 		final ArrayList<Loan> userLoans, final UserType userTypeDB)
     {
-	super(emailDB, passwordDB);
+	super(emailDB, passwordDB,name);
 	this.uid = uid;
-	this.name = name;
 	this.userLoans = userLoans;
 	this.userType = userTypeDB;
 
     }
 
     public User(final String id, final String name, final String email, final String password, final UserType userType) {
-	super(email, password);
-	this.name = name;
+	super(email, password,name);
 	this.uid = id;
 	this.userType = userType;
 
@@ -47,7 +43,6 @@ public class User extends AbstractUser
 
     public User() {
 	super();
-	this.name = "";
 	this.userLoans = new ArrayList<>();
 	this.userType = UserType.ORDINARY;
     }

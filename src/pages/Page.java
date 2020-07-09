@@ -1,6 +1,6 @@
 package pages;
 
-import classes.CardSwitcher;
+import handlers.CardSwitcher;
 
 /**
  * Page interface som kräver att varje sida ska ha funktionaliteten ha en övergång mellan andra sidor

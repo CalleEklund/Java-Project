@@ -1,10 +1,10 @@
 package pages;
 
-import classes.CardSwitcher;
-import classes.Loan;
-import classes.User;
+import handlers.CardSwitcher;
+import user_loan_classes.Loan;
+import user_loan_classes.User;
 import handlers.Database;
-import handlers.LoggerBudget;
+import handlers.ProjectLogger;
 import net.miginfocom.swing.MigLayout;
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -37,30 +37,30 @@ public class MainPage extends JPanel implements Page
     private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
     private final JButton addNewLoan = new JButton("Lägg till lån");
-    private final JLabel titleLbl = new JLabel("*BUDGET*");
-    private final JButton logOutBtn = new JButton("Logga ut");
+    private final JButton logOutButton = new JButton("Logga ut");
+    private final JLabel titleLabel = new JLabel("*BUDGET*");
     private static JTabbedPane loanPanes = new JTabbedPane(TOP);
 
     private final Database db;
-    private LoggerBudget mainPageLogger;
+    private ProjectLogger mainPageProjectLogger;
     private User currentUser = null;
 
 
     /**
-     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * Konstruktor som skapar den grafiska layouten samt sätter en projectLogger för sidan och en switcher som gör övergången till
      * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
-     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
+     * @param projectLogger   Loggerklassen som används för att logga varning/info för sidan.
      */
-    public MainPage(CardSwitcher switcher, LoggerBudget logger) {
-	mainPageLogger = logger;
-	db = new Database(logger);
+    public MainPage(CardSwitcher switcher, ProjectLogger projectLogger) {
+	mainPageProjectLogger = projectLogger;
+	db = new Database(projectLogger);
 	setLayout(new MigLayout("fillx"));
-	titleLbl.setFont(TITLE_FONT);
-	add(titleLbl, "wrap,alignx center,spanx,gap 0 0 20 20");
+	titleLabel.setFont(TITLE_FONT);
+	add(titleLabel, "wrap,alignx center,spanx,gap 0 0 20 20");
 	add(addNewLoan, "");
-	add(logOutBtn, "alignx right,wrap");
+	add(logOutButton, "alignx right,wrap");
 
 	addLoanPage(switcher);
 	logOut(switcher);
@@ -77,10 +77,10 @@ public class MainPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void logOut(final CardSwitcher switcher) {
-	logOutBtn.addActionListener(new ActionListener()
+	logOutButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
-		mainPageLogger.logMsg(Level.INFO, "Loggade ut med email: " + currentUser.getEmail());
+		mainPageProjectLogger.logMsg(Level.INFO, "Loggade ut med email: " + currentUser.getEmail());
 		currentUser = new User();
 		switchPage(switcher, "logInPage");
 	    }
@@ -127,7 +127,7 @@ public class MainPage extends JPanel implements Page
     /**
      * Skapar de grafiska för varje lån som är skapt av användaren.
      *
-     * @param l Lån av klassen classes.Loan
+     * @param l Lån av klassen user_loan_classes.Loan
      * @return returnerar GUI:n för det lånet
      */
     private static JPanel makeLoanPanel(Loan l) {
@@ -237,8 +237,9 @@ public class MainPage extends JPanel implements Page
 	String email = currentUser.getEmail();
 	String password = currentUser.getPassword();
 	db.saveLoanToUser(currentUser, currentLoan);
-	mainPageLogger.logMsg(Level.INFO, "La till lån med titel: " + currentLoan.getTitle() + " till användare med email: " +
-					  currentUser.getEmail());
+	mainPageProjectLogger
+		.logMsg(Level.INFO, "La till lån med titel: " + currentLoan.getTitle() + " till användare med email: " +
+				    currentUser.getEmail());
 	currentUser = db.getUser(email, password);
 	makePages(currentUser.getUserLoans());
     }

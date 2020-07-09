@@ -1,9 +1,9 @@
 package pages;
 
-import handlers.LoggerBudget;
+import handlers.ProjectLogger;
 import mvc_controllers.AdminController;
 import mvc_controllers.UserController;
-import classes.CardSwitcher;
+import handlers.CardSwitcher;
 import mvc_controllers.LoanController;
 
 import javax.swing.*;
@@ -25,16 +25,16 @@ public class App
      * instansieras
      */
     private App() {
-	LoggerBudget logger = new LoggerBudget();
+	ProjectLogger projectLogger = new ProjectLogger();
 
 	final CardLayout cl = new CardLayout();
 	final JPanel cont = new JPanel();
 	final CardSwitcher switcher = new CardSwitcher(cont, cl);
-	final LoginPage logInPage = new LoginPage(switcher, logger);
-	final MainPage mainPage = new MainPage(switcher, logger);
-	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher, logger);
-	final AddLoanPage addLoanPage = new AddLoanPage(switcher, logger);
-	final AdminPage adminPage = new AdminPage(switcher, logger);
+	final LoginPage logInPage = new LoginPage(switcher, projectLogger);
+	final MainPage mainPage = new MainPage(switcher, projectLogger);
+	final CreateAccountPage createAccountPage = new CreateAccountPage(switcher, projectLogger);
+	final AddLoanPage addLoanPage = new AddLoanPage(switcher, projectLogger);
+	final AdminPage adminPage = new AdminPage(switcher, projectLogger);
 
 	new UserController(logInPage, mainPage);
 	new AdminController(logInPage, adminPage);

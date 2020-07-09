@@ -1,4 +1,4 @@
-package classes;
+package handlers;
 
 import java.awt.*;
 

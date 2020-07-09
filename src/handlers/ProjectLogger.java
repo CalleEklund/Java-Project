@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * Logger klass som används för att spara det som sker under programmets gång som t.ex. felaktigt input vid inloggning men även
+ * ProjectLogger klass som används för att spara det som sker under programmets gång som t.ex. felaktigt input vid inloggning men även
  * vilken användare som inloggad som när en användare väljer att logga ut.
  */
-public class LoggerBudget
+public class ProjectLogger
 {
     final static String FILE_SEPERATOR = File.separator;
     final static private String LOGGER_PROPERTIES = "logger.properties";
@@ -23,7 +23,7 @@ public class LoggerBudget
     private static final LogManager LOG_MANAGER = LogManager.getLogManager();
     private static final Logger LOGGER = Logger.getLogger("pages");
 
-    public LoggerBudget() {
+    public ProjectLogger() {
 	try {
 	    LOG_MANAGER.readConfiguration(ClassLoader.getSystemResourceAsStream(LOGGER_PROPERTIES));
 	    LOGGER.fine("Conf Loaded");
@@ -45,7 +45,7 @@ public class LoggerBudget
 	disableConsoleOutput();
 
 
-	LOGGER.log(Level.INFO, "Logger loaded correctly");
+	LOGGER.log(Level.INFO, "ProjectLogger loaded correctly");
     }
 
     /**

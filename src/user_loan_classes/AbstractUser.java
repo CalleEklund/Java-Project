@@ -1,4 +1,4 @@
-package classes;
+package user_loan_classes;
 
 
 /**
@@ -9,10 +9,12 @@ public abstract class AbstractUser
 {
     protected String email = null;
     protected String password = null;
+    protected String name = null;
 
-    protected AbstractUser(final String emailDB, final String passwordDB) {
+    protected AbstractUser(final String emailDB, final String passwordDB, final String nameDB) {
 	this.email = emailDB;
 	this.password = passwordDB;
+	this.name = nameDB;
 
     }
 

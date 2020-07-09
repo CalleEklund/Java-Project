@@ -1,10 +1,10 @@
 package pages;
 
-import classes.CardSwitcher;
-import classes.User;
-import classes.UserType;
-import classes.Validator;
-import handlers.LoggerBudget;
+import handlers.CardSwitcher;
+import handlers.ProjectLogger;
+import user_loan_classes.User;
+import user_loan_classes.UserType;
+import handlers.Validator;
 import net.miginfocom.swing.MigLayout;
 import handlers.Database;
 
@@ -29,10 +29,10 @@ public class CreateAccountPage extends JPanel implements Page
     private final static Font TITLE_FONT = new Font(Font.SERIF, Font.PLAIN, TITLE_FONT_SIZE);
     private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
-    private JLabel errorMessagelbl;
+    private JLabel errorMessageLabel;
 
-    private JButton toLoginPage;
-    private JButton createAccount;
+    private JButton toLoginPageButton;
+    private JButton createAccountButton;
 
     private ButtonGroup userTypeButtons;
 
@@ -42,19 +42,19 @@ public class CreateAccountPage extends JPanel implements Page
 
     private Database db;
     private Validator validator = new Validator();
-    private LoggerBudget createAccountLogger;
+    private ProjectLogger createAccountProjectLogger;
 
 
     /**
-     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * Konstruktor som skapar den grafiska layouten samt sätter en projectLogger för sidan och en switcher som gör övergången till
      * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
-     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
+     * @param projectLogger   Loggerklassen som används för att logga varning/info för sidan.
      */
-    public CreateAccountPage(CardSwitcher switcher, LoggerBudget logger) {
-	createAccountLogger = logger;
-	db = new Database(logger);
+    public CreateAccountPage(CardSwitcher switcher, ProjectLogger projectLogger) {
+	createAccountProjectLogger = projectLogger;
+	db = new Database(projectLogger);
 
 	setLayout(new MigLayout("fillx"));
 
@@ -62,26 +62,26 @@ public class CreateAccountPage extends JPanel implements Page
 	formPanel.setLayout(new MigLayout("fillx"));
 
 
-	final JLabel titlelbl = new JLabel("*BUDGET*");
-	titlelbl.setFont(TITLE_FONT);
-	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
+	final JLabel titleLabel = new JLabel("*BUDGET*");
+	titleLabel.setFont(TITLE_FONT);
+	add(titleLabel, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
-	final JLabel namelbl = new JLabel("Namn: ");
-	namelbl.setFont(BREAD_FONT);
-	final JLabel emaillbl = new JLabel("Email: ");
-	emaillbl.setFont(BREAD_FONT);
-	final JLabel passwordlbl = new JLabel("Lösenord: ");
-	passwordlbl.setFont(BREAD_FONT);
+	final JLabel nameLabel = new JLabel("Namn: ");
+	nameLabel.setFont(BREAD_FONT);
+	final JLabel emailLabel = new JLabel("Email: ");
+	emailLabel.setFont(BREAD_FONT);
+	final JLabel passwordLabel = new JLabel("Lösenord: ");
+	passwordLabel.setFont(BREAD_FONT);
 
-	add(namelbl, "alignx center,gap 0 0 30 0");
+	add(nameLabel, "alignx center,gap 0 0 30 0");
 	nameInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
 	add(nameInput, "wrap, h 30");
 
-	add(emaillbl, "alignx center,gap 0 0 30 0");
+	add(emailLabel, "alignx center,gap 0 0 30 0");
 	emailInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
 	add(emailInput, "wrap, h 30");
 
-	add(passwordlbl, "alignx center,gap 0 0 30 0");
+	add(passwordLabel, "alignx center,gap 0 0 30 0");
 	passwordInput = new JPasswordField(TEXT_AREA_COLUMN_SIZE);
 	add(passwordInput, "wrap, h 30");
 	final JPanel buttons = new JPanel();
@@ -102,25 +102,25 @@ public class CreateAccountPage extends JPanel implements Page
 	buttons.add(adminUser);
 	add(buttons, "wrap, spanx, alignx center");
 
-	errorMessagelbl = new JLabel();
-	add(errorMessagelbl, "wrap,alignx center,spanx");
+	errorMessageLabel = new JLabel();
+	add(errorMessageLabel, "wrap,alignx center,spanx");
 
 
-	createAccount = new JButton("Skapa konto");
+	createAccountButton = new JButton("Skapa konto");
 
 	toMainPage(switcher);
 
-	add(createAccount, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
-	final JLabel noAccountlbl = new JLabel("har du redan ett konto ?");
-	add(noAccountlbl, "wrap,alignx center,spanx");
+	add(createAccountButton, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
+	final JLabel noAccountLabel = new JLabel("har du redan ett konto ?");
+	add(noAccountLabel, "wrap,alignx center,spanx");
 
 
-	toLoginPage = new JButton("Logga in");
+	toLoginPageButton = new JButton("Logga in");
 	logInPage(switcher);
-	add(toLoginPage, "wrap,alignx center,spanx");
+	add(toLoginPageButton, "wrap,alignx center,spanx");
 
-	final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
-	add(copyrightlbl, "spanx,alignx right,gap 0 0 120 0");
+	final JLabel copyrightLabel = new JLabel("Carl Eklund Copyright©");
+	add(copyrightLabel, "spanx,alignx right,gap 0 0 120 0");
 
     }
 
@@ -131,7 +131,7 @@ public class CreateAccountPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void toMainPage(final CardSwitcher switcher) {
-	createAccount.addActionListener(new ActionListener()
+	createAccountButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		String userType = userTypeButtons.getSelection().getActionCommand();
@@ -146,24 +146,24 @@ public class CreateAccountPage extends JPanel implements Page
 		}
 		if (validator.validateEmptyInput(name) || validator.validateEmptyInput(email) ||
 		    validator.validateEmptyInput(password)) {
-		    createAccountLogger.logMsg(Level.WARNING,"Tom indata");
-		    errorMessagelbl.setText("Tom indata");
+		    createAccountProjectLogger.logMsg(Level.WARNING, "Tom indata");
+		    errorMessageLabel.setText("Tom indata");
 
 		} else if (!validator.validateEmail(email)) {
-		    createAccountLogger.logMsg(Level.WARNING,"Felaktig email");
+		    createAccountProjectLogger.logMsg(Level.WARNING, "Felaktig email");
 
-		    errorMessagelbl.setText("Felaktig email");
+		    errorMessageLabel.setText("Felaktig email");
 		} else if (!validator.validateIsString(name) || !validator.validateIsString(email) ||
 			   !validator.validateIsString(password)) {
-		    createAccountLogger.logMsg(Level.WARNING,"Ogiltig inmatning (bokstäver ist för siffror)");
+		    createAccountProjectLogger.logMsg(Level.WARNING, "Ogiltig inmatning (bokstäver ist för siffror)");
 
-		    errorMessagelbl.setText("Ogiltig inmatning (bokstäver ist för siffror)");
+		    errorMessageLabel.setText("Ogiltig inmatning (bokstäver ist för siffror)");
 
 		} else {
 		    saveUser(newUser);
-		    createAccountLogger
+		    createAccountProjectLogger
 			    .logMsg(Level.INFO, "Skapade " + newUser.getUserType() + " med email: " + newUser.getEmail());
-		    errorMessagelbl.setText("Konto skapat");
+		    errorMessageLabel.setText("Konto skapat");
 		}
 	    }
 	});
@@ -175,7 +175,7 @@ public class CreateAccountPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void logInPage(final CardSwitcher switcher) {
-	toLoginPage.addActionListener(new ActionListener()
+	toLoginPageButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		switchPage(switcher, "logInPage");
@@ -194,9 +194,9 @@ public class CreateAccountPage extends JPanel implements Page
 	if (!db.userExists(email, password)) {
 	    db.insertUser(u);
 	} else {
-	    errorMessagelbl.setForeground(Color.red);
-	    errorMessagelbl.setText("Emailen är redan registrerad");
-	    createAccountLogger.logMsg(Level.WARNING,"Email är redan registrerad");
+	    errorMessageLabel.setForeground(Color.red);
+	    errorMessageLabel.setText("Emailen är redan registrerad");
+	    createAccountProjectLogger.logMsg(Level.WARNING, "Email är redan registrerad");
 	}
     }
     /**

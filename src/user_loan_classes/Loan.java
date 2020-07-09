@@ -1,4 +1,4 @@
-package classes;
+package user_loan_classes;
 
 import java.time.LocalDate;
 import java.util.UUID;

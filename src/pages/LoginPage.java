@@ -1,10 +1,10 @@
 package pages;
 
-import classes.CardSwitcher;
-import classes.User;
-import classes.UserType;
-import classes.Validator;
-import handlers.LoggerBudget;
+import handlers.CardSwitcher;
+import user_loan_classes.User;
+import user_loan_classes.UserType;
+import handlers.Validator;
+import handlers.ProjectLogger;
 import net.miginfocom.swing.MigLayout;
 import handlers.Database;
 
@@ -29,10 +29,10 @@ public class LoginPage extends JPanel implements Page
     private final static Font BREAD_FONT = new Font(Font.SERIF, Font.PLAIN, BREAD_FONT_SIZE);
 
 
-    private JLabel errorMessagelbl;
+    private JLabel errorMessageLabel;
 
-    private JButton logInbtn;
-    private JButton toCreateAccountPagebtn;
+    private JButton logInButton;
+    private JButton toCreateAccountPageButton;
 
     private JTextField emailInput = new JTextField(TEXT_AREA_COLUMN_SIZE);
     private JPasswordField passwordInput = new JPasswordField(TEXT_AREA_COLUMN_SIZE);
@@ -40,55 +40,56 @@ public class LoginPage extends JPanel implements Page
     private Database db;
     private Validator validator = new Validator();
 
-    private LoggerBudget logInLogger;
+    private ProjectLogger logInProjectLogger;
 
     /**
-     * Konstruktor som skapar den grafiska layouten samt sätter en logger för sidan och en switcher som gör övergången till
+     * Konstruktor som skapar den grafiska layouten samt sätter en projectLogger för sidan och en switcher som gör övergången till
      * andra sidor möjligt. Samt skapar en databas koppling för att kunna spara de gjorda ändringar.
      *
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
-     * @param logger   Loggerklassen som används för att logga varning/info för sidan.
+     * @param projectLogger   Loggerklassen som används för att logga varning/info för sidan.
      */
-    public LoginPage(CardSwitcher switcher, LoggerBudget logger) {
-	logInLogger = logger;
+    public LoginPage(CardSwitcher switcher, ProjectLogger projectLogger) {
+	logInProjectLogger = projectLogger;
 
-	db = new Database(logger);
+	db = new Database(projectLogger);
+
 	setLayout(new MigLayout("fillx"));
 
-	final JLabel titlelbl = new JLabel("*BUDGET*");
-	titlelbl.setFont(TITLE_FONT);
-	add(titlelbl, "wrap,top,alignx center,spanx, gap 0 0 20 20");
+	final JLabel titleLabel = new JLabel("*BUDGET*");
+	titleLabel.setFont(TITLE_FONT);
+	add(titleLabel, "wrap,top,alignx center,spanx, gap 0 0 20 20");
 
-	final JLabel emaillbl = new JLabel("Email: ");
-	emaillbl.setFont(BREAD_FONT);
-	final JLabel passwordlbl = new JLabel("Lösenord: ");
-	passwordlbl.setFont(BREAD_FONT);
+	final JLabel emailLabel = new JLabel("Email: ");
+	emailLabel.setFont(BREAD_FONT);
+	final JLabel passwordLabel = new JLabel("Lösenord: ");
+	passwordLabel.setFont(BREAD_FONT);
 
 
-	add(emaillbl, "alignx center,gap 0 0 80 0");
+	add(emailLabel, "alignx center,gap 0 0 80 0");
 	add(emailInput, "wrap, h 30");
 
-	add(passwordlbl, "alignx center,gap 0 0 30 0");
+	add(passwordLabel, "alignx center,gap 0 0 30 0");
 	add(passwordInput, "wrap, h 30");
 
-	errorMessagelbl = new JLabel();
-	errorMessagelbl.setForeground(Color.RED);
-	add(errorMessagelbl, "wrap,alignx center,spanx");
+	errorMessageLabel = new JLabel();
+	errorMessageLabel.setForeground(Color.RED);
+	add(errorMessageLabel, "wrap,alignx center,spanx");
 
-	logInbtn = new JButton("Logga in");
+	logInButton = new JButton("Logga in");
 	logInUser(switcher);
 
-	add(logInbtn, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
-	final JLabel noAccountlbl = new JLabel("har du inte ett konto ?");
-	add(noAccountlbl, "wrap,alignx center,spanx");
+	add(logInButton, "wrap,alignx center,spanx,height 40,width 200,gap 0 0 50 0");
+	final JLabel noAccountLabel = new JLabel("har du inte ett konto ?");
+	add(noAccountLabel, "wrap,alignx center,spanx");
 
 
-	toCreateAccountPagebtn = new JButton("Skapa konto");
+	toCreateAccountPageButton = new JButton("Skapa konto");
 	createAccountPage(switcher);
-	add(toCreateAccountPagebtn, "wrap,alignx center,spanx");
+	add(toCreateAccountPageButton, "wrap,alignx center,spanx");
 
-	final JLabel copyrightlbl = new JLabel("Carl Eklund Copyright©");
-	add(copyrightlbl, "spanx,alignx right,gap 0 0 135 0");
+	final JLabel copyrightLabel = new JLabel("Carl Eklund Copyright©");
+	add(copyrightLabel, "spanx,alignx right,gap 0 0 135 0");
 
 
     }
@@ -99,7 +100,7 @@ public class LoginPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void createAccountPage(final CardSwitcher switcher) {
-	toCreateAccountPagebtn.addActionListener(new ActionListener()
+	toCreateAccountPageButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		switchPage(switcher, "createAccountPage");
@@ -115,33 +116,33 @@ public class LoginPage extends JPanel implements Page
      * @param switcher Cardlayout för att kunna byta mellan sidorna.
      */
     private void logInUser(final CardSwitcher switcher) {
-	logInbtn.addActionListener(new ActionListener()
+	logInButton.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent actionEvent) {
 		String email = emailInput.getText();
 		String password = new String(passwordInput.getPassword());
 		if (validator.validateEmptyInput(email) || validator.validateEmptyInput(password)) {
-		    errorMessagelbl.setText("Tom indata");
-		    logInLogger.logMsg(Level.WARNING, "tom indata vid inloggning");
+		    errorMessageLabel.setText("Tom indata");
+		    logInProjectLogger.logMsg(Level.WARNING, "tom indata vid inloggning");
 		    emailInput.setText("");
 		    passwordInput.setText("");
 		} else if (!validator.validateEmail(email)) {
-		    errorMessagelbl.setText("Felaktig email");
-		    logInLogger.logMsg(Level.WARNING, "felaktigt email vid inloggning");
+		    errorMessageLabel.setText("Felaktig email");
+		    logInProjectLogger.logMsg(Level.WARNING, "felaktigt email vid inloggning");
 		    emailInput.setText("");
 		} else {
 		    if (db.userExists(email, password)) {
-			errorMessagelbl.setText("");
+			errorMessageLabel.setText("");
 			User u = db.getUser(email, password);
-			logInLogger.logMsg(Level.INFO, "Korrekt inloggning med email: " + u.getEmail());
+			logInProjectLogger.logMsg(Level.INFO, "Korrekt inloggning med email: " + u.getEmail());
 			if (u.getUserType().equals(UserType.ORDINARY)) {
 			    switchPage(switcher, "mainPage");
 			} else {
 			    switchPage(switcher, "adminPage");
 			}
 		    } else {
-			errorMessagelbl.setText("Det finns ingen sådan användare");
-			logInLogger.logMsg(Level.WARNING, "Felaktig användare");
+			errorMessageLabel.setText("Det finns ingen sådan användare");
+			logInProjectLogger.logMsg(Level.WARNING, "Felaktig användare");
 
 		    }
 		}
@@ -171,7 +172,7 @@ public class LoginPage extends JPanel implements Page
      * @param listenForLogIn Lyssnare för inloggade användare
      */
     public void addLogInListener(ActionListener listenForLogIn) {
-	logInbtn.addActionListener(listenForLogIn);
+	logInButton.addActionListener(listenForLogIn);
     }
 
     /**
