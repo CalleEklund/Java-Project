@@ -20,12 +20,13 @@ public class ProjectLogger
     final static private String LOGGER_PROPERTIES = "logger.properties";
     final static private String LOG_FILE_LOCATION = "res" + FILE_SEPERATOR + "budget_logs.log";
 
-    private static final LogManager LOG_MANAGER = LogManager.getLogManager();
     private static final Logger LOGGER = Logger.getLogger("pages");
 
+
     public ProjectLogger() {
+	final LogManager logManger = LogManager.getLogManager();
 	try {
-	    LOG_MANAGER.readConfiguration(ClassLoader.getSystemResourceAsStream(LOGGER_PROPERTIES));
+	    logManger.readConfiguration(ClassLoader.getSystemResourceAsStream(LOGGER_PROPERTIES));
 	    LOGGER.fine("Conf Loaded");
 
 	} catch (IOException e) {

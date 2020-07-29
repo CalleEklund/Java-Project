@@ -39,7 +39,7 @@ public class MainPage extends JPanel implements Page
     private final JButton addNewLoan = new JButton("Lägg till lån");
     private final JButton logOutButton = new JButton("Logga ut");
     private final JLabel titleLabel = new JLabel("*BUDGET*");
-    private static JTabbedPane loanPanes = new JTabbedPane(TOP);
+    private final JTabbedPane loanPanes = new JTabbedPane(TOP);
 
     private final Database db;
     private ProjectLogger mainPageProjectLogger;

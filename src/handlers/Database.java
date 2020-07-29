@@ -83,7 +83,6 @@ public class Database
 	    final String query = "SELECT * FROM user WHERE email = ?";
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 	    try {
-
 		preparedStmt.setString(1, userEmail);
 		try {
 		    ResultSet rs = preparedStmt.executeQuery();
