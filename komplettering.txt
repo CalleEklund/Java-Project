@@ -1,0 +1,14 @@
+Komplettering carek123
+
+Ändrade namn samt struktur på klasser och packages t.ex. LoggerBudget till ProjectLogger. Tog även bort onödiga filer som inte användes som Savedata.
+Gälllande AutoCloseableResource-varningarna så stäng varje Connect, Preparedstatement och Resultset i metoderna, det kan se som för många try-catches
+men det behövdes för att lättare kunna felsöka med hjälp av Logger eller Konsolen.
+Gällande att loggern bara används i databasen stämmer inte eftersom den används i varje "page" i programmet förutom i App klassen.
+Tanken med att ha AbstractUser är för att bygga dynamiskt och skalbart för framtiden.
+Gällande Java namning convetion så har jag ändrat alla ...lbl till ...label samt ...btn till ...button.
+För att lösa att programmet fortsätter trots att den inte har någon databaskoppling så i Databas klassen om den kommer in i
+catchen för att det inte finns någon databaskoppling så kommer den skickas till nullDatabas metoden som finns på rad 62 i Database.java,
+där det sedan visar användare att den inte har någon databaskoppling för att sedan avsluta programmet.
+Gällnade catch-fallthroughs så hanteras varje catch med antingen en följdhändelse t.ex. conn = null och skickas till nullDatabase() medtoden,
+annars så loggas allt samt printas i konsolen, användaren får även svar att deras handling inte går att genomföra eller att de får ett "nullsvar"
+allt detta hanteras med logger samt ett felmeddelande till användare.
