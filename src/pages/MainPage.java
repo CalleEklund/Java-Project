@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -107,15 +107,14 @@ public class MainPage extends JPanel implements Page
      *
      * @param userLoans inloggade användares lån
      */
-    private void makePages(ArrayList<Loan> userLoans) {
+    private void makePages(List<Loan> userLoans) {
 	JPanel loanPanel = new JPanel();
 	if (!userLoans.isEmpty()) {
 	    loanPanes.removeAll();
 	    int index = 0;
-	    for (int i = 0; i < userLoans.size(); i++) {
-		loanPanel = makeLoanPanel(userLoans.get(i));
-		Loan currentLoan = userLoans.get(i);
-		loanPanes.insertTab(currentLoan.getTitle(), null, loanPanel, null, index);
+	    for (Loan userLoan : userLoans) {
+		loanPanel = makeLoanPanel(userLoan);
+		loanPanes.insertTab(userLoan.getTitle(), null, loanPanel, null, index);
 		index++;
 	    }
 	} else {

@@ -2,6 +2,7 @@ package user_loan_classes;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.List;
 
 /**
  * Användare klassen som skapas vid kontoskapningen, även klassen som används vid lagring samt hämtning med databas. Klassen har
@@ -12,7 +13,7 @@ import java.util.Objects;
 public class User extends AbstractUser
 {
     private String uid = null;
-    private ArrayList<Loan> userLoans = null;
+    private List<Loan> userLoans = null;
     private UserType userType = null;
 
 
@@ -24,7 +25,7 @@ public class User extends AbstractUser
 
 
     public User(final String emailDB, final String passwordDB, final String uid, final String name,
-		final ArrayList<Loan> userLoans, final UserType userTypeDB)
+		final List<Loan> userLoans, final UserType userTypeDB)
     {
 	super(emailDB, passwordDB,name);
 	this.uid = uid;
@@ -58,7 +59,7 @@ public class User extends AbstractUser
 	userLoans.add(l);
     }
 
-    public ArrayList<Loan> getUserLoans() {
+    public List<Loan> getUserLoans() {
 	return userLoans;
     }
 

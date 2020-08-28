@@ -159,7 +159,7 @@ public class Database
      * @return användare och dess lån
      */
     public User getUser(String email, String password) {
-	ArrayList<Loan> userLoansDB = convertToLoan(email);
+	List<Loan> userLoansDB = convertToLoan(email);
 	if (userExists(email, password)) {
 	    try {
 		final String query = "SELECT * FROM user WHERE email = ?";
@@ -216,8 +216,8 @@ public class Database
      *              användare
      * @return Användarens lån i form av ArrayList(Loan)
      */
-    public ArrayList<Loan> convertToLoan(String email) {
-	ArrayList<Loan> temp = new ArrayList<>();
+    public List<Loan> convertToLoan(String email) {
+	List<Loan> temp = new ArrayList<>();
 	try {
 	    final String query = "SELECT loan.* FROM loan INNER JOIN user ON loan.user_id = user.id WHERE user.email = ?";
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -322,7 +322,7 @@ public class Database
 		    while (rs.next()) {
 			if (rs.getInt("userType") == 0) {
 			    String email = rs.getString("user.email");
-			    ArrayList<Loan> userLoans = convertToLoan(email);
+			    List<Loan> userLoans = convertToLoan(email);
 			    User u =
 				    new User(rs.getString("user.email"), rs.getString("user.password"), rs.getString("user.id"),
 					     rs.getString("user.name"), userLoans, UserType.ORDINARY);

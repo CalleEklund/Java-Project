@@ -1,13 +1,12 @@
 package pages;
 
 import handlers.CardSwitcher;
+import handlers.Database;
 import handlers.ProjectLogger;
+import handlers.Validator;
+import net.miginfocom.swing.MigLayout;
 import user_loan_classes.User;
 import user_loan_classes.UserType;
-import handlers.Validator;
-import handlers.Database;
-
-import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -245,7 +244,8 @@ public class AdminPage extends JPanel implements Page
 	    if (!validCheck()) {
 		JOptionPane.showMessageDialog(null, "Det finns tomma fält");
 	    } else {
-		ArrayList<User> changedData = new ArrayList<>();
+		List<User> changedData = new ArrayList<>();
+
 		if (table != null) {
 		    for (int i = 0; i < table.getRowCount(); i++) {
 			String id = table.getValueAt(i, ID_INDEX).toString();
@@ -300,8 +300,8 @@ public class AdminPage extends JPanel implements Page
      * @param newData Den nya tabellens data (ArrayList av User)
      * @return returnerar en ArrayList med den ändraden datan
      */
-    private ArrayList<User> getNoDuplicate(List<User> oldData, ArrayList<User> newData) {
-	ArrayList<User> temp = new ArrayList<>();
+    private List<User> getNoDuplicate(List<User> oldData, List<User> newData) {
+	List<User> temp = new ArrayList<>();
 	for (int i = 0; i < oldData.size(); i++) {
 	    if (!oldData.get(i).compareTo(newData.get(i))) {
 		temp.add(newData.get(i));
