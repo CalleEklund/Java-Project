@@ -1,2 +1,1 @@
-Ett budget program för kursen TDDD78
-av Carl Eklund carek123 VT 2019 period 1
+A budget program for the Java course TDDD78, Apache server is required to run but the inital screen can be opened. Written by Carl Eklund Spring 2019
